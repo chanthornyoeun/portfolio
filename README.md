@@ -123,7 +123,7 @@ docs/           spec, design system, content guidelines, plan, deployment
 
 ## Deployment
 
-The site deploys to **GitHub Pages** through `.github/workflows/deploy.yml`, on every push to `main` or by running it manually. That workflow:
+The site deploys to **GitHub Pages** through `.github/workflows/deploy.yml`, on every push to `master` or by running it manually. That workflow:
 
 1. runs lint, type checks, unit tests and Playwright on the real base path;
 2. builds and verifies `out/`;

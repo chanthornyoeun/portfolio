@@ -2,7 +2,7 @@
 
 The site is a fully static export (`output: "export"`). GitHub Pages serves the files in `out/`, and nothing runs on a server: no API routes, no runtime environment variables, no custom HTTP headers. GitHub Pages is free for public repositories, so no paid service or domain is required.
 
-> Nothing deploys until you push to `main` (or run the workflow manually) in a repository where Pages is enabled with the **GitHub Actions** source.
+> Nothing deploys until you push to `master` (or run the workflow manually) in a repository where Pages is enabled with the **GitHub Actions** source.
 
 ## How the URL and base path work
 
@@ -20,20 +20,16 @@ In the workflow, `actions/configure-pages` supplies `base_url`, so the username,
 
 ## 1. Push the code to GitHub
 
-The workflow deploys from `main`. If your local branch is called `master`, rename it first:
+The workflow deploys from `master`, which is this repository's default branch. GitHub's `github-pages` environment only lets the default branch deploy, so the two must match. If you change the default branch, update `branches:` in `deploy.yml` and the environment's deployment-branch rule as well.
 
-```bash
-git branch -M main
-```
-
-Create an **empty** repository on GitHub (for example `developer-portfolio`), with no README, licence or `.gitignore`, then:
+To publish into a new, **empty** repository (no README, licence or `.gitignore`):
 
 ```bash
 git remote add origin https://github.com/<username>/<repository>.git
 ```
 
 ```bash
-git push -u origin main
+git push -u origin master
 ```
 
 GitHub Pages on a free account requires the repository to be **public**. Private repositories need a paid GitHub plan for Pages.
@@ -45,9 +41,11 @@ GitHub Pages on a free account requires the repository to be **public**. Private
 
 That's all; no branch or folder needs selecting.
 
+> If the live site shows the README rendered as a plain page, the source is still "Deploy from a branch". GitHub is then rendering raw repository files with Jekyll instead of publishing the built site. Switch the source to **GitHub Actions** and re-run the workflow.
+
 ## 3. Run the deployment workflow
 
-- **Automatic:** every push to `main` runs `.github/workflows/deploy.yml`.
+- **Automatic:** every push to `master` runs `.github/workflows/deploy.yml`.
 - **Manual:** go to **Actions → Deploy to GitHub Pages → Run workflow**.
 
 The workflow runs these steps in order. Any failure stops it **before** anything is deployed.
@@ -102,7 +100,7 @@ Consider verifying the domain under your account's **Settings → Pages** to pre
 GitHub Pages serves the most recent successful deployment. To roll back:
 
 - **Revert and push:** `git revert <bad-commit>` then `git push`. The workflow deploys the previous content. This is the recommended way.
-- **Redeploy an older commit:** check out the older commit on a branch, merge it to `main`, or temporarily allow the workflow to run from that ref.
+- **Redeploy an older commit:** check out the older commit on a branch, merge it to `master`, or temporarily allow the workflow to run from that ref.
 
 Under **Actions**, each run keeps its uploaded `github-pages` artifact for a limited time. Old runs can't be "re-promoted" in one click the way some hosts allow.
 
