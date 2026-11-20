@@ -1,0 +1,65 @@
+name: CI
+
+# Pull requests are checked here; pushes to main are checked by deploy.yml.
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  checks:
+    name: Lint, types, format, unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run format:check
+      - run: npm test
+      - run: npm audit --audit-level=high --omit=dev
+
+  e2e:
+    name: Static export e2e (${{ matrix.name }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: custom domain / user site
+            base_path: ""
+          - name: repository subpath
+            base_path: /developer-portfolio
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run test:e2e:install
+      # Builds the export, serves it like GitHub Pages, runs Playwright.
+      - run: npm run test:e2e
+        env:
+          E2E_BASE_PATH: ${{ matrix.base_path }}
+      - run: npm run verify:export
+        env:
+          NEXT_PUBLIC_SITE_URL: http://localhost:3100${{ matrix.base_path }}
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ strategy.job-index }}
+          path: playwright-report/
+          retention-days: 7

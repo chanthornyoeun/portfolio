@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+/* next-themes toggles the .dark class on <html>. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Tokens: see docs/DESIGN_SYSTEM.md */
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #f7f7f8;
+  --fg: #111214;
+  --fg-muted: #5b616e;
+  --border: #e6e7ea;
+  --accent: #2457c5;
+  --accent-fg: #ffffff;
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #0b0c0e;
+  --bg-subtle: #131518;
+  --fg: #ececee;
+  --fg-muted: #9aa0ab;
+  --border: #24272c;
+  --accent: #7aa2f7;
+  --accent-fg: #0b0c0e;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-bg-subtle: var(--bg-subtle);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+}
+
+/* Keep anchored section headings clear of the sticky header. */
+section[id] {
+  scroll-margin-top: 4rem;
+}
+
+/* In the base layer so component utilities can override it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  [data-print-hidden] {
+    display: none !important;
+  }
+}

@@ -1,0 +1,87 @@
+import type { SkillGroup } from "@/lib/types";
+
+export const skills: SkillGroup[] = [
+  {
+    name: "Backend Engineering",
+    skills: [
+      "Java",
+      "Spring Boot",
+      "Spring Framework",
+      "Grails",
+      "Laravel",
+      "PHP",
+      "Node.js",
+      "NestJS",
+      "REST APIs",
+    ],
+  },
+  {
+    name: "Frontend Engineering",
+    skills: [
+      "JavaScript",
+      "TypeScript",
+      "React",
+      "Next.js",
+      "Vue.js",
+      "Nuxt.js",
+      "Angular",
+    ],
+  },
+  {
+    name: "Databases",
+    skills: [
+      "MySQL",
+      "PostgreSQL",
+      "MariaDB",
+      "SQL Server",
+      "MongoDB",
+      "Redis",
+    ],
+  },
+  {
+    name: "Architecture",
+    skills: [
+      "System design",
+      "MVC",
+      "SOLID",
+      "Design patterns",
+      "Concurrency control",
+      "Database transactions",
+      "SQL optimization",
+      "API performance",
+    ],
+  },
+  {
+    name: "Cloud & Tools",
+    skills: [
+      "AWS EC2",
+      "AWS S3",
+      "DigitalOcean",
+      "Docker",
+      "Linux",
+      "Nginx",
+      "Apache Tomcat",
+      "Git",
+      "GitHub",
+      "GitLab",
+      "Bitbucket",
+      "Postman",
+      "Swagger/OpenAPI",
+      "OpenAI Codex",
+      "Claude Code",
+      "GitHub Copilot",
+      "ChatGPT",
+    ],
+  },
+  {
+    name: "Technical Leadership",
+    skills: [
+      "Team mentoring",
+      "Code review",
+      "Business analysis",
+      "Requirements gathering",
+      "Client communication",
+      "Technical coordination",
+    ],
+  },
+];
