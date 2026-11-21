@@ -10,7 +10,7 @@ export function Footer() {
         <p className="flex items-center gap-2">
           &copy; {new Date().getFullYear()} {profile.name}
           {profile.email && (
-            <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} title={profile.email} onClick={() => trackEvent('contact_email_click', { link_location: 'footer' })} className="rounded p-1 hover:text-gray-900 dark:hover:text-gray-50">
+            <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} title={profile.email} onClick={() => trackEvent('contact_email_click', { link_location: 'footer' })} className="-my-2.5 inline-flex h-11 w-11 items-center justify-center rounded hover:text-gray-900 dark:hover:text-gray-50">
               <Mail size={16} aria-hidden="true" />
             </a>
           )}

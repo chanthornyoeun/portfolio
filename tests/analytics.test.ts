@@ -25,3 +25,11 @@ test('nothing is sent before analytics loads', () => {
   trackEvent('contact_email_click', { link_location: 'contact' });
   assert.equal(calls.length, 0);
 });
+
+test('a page view counts once per page; section anchors and repeats are ignored', () => {
+  assert.equal(trackPageView('#/work/enterprise-crm', 'CRM'), true);
+  assert.equal(trackPageView('#/work/enterprise-crm', 'CRM'), false);
+  assert.equal(trackPageView('', 'Home'), true); // back to the homepage
+  assert.equal(trackPageView('#contact', 'Home'), false);
+  assert.equal(trackPageView('#/work/enterprise-crm', 'CRM'), true); // forward again
+});

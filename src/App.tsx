@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MotionConfig } from 'framer-motion';
+import { LazyMotion, MotionConfig, domAnimation } from 'framer-motion';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { About } from './components/About';
@@ -32,7 +32,10 @@ export default function App() {
 
   useEffect(() => {
     document.title = project ? `${project.title} — ${profile.name}` : defaultTitle;
-    trackPageView(project ? hash : '', document.title);
+    // project_view only on a real page change, so StrictMode and repeated hashes don't double count.
+    if (trackPageView(project ? hash : '', document.title) && project) {
+      trackEvent('project_view', { project_slug: project.slug, project_title: project.title });
+    }
     if (project || hash.startsWith('#/')) {
       window.scrollTo(0, 0);
     } else if (hash) {
@@ -41,15 +44,12 @@ export default function App() {
     }
   }, [hash, project]);
 
-  useEffect(() => {
-    if (project) trackEvent('project_view', { project_slug: project.slug, project_title: project.title });
-  }, [project]);
-
   return (
     <ThemeProvider>
+      <LazyMotion features={domAnimation} strict>
       <MotionConfig reducedMotion="user">
       <div className="min-h-screen bg-white font-sans text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-50">
-        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-white focus:px-3 focus:py-2 focus:text-sm">
+        <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-white focus:text-gray-900 focus:px-3 focus:py-2 focus:text-sm">
           Skip to content
         </a>
         <Header onCaseStudy={!!project} />
@@ -71,6 +71,7 @@ export default function App() {
         <ConsentBanner />
       </div>
       </MotionConfig>
+      </LazyMotion>
     </ThemeProvider>
   );
 }

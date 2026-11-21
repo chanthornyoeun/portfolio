@@ -1,5 +1,4 @@
 import { FileText, Github, Linkedin } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { profile } from '../data/profile';
 import { container, iconLink, primaryButton, secondaryButton } from './styles';
 import { trackEvent } from '../lib/analytics';
@@ -9,7 +8,8 @@ const at = { link_location: 'hero' } as const;
 export function Hero() {
   return (
     <section id="top" aria-label="Introduction" className="pt-28 pb-20 sm:pt-40 sm:pb-28">
-      <motion.div className={container} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+      {/* No entrance animation: the headline is the largest paint and should show immediately. */}
+      <div className={container}>
         <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between md:gap-12">
           <div className="max-w-2xl">
             <p className="text-sm font-medium text-gray-900 dark:text-gray-50">{profile.name}</p>
@@ -52,7 +52,7 @@ export function Hero() {
             />
           )}
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

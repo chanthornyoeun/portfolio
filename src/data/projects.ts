@@ -78,25 +78,27 @@ export const projects: Project[] = [
   },
   {
     slug: 'real-time-auction',
-    title: 'Real-Time Auction Platform',
+    title: 'Real-Time Auction & E-Commerce Platform',
     role: 'Project Leader / Developer',
     summary:
-      'A real-time auction platform supporting concurrent bidding, transactional consistency, and e-commerce workflows.',
-    tech: ['Java', 'Spring Boot', 'Redis', 'MySQL', 'Vue.js'],
-    overview: 'An auction platform where many users can bid on the same item at the same time, alongside e-commerce workflows.',
+      'Developed and maintained a real-time auction and e-commerce platform using Java Spring Boot and Vue.js, supporting live bidding, concurrent transactions, and online shopping workflows.',
+    // Card shows the first five, then "etc."; the case study shows all.
+    tech: ['Java', 'Spring Boot', 'Vue.js', 'Redis', 'MySQL', 'WebSocket', 'RabbitMQ', 'OneSignal', 'MyBatis'],
+    overview:
+      'An auction and e-commerce platform where many users can bid on the same item at the same time and see new bids as they happen. It includes customer-facing auction and shop interfaces and an admin dashboard.',
     challenge:
-      'Concurrent bids on the same item must be processed safely so that the recorded result stays consistent.',
+      'Concurrent bids on the same item must be accepted or rejected safely so the recorded winning bid stays consistent, while every watching user sees the change in real time.',
     myRole: 'Project Leader and developer: technical leadership and mentoring alongside hands-on backend and frontend work.',
     contributions: [
-      'Backend and frontend development.',
-      'Redis-based distributed locking.',
-      'Transactional bidding logic.',
-      'Database consistency.',
-      'API optimization.',
-      'Technical leadership and mentoring.',
+      'Implemented real-time bidding features and live auction updates using WebSocket.',
+      'Used Redis distributed locking to manage concurrent bids and prevent duplicate processing.',
+      'Implemented transactional bidding workflows to maintain data consistency.',
+      'Optimized MySQL queries and backend APIs for auction operations.',
+      'Integrated asynchronous messaging and notifications using RabbitMQ and OneSignal.',
+      'Developed and maintained frontend features for auction participation and e-commerce.',
     ],
     approach:
-      'Bid handling combines Redis distributed locks with database transactions in a Spring Boot backend, with a Vue.js frontend.',
+      'Standard business operations go through REST APIs on a Java Spring Boot backend. Bids for the same item are serialized with a Redis distributed lock, and each accepted bid is written to MySQL through MyBatis inside a transaction so the stored result stays consistent. Accepted bids are pushed to connected clients over WebSocket. RabbitMQ handles asynchronous event processing outside the request flow, and OneSignal delivers push notifications to users. Vue.js powers the auction and e-commerce interfaces and the admin dashboard.',
     lessons:
       'Concurrency issues need to be designed for explicitly — locking and transaction boundaries are part of the business logic, not an afterthought.',
   },
