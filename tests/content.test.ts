@@ -82,3 +82,11 @@ test('Petroleum is described as frontend and client coordination, not backend wo
   const freelance = experience.find((g) => g.company === 'Freelance')!.roles[0].highlights.join(' ');
   assert.doesNotMatch(freelance, /Laravel|backend development|database design/i);
 });
+
+test('YesCAR CRM keeps its slug, five featured badges and no invented metrics', () => {
+  const p = findProject('enterprise-crm')!;
+  assert.match(p.title, /^YesCAR/);
+  assert.deepEqual(p.featuredTech, ['Java', 'Spring Boot', 'Spring Data JPA', 'Vue.js', 'REST APIs']);
+  assert.match(p.challenge, /N\+1/);
+  assert.doesNotMatch([p.summary, p.challenge, p.approach, p.lessons].join(' '), /\d+\s*(%|ms|x\b|times faster)/i);
+});

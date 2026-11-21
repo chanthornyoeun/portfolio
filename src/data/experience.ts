@@ -64,9 +64,10 @@ export const experience: ExperienceGroup[] = [
         startDate: '2024-01',
         endDate: '2024-06',
         highlights: [
-          'Java Spring Boot backend development.',
-          'Vue.js frontend development, CRM features, and REST API integration.',
-          'Technical troubleshooting and support.',
+          'Java Spring Boot and Spring Data JPA backend development.',
+          'Vue.js frontend development and REST API integration.',
+          'Investigated and resolved a production N+1 query performance issue.',
+          'Implemented large-volume CRM data exports.',
         ],
       },
     ],
