@@ -8,3 +8,11 @@ export const secondaryButton =
 
 export const iconLink =
   'rounded-md p-2 text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50';
+
+// Subtle staggered reveal for list items; MotionConfig in App disables it for reduced-motion users.
+export const reveal = (index: number) => ({
+  initial: { opacity: 0, y: 12 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+  transition: { duration: 0.4, delay: Math.min(index, 6) * 0.06 },
+});

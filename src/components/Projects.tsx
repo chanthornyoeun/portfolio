@@ -1,7 +1,9 @@
 import { ArrowRight, Lock } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { otherProjects, projects } from '../data/projects';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Section } from './Section';
+import { reveal } from './styles';
 
 export function Tags({ items }: { items: string[] }) {
   return (
@@ -27,8 +29,9 @@ export function Projects() {
   return (
     <Section id="work" title="Selected Work">
       <div className="grid gap-6 md:grid-cols-2">
-        {projects.map((project) => (
-          <article
+        {projects.map((project, i) => (
+          <motion.article
+            {...reveal(i)}
             key={project.slug}
             className="flex flex-col rounded-lg border border-gray-200 p-6 transition-colors hover:border-gray-400 dark:border-gray-800 dark:hover:border-gray-600"
           >
@@ -53,7 +56,7 @@ export function Projects() {
               View Case Study <span className="sr-only">: {project.title}</span>
               <ArrowRight size={14} aria-hidden="true" />
             </a>
-          </article>
+          </motion.article>
         ))}
       </div>
 
