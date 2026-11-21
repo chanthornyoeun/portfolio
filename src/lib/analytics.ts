@@ -11,7 +11,7 @@ type EventParams = {
   resume_download: { link_location: LinkLocation };
   navigation_click: { navigation_target: string; link_location: LinkLocation };
 };
-export type LinkLocation = 'header' | 'mobile_menu' | 'hero' | 'contact' | 'footer';
+export type LinkLocation = 'header' | 'mobile_menu' | 'hero' | 'contact';
 export type Consent = 'granted' | 'denied';
 
 const env = import.meta.env ?? {};

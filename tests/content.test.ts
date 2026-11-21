@@ -65,3 +65,20 @@ test('asset() resolves against the base path and keeps empty values empty', () =
   assert.equal(asset('resume.pdf'), '/resume.pdf');
   assert.equal(asset('/resume.pdf'), '/resume.pdf');
 });
+
+test('cards feature at most five technologies, all from the full stack', () => {
+  for (const p of projects) {
+    assert.ok(p.featuredTech.length >= 1 && p.featuredTech.length <= 5, p.slug);
+    for (const t of p.featuredTech) assert.ok(p.tech.includes(t), `${p.slug}: ${t}`);
+  }
+});
+
+test('Petroleum is described as frontend and client coordination, not backend work', () => {
+  const p = projects.find((x) => x.slug === 'petroleum-distribution')!;
+  const mine = [p.role, p.summary, p.myRole, ...p.contributions].join(' ');
+  assert.match(p.role, /Frontend Development & Client Coordination/);
+  assert.doesNotMatch(mine, /Laravel backend development|database design|full-stack/i);
+  assert.match(p.team ?? '', /backend team/);
+  const freelance = experience.find((g) => g.company === 'Freelance')!.roles[0].highlights.join(' ');
+  assert.doesNotMatch(freelance, /Laravel|backend development|database design/i);
+});

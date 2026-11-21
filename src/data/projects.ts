@@ -3,12 +3,17 @@ export interface Project {
   title: string;
   role: string;
   summary: string;
+  /** Up to five shown on the homepage card. */
+  featuredTech: string[];
+  /** Full verified stack, shown on the case study. */
   tech: string[];
   /** Optional authorized, sanitized screenshot (16:9) in public/, e.g. 'projects/auction.webp'. Resolved with asset(). */
   image?: string;
   overview: string;
   challenge: string;
   myRole: string;
+  /** Work done by others on the project, so it isn't read as mine. */
+  team?: string;
   contributions: string[];
   approach: string;
   lessons: string;
@@ -19,28 +24,28 @@ export const projects: Project[] = [
   {
     slug: 'petroleum-distribution',
     title: 'Petroleum Distribution Management System',
-    role: 'Freelance Software Engineer / Full-Stack Development',
+    role: 'Freelance Software Engineer — Frontend Development & Client Coordination',
     summary:
-      'An enterprise petroleum distribution platform built with Next.js and Laravel, where I contribute to frontend and backend development, business analysis, and operational workflows.',
-    tech: ['Next.js', 'React', 'TypeScript', 'Laravel', 'Figma'],
+      'An enterprise petroleum distribution platform supporting wholesale, retail, logistics, and master data operations. Responsible for frontend development, client communication, requirements analysis, and UI/UX prototyping, while collaborating with a dedicated backend development team.',
+    featuredTech: ['Next.js', 'React', 'TypeScript', 'Figma', 'REST APIs'],
+    tech: ['Next.js', 'React', 'TypeScript', 'Figma', 'REST APIs', 'Laravel (backend team)'],
     overview:
       'A business platform supporting petroleum distribution operations, covering wholesale, retail, logistics, and master data.',
     challenge:
       'Distribution operations involve several connected business areas. Each workflow needs to reflect real operational rules while staying consistent with shared master data.',
     myRole:
-      'Freelance software engineer working across the stack — from requirements and UI prototypes to frontend and backend implementation.',
+      'Responsible for frontend implementation using Next.js, React, and TypeScript, communicating directly with clients to understand business requirements, creating Figma prototypes, and coordinating with backend developers to deliver integrated business workflows.',
+    team: 'The Laravel backend, including its APIs and database, is implemented and maintained by a dedicated backend team.',
     contributions: [
-      'Hands-on frontend implementation using Next.js.',
-      'Hands-on Laravel backend development.',
-      'API integration.',
-      'Figma prototyping.',
-      'Database design.',
-      'Business requirements analysis.',
-      'Wholesale, retail, logistics, and master data workflows.',
-      'Stakeholder collaboration.',
+      'Developed frontend features using Next.js, React, and TypeScript.',
+      'Communicated with clients to gather and clarify business requirements.',
+      'Created Figma prototypes and translated requirements into working interfaces.',
+      'Integrated frontend modules with REST APIs.',
+      'Coordinated with backend developers on API contracts and business rules.',
+      'Contributed to wholesale, retail, logistics, and master data workflows.',
     ],
     approach:
-      'Requirements are clarified with stakeholders and prototyped in Figma before implementation. The Next.js frontend communicates with a Laravel backend through REST APIs.',
+      'Requirements are clarified with the client and prototyped in Figma before implementation. The Next.js frontend consumes REST APIs from the Laravel backend built by the backend team, with API contracts and business rules agreed together before integration.',
     lessons:
       'Close collaboration with stakeholders and early prototyping help align complex operational workflows before code is written.',
   },
@@ -50,13 +55,15 @@ export const projects: Project[] = [
     role: 'Frontend Team Leader',
     summary:
       'An enterprise general insurance platform where I led frontend development and contributed hands-on to implementing core insurance workflows using Angular, while coordinating technical requirements with backend teams and clients.',
+    featuredTech: ['Angular', 'TypeScript', 'REST APIs'],
     tech: ['Angular', 'TypeScript', 'REST APIs'],
     overview:
       'An enterprise general insurance system covering the core insurance lifecycle, from underwriting requests and quotations to policies, claims, and endorsements.',
     challenge:
       'Insurance workflows are rule-heavy and interconnected. The frontend needed to represent these processes clearly while staying aligned with backend services built by a separate team.',
     myRole:
-      'Frontend Team Leader: implemented Angular features directly while guiding the frontend team and coordinating requirements with backend developers and clients. Backend services were owned by the backend team.',
+      'Frontend Team Leader: implemented Angular features directly while guiding the frontend team and coordinating requirements with backend developers and clients. ',
+    team: 'Backend services were built and owned by a separate backend team.',
     contributions: [
       'Hands-on Angular frontend development.',
       'Insurance modules and business workflows.',
@@ -79,23 +86,26 @@ export const projects: Project[] = [
   {
     slug: 'real-time-auction',
     title: 'Real-Time Auction & E-Commerce Platform',
-    role: 'Project Leader / Developer',
+    role: 'Project Leader / Team Lead',
     summary:
       'Developed and maintained a real-time auction and e-commerce platform using Java Spring Boot and Vue.js, supporting live bidding, concurrent transactions, and online shopping workflows.',
-    // Card shows the first five, then "etc."; the case study shows all.
+    featuredTech: ['Spring Boot', 'Vue.js', 'WebSocket', 'Redis', 'MySQL'],
     tech: ['Java', 'Spring Boot', 'Vue.js', 'Redis', 'MySQL', 'WebSocket', 'RabbitMQ', 'OneSignal', 'MyBatis'],
     overview:
       'An auction and e-commerce platform where many users can bid on the same item at the same time and see new bids as they happen. It includes customer-facing auction and shop interfaces and an admin dashboard.',
     challenge:
       'Concurrent bids on the same item must be accepted or rejected safely so the recorded winning bid stays consistent, while every watching user sees the change in real time.',
-    myRole: 'Project Leader and developer: technical leadership and mentoring alongside hands-on backend and frontend work.',
+    myRole:
+      'Project Leader / Team Lead with hands-on development across the Java Spring Boot backend and the Vue.js frontend.',
+    team:
+      'Built collaboratively with my development team. Alongside my own backend and frontend work, I led the team through code reviews, mentoring, and day-to-day technical coordination with developers. Integrations not listed under my contributions were delivered as a team effort.',
     contributions: [
-      'Implemented real-time bidding features and live auction updates using WebSocket.',
-      'Used Redis distributed locking to manage concurrent bids and prevent duplicate processing.',
-      'Implemented transactional bidding workflows to maintain data consistency.',
-      'Optimized MySQL queries and backend APIs for auction operations.',
-      'Integrated asynchronous messaging and notifications using RabbitMQ and OneSignal.',
-      'Developed and maintained frontend features for auction participation and e-commerce.',
+      'Java Spring Boot backend development.',
+      'Vue.js frontend development for auction participation and e-commerce.',
+      'Real-time auction features.',
+      'Redis distributed locking for concurrent bidding.',
+      'Transactional bidding workflows to keep bid data consistent.',
+      'MySQL query and backend API optimization.',
     ],
     approach:
       'Standard business operations go through REST APIs on a Java Spring Boot backend. Bids for the same item are serialized with a Redis distributed lock, and each accepted bid is written to MySQL through MyBatis inside a transaction so the stored result stays consistent. Accepted bids are pushed to connected clients over WebSocket. RabbitMQ handles asynchronous event processing outside the request flow, and OneSignal delivers push notifications to users. Vue.js powers the auction and e-commerce interfaces and the admin dashboard.',
@@ -108,16 +118,18 @@ export const projects: Project[] = [
     role: 'Senior Java Developer',
     summary:
       'An enterprise CRM application involving backend services, frontend development, API integration, and business workflow support.',
+    featuredTech: ['Java', 'Spring Boot', 'Vue.js', 'REST APIs'],
     tech: ['Java', 'Spring Boot', 'Vue.js', 'REST APIs'],
     overview: 'A CRM application supporting customer-related business workflows.',
     challenge: 'Adding CRM features and keeping an existing business application stable and maintainable.',
     myRole: 'Senior Java Developer working on both backend services and the frontend.',
+    team: 'Developed collaboratively as part of a development team, with my contributions spanning both backend and frontend.',
     contributions: [
-      'Backend development.',
-      'Frontend development.',
+      'Java Spring Boot backend development.',
+      'Vue.js frontend development.',
       'REST API integration.',
-      'Troubleshooting.',
-      'Business application maintenance.',
+      'Troubleshooting and maintenance.',
+      'Supporting business workflows.',
     ],
     approach: 'Spring Boot backend services exposed through REST APIs and consumed by a Vue.js frontend.',
     lessons: 'Working across backend and frontend makes troubleshooting faster in business applications.',

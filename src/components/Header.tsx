@@ -1,5 +1,5 @@
 import { Menu, X, Moon, Sun } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { profile } from '../data/profile';
 import { container } from './styles';
@@ -40,21 +40,39 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
   const { theme, toggleTheme } = useTheme();
   const active = useActiveSection(onCaseStudy);
 
+  const headerRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+
+  // Close on Escape (returning focus to the toggle), on a tap outside the header, or when the desktop nav takes over.
+  // Taps inside the header, such as the theme toggle, keep it open.
   useEffect(() => {
     if (!isMenuOpen) return;
-    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setIsMenuOpen(false);
+    const close = () => setIsMenuOpen(false);
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      close();
+      toggleRef.current?.focus();
+    };
+    const onPointer = (e: PointerEvent) => !headerRef.current?.contains(e.target as Node) && close();
+    const desktop = window.matchMedia('(min-width: 768px)');
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    document.addEventListener('pointerdown', onPointer);
+    desktop.addEventListener('change', close);
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.removeEventListener('pointerdown', onPointer);
+      desktop.removeEventListener('change', close);
+    };
   }, [isMenuOpen]);
 
-  const links = (extra = '', where: LinkLocation = 'header') => (
+  const links = (extra = '', where: LinkLocation = 'header', activeExtra = '') => (
     <>
       {sections.map((s) => (
         <li key={s.id}>
           <a
             href={`#${s.id}`}
             aria-current={active === s.id ? 'true' : undefined}
-            className={`${linkClass} ${active === s.id ? current : idle} ${extra}`}
+            className={`${linkClass} ${active === s.id ? `${current} ${activeExtra}` : idle} ${extra}`}
             onClick={() => {
               trackEvent('navigation_click', { navigation_target: s.id, link_location: where });
               setIsMenuOpen(false);
@@ -75,11 +93,11 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
   );
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/95">
+    <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/95">
       <nav aria-label="Main" className={`${container} py-3`}>
         <div className="flex items-center justify-between gap-4">
           <a href="#top" className="-my-2 rounded py-2 font-semibold text-gray-900 dark:text-gray-50">
-            {profile.name}.
+            {profile.name}
           </a>
 
           <div className="flex items-center gap-1 md:gap-6">
@@ -88,15 +106,16 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
             <button
               type="button"
               onClick={toggleTheme}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-600 focus-visible:outline-offset-0 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
               aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
             >
               {theme === 'light' ? <Moon size={18} aria-hidden="true" /> : <Sun size={18} aria-hidden="true" />}
             </button>
 
             <button
+              ref={toggleRef}
               type="button"
-              className="inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100 md:hidden dark:text-gray-300 dark:hover:bg-gray-800"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-700 focus-visible:outline-offset-0 hover:bg-gray-100 md:hidden dark:text-gray-300 dark:hover:bg-gray-800"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMenuOpen}
@@ -107,12 +126,18 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
           </div>
         </div>
 
-        {isMenuOpen && (
-          <ul id="mobile-nav" className="mt-3 border-t border-gray-200 pt-2 md:hidden dark:border-gray-800">
-            {links('block py-3', 'mobile_menu')}
-          </ul>
-        )}
       </nav>
+
+      {/* Compact dropdown under the bar; it overlays the page instead of pushing it down. */}
+      <div
+        className={`absolute inset-x-0 top-full border-b border-gray-200 bg-white shadow-sm transition-[opacity,transform,visibility] duration-150 ease-out motion-reduce:transition-none md:hidden dark:border-gray-800 dark:bg-gray-950 ${
+          isMenuOpen ? 'translate-y-0 opacity-100' : 'invisible -translate-y-1 opacity-0'
+        }`}
+      >
+        <ul id="mobile-nav" className={`${container} py-2`}>
+          {links('flex h-11 items-center border-l-2 border-transparent pl-3 focus-visible:outline-offset-0', 'mobile_menu', 'border-l-gray-900 dark:border-l-gray-50')}
+        </ul>
+      </div>
     </header>
   );
 }

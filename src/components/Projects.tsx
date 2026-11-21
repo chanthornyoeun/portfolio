@@ -6,20 +6,14 @@ import { Section } from './Section';
 import { reveal } from './styles';
 import { trackEvent } from '../lib/analytics';
 
-export function Tags({ items, limit = items.length }: { items: string[]; limit?: number }) {
-  const hidden = items.length - limit;
+export function Tags({ items }: { items: string[] }) {
   return (
     <ul className="flex flex-wrap gap-2">
-      {items.slice(0, limit).map((t) => (
+      {items.map((t) => (
         <li key={t} className="rounded border border-gray-200 px-2 py-0.5 text-xs text-gray-600 dark:border-gray-700 dark:text-gray-400">
           {t}
         </li>
       ))}
-      {hidden > 0 && (
-        <li className="px-1 py-0.5 text-xs text-gray-500 dark:text-gray-400">
-          etc.<span className="sr-only"> ({hidden} more on the case study)</span>
-        </li>
-      )}
     </ul>
   );
 }
@@ -58,7 +52,7 @@ export function Projects() {
             <PrivateLabel />
             <h3 className="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-gray-50">{project.title}</h3>
             <p className="mt-2 mb-5 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{project.summary}</p>
-            <Tags items={project.tech} limit={5} />
+            <Tags items={project.featuredTech.slice(0, 5)} />
             <a
               href={`#/work/${project.slug}`}
               onClick={() => trackEvent('project_card_click', { project_slug: project.slug, project_title: project.title })}

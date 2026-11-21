@@ -3,34 +3,43 @@ import { skills } from '../data/skills';
 import { Section } from './Section';
 import { reveal } from './styles';
 
-const badge = 'rounded border px-2 py-0.5 text-xs';
-const core = `${badge} border-gray-300 font-medium text-gray-900 dark:border-gray-600 dark:text-gray-50`;
-const other = `${badge} border-gray-200 text-gray-600 dark:border-gray-700 dark:text-gray-400`;
+// Supporting skills are plain muted text, so only primary technologies carry badge borders.
+function Muted({ items }: { items: string[] }) {
+  return (
+    <ul className="flex flex-wrap gap-x-3 gap-y-1 text-sm text-gray-600 dark:text-gray-400">
+      {items.map((s) => (
+        <li key={s}>{s}</li>
+      ))}
+    </ul>
+  );
+}
 
 export function Skills() {
   return (
     <Section id="skills" title="Technical Expertise">
-      <dl className="grid gap-x-10 gap-y-8 sm:grid-cols-2">
+      <div className="grid items-start gap-x-12 gap-y-10 md:grid-cols-2">
         {skills.map((group, i) => (
           <m.div {...reveal(i)} key={group.category}>
-            <dt className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-50">{group.category}</dt>
-            <dd>
-              <ul className="flex flex-wrap gap-2">
-                {group.core.map((s) => (
-                  <li key={s} className={core}>
-                    {s}
-                  </li>
-                ))}
-                {group.other.map((s) => (
-                  <li key={s} className={other}>
+            <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-50">{group.category}</h3>
+            {group.primary.length > 0 && (
+              <ul className="mb-3 flex flex-wrap gap-2" aria-label={`${group.category}: primary`}>
+                {group.primary.map((s) => (
+                  <li key={s} className="rounded border border-gray-300 px-2 py-0.5 text-xs font-medium text-gray-900 dark:border-gray-600 dark:text-gray-50">
                     {s}
                   </li>
                 ))}
               </ul>
-            </dd>
+            )}
+            <Muted items={group.supporting} />
+            {group.subgroup && (
+              <div className="mt-3">
+                <h4 className="mb-1 text-xs font-medium uppercase tracking-wide text-gray-500 dark:text-gray-400">{group.subgroup.label}</h4>
+                <Muted items={group.subgroup.items} />
+              </div>
+            )}
           </m.div>
         ))}
-      </dl>
+      </div>
     </Section>
   );
 }

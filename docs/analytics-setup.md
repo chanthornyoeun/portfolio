@@ -30,7 +30,7 @@ The portfolio uses the official Google tag (`gtag.js`) through a small module, `
 | `project_view` | A case study page opens (from a card, a direct link or back/forward) | `project_slug`, `project_title` |
 | `project_card_click` | A visitor clicks a project card | `project_slug`, `project_title` |
 | `navigation_click` | A visitor uses the header or mobile menu | `navigation_target`, `link_location` |
-| `contact_email_click` | A visitor clicks an Email link (Contact or footer) | `link_location` |
+| `contact_email_click` | A visitor clicks the Email button in Contact | `link_location` |
 | `linkedin_click` / `github_click` | A visitor clicks a LinkedIn or GitHub link (Hero or Contact) | `link_location` |
 | `resume_view` | A visitor clicks a Resume link (only shown once a CV is configured) | `link_location` |
 | `resume_download` | Reserved; no download-only link exists yet | `link_location` |
