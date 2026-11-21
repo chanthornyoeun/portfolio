@@ -1,72 +1,67 @@
 import { Menu, X, Moon, Sun } from 'lucide-react';
 import { useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
+import { profile } from '../data/profile';
+import { container } from './styles';
+
+const navItems = [
+  { label: 'Work', href: '#work' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'About', href: '#about' },
+  { label: 'Contact', href: '#contact' },
+  ...(profile.resumeUrl ? [{ label: 'Resume', href: profile.resumeUrl }] : []),
+];
+
+const linkClass = 'text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50 transition-colors';
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-  const navItems = [
-    { label: 'Home', href: '#home' },
-    { label: 'About', href: '#about' },
-    { label: 'Experience', href: '#experience' },
-    { label: 'Skills', href: '#skills' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'Contact', href: '#contact' },
-  ];
-
   return (
-    <header className="fixed top-0 left-0 right-0 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm shadow-sm z-50 transition-colors">
-      <nav className="container mx-auto px-4 py-4">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/95">
+      <nav aria-label="Main" className={`${container} py-4`}>
         <div className="flex items-center justify-between">
-          <a href="#home" className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-            Portfolio
+          <a href="#top" className="font-semibold text-gray-900 dark:text-gray-50">
+            {profile.name}.
           </a>
 
-          {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center gap-8">
-            {navItems.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div className="flex items-center gap-6">
+            <ul className="hidden items-center gap-6 md:flex">
+              {navItems.map((item) => (
+                <li key={item.label}>
+                  <a href={item.href} className={linkClass}>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
 
-          {/* Theme Toggle & Mobile Menu Button */}
-          <div className="flex items-center gap-4">
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
-              aria-label="Toggle theme"
+              className="rounded-md p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
             >
-              {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+              {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
             </button>
 
             <button
-              className="md:hidden text-gray-700 dark:text-gray-300"
+              className="rounded-md p-1 text-gray-700 md:hidden dark:text-gray-300"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle menu"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-nav"
             >
-              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
 
-        {/* Mobile Navigation */}
         {isMenuOpen && (
-          <ul className="md:hidden mt-4 space-y-4">
+          <ul id="mobile-nav" className="mt-4 space-y-3 md:hidden">
             {navItems.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  className="block text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+              <li key={item.label}>
+                <a href={item.href} className={`block py-1 ${linkClass}`} onClick={() => setIsMenuOpen(false)}>
                   {item.label}
                 </a>
               </li>
