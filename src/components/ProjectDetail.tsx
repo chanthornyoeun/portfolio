@@ -8,10 +8,13 @@ function Block({ title, children }: { title: string; children: React.ReactNode }
   return (
     <section className="grid gap-2 border-t border-gray-200 py-8 sm:grid-cols-[180px_1fr] sm:gap-8 dark:border-gray-800">
       <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{title}</h2>
-      <div className="leading-relaxed text-gray-700 dark:text-gray-300">{children}</div>
+      <div className="space-y-4 leading-relaxed text-gray-700 dark:text-gray-300">{children}</div>
     </section>
   );
 }
+
+// Text fields may hold several paragraphs separated by a blank line.
+const paras = (text: string) => text.split('\n\n').map((p) => <p key={p}>{p}</p>);
 
 export function ProjectDetail({ project }: { project: Project }) {
   return (
@@ -44,10 +47,10 @@ export function ProjectDetail({ project }: { project: Project }) {
         />
       )}
 
-      <Block title="Overview">{project.overview}</Block>
-      <Block title="Challenge">{project.challenge}</Block>
-      <Block title="My Role">{project.myRole}</Block>
-      {project.team && <Block title="Team & Collaboration">{project.team}</Block>}
+      <Block title="Overview">{paras(project.overview)}</Block>
+      <Block title="Challenge">{paras(project.challenge)}</Block>
+      <Block title="My Role">{paras(project.myRole)}</Block>
+      {project.team && <Block title="Team & Collaboration">{paras(project.team)}</Block>}
       <Block title="Contributions">
         <ul className="grid list-disc gap-x-8 gap-y-1 pl-5 marker:text-gray-400 sm:grid-cols-2">
           {project.contributions.map((c) => (
@@ -55,8 +58,8 @@ export function ProjectDetail({ project }: { project: Project }) {
           ))}
         </ul>
       </Block>
-      <Block title="Technical Approach">{project.approach}</Block>
-      <Block title="Lessons Learned">{project.lessons}</Block>
+      <Block title="Technical Approach">{paras(project.approach)}</Block>
+      <Block title="Lessons Learned">{paras(project.lessons)}</Block>
     </article>
   );
 }

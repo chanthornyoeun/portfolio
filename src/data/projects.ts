@@ -114,25 +114,37 @@ export const projects: Project[] = [
   },
   {
     slug: 'enterprise-crm',
-    title: 'Enterprise CRM Platform',
+    title: 'YesCAR — Customer Relationship Management System',
     role: 'Senior Java Developer',
     summary:
-      'An enterprise CRM application involving backend services, frontend development, API integration, and business workflow support.',
-    featuredTech: ['Java', 'Spring Boot', 'Vue.js', 'REST APIs'],
-    tech: ['Java', 'Spring Boot', 'Vue.js', 'REST APIs'],
-    overview: 'A CRM application supporting customer-related business workflows.',
-    challenge: 'Adding CRM features and keeping an existing business application stable and maintainable.',
-    myRole: 'Senior Java Developer working on both backend services and the frontend.',
-    team: 'Developed collaboratively as part of a development team, with my contributions spanning both backend and frontend.',
+      'Developed and maintained a CRM platform that digitized customer management, sales leads, and reporting. Contributed to backend and frontend development, resolved a production N+1 query performance issue, and implemented large-volume data exports.',
+    featuredTech: ['Java', 'Spring Boot', 'Spring Data JPA', 'Vue.js', 'REST APIs'],
+    tech: ['Java', 'Spring Boot', 'Spring Data JPA', 'Vue.js', 'REST APIs'],
+    overview:
+      'The YesCAR CRM platform replaced manual paperwork with digital workflows for managing customer information, sales leads, customer relationships, and sales reports.',
+    // Paragraphs are separated by a blank line ("\n\n").
+    challenge:
+      'After deployment to production, growing customer data exposed an N+1 query problem in an existing customer phone number update workflow. The original implementation fetched records, evaluated matching conditions in application memory, and performed repeated database operations, creating a performance bottleneck. Non-unique customer names and phone numbers also complicated identifying the intended records without changing unrelated ones.\n\nExporting thousands of CRM records for reporting and business operations was a second engineering challenge.',
+    myRole:
+      'As a Senior Java Developer, I worked on Java Spring Boot backend services, Spring Data JPA persistence, Vue.js frontend features, and REST API integration. I also investigated and resolved the production N+1 query issue and implemented large-volume CRM data exports.',
+    team:
+      'The CRM was developed collaboratively by a development team. The customer phone number update feature had been implemented before I took ownership of its performance issue. I investigated and optimized that workflow while contributing to backend, frontend, and export functionality.',
     contributions: [
-      'Java Spring Boot backend development.',
-      'Vue.js frontend development.',
-      'REST API integration.',
-      'Troubleshooting and maintenance.',
-      'Supporting business workflows.',
+      'Developed backend services using Java and Spring Boot.',
+      'Used Spring Data JPA for database access and persistence.',
+      'Developed Vue.js frontend functionality and integrated REST APIs.',
+      'Supported customer, lead, and sales reporting workflows.',
+      'Investigated a production N+1 query problem in an existing customer update feature.',
+      'Identified inefficient application-level record fetching and repeated database operations.',
+      'Replaced the affected workflow with direct conditional database updates.',
+      'Eliminated unnecessary in-memory record checking and the N+1 query pattern.',
+      'Implemented data exports involving thousands of CRM records.',
+      'Supported troubleshooting and maintenance.',
     ],
-    approach: 'Spring Boot backend services exposed through REST APIs and consumed by a Vue.js frontend.',
-    lessons: 'Working across backend and frontend makes troubleshooting faster in business applications.',
+    approach:
+      'The CRM uses Java Spring Boot backend services with Spring Data JPA for data access, exposing REST APIs consumed by a Vue.js frontend.\n\nSet-based update optimization: I investigated the production bottleneck and replaced the application-level processing with direct conditional database updates. The database now evaluates the matching conditions and updates the intended records itself, which eliminated the N+1 query pattern in the affected workflow, avoided loading records into application memory, and removed unnecessary database round trips. Because customer names and phone numbers are not unique, the update conditions still had to be defined carefully to target only the intended records. The result resolved a production performance bottleneck and improved the efficiency and scalability of customer information updates.\n\nLarge-volume export: I implemented CRM data export functionality capable of handling thousands of records to support business reporting and operational needs.',
+    lessons:
+      'Performance problems in enterprise applications may only become visible under real production data volumes. ORM query behavior and application-level record processing need careful attention, especially with growing datasets and non-unique customer information. Direct database operations can significantly simplify inefficient workflows.',
   },
 ];
 
