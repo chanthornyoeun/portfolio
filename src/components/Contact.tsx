@@ -12,7 +12,7 @@ export function Contact() {
       </p>
       <div className="flex flex-wrap gap-3">
         {profile.email && (
-          <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} className={`${primaryButton} gap-2 border border-transparent`}>
+          <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} title={profile.email} className={`${primaryButton} gap-2 border border-transparent`}>
             <Mail size={16} aria-hidden="true" /> Email
           </a>
         )}

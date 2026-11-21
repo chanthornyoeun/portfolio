@@ -1,8 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { projects, findProject } from '../src/data/projects.ts';
-import { experience } from '../src/data/experience.ts';
-import { profile } from '../src/data/profile.ts';
+import { companyPeriod, experience, formatDuration, formatPeriod, monthsBetween } from '../src/data/experience.ts';
+import { asset, profile } from '../src/data/profile.ts';
 
 test('four featured projects with unique slugs that resolve', () => {
   assert.equal(projects.length, 4);
@@ -15,14 +15,53 @@ test('private projects carry no repository or demo links', () => {
   for (const p of projects) assert.doesNotMatch(JSON.stringify(p), /https?:\/\//);
 });
 
-test('experience is newest-first and keeps verified titles', () => {
-  assert.equal(experience.length, 7);
-  assert.equal(experience[0].title, 'Freelance Software Engineer');
-  assert.equal(experience.at(-1)?.period, 'December 2018 – October 2019');
+test('experience is grouped by employer with verified titles and dates', () => {
+  assert.deepEqual(
+    experience.map((g) => [g.company, g.roles.map((r) => `${r.title} ${formatPeriod(r.startDate, r.endDate)}`)]),
+    [
+      ['Freelance', ['Freelance Software Engineer Jan 2026 – Present']],
+      ['Aibodia Co., Ltd', ['Project Leader / Team Lead Nov 2024 – Dec 2025', 'Senior Frontend Developer Aug 2024 – Oct 2024']],
+      ['YesCAR Cambodia', ['Senior Java Developer Jan 2024 – Jun 2024']],
+      [
+        'Ecoinsoft Solution Co., Ltd',
+        ['Frontend Team Leader Mar 2020 – Sep 2023', 'Frontend Developer Nov 2019 – Feb 2020', 'Backend Developer Dec 2018 – Oct 2019'],
+      ],
+    ],
+  );
+});
+
+test('roles are newest first within each company', () => {
+  for (const g of experience) {
+    const starts = g.roles.map((r) => r.startDate);
+    assert.deepEqual(starts, [...starts].sort().reverse(), g.company);
+  }
+});
+
+test('company period spans earliest start to latest end', () => {
+  const [freelance, aibodia, yescar, ecoinsoft] = experience;
+  assert.deepEqual(companyPeriod(aibodia), { start: '2024-08', end: '2025-12' });
+  assert.deepEqual(companyPeriod(ecoinsoft), { start: '2018-12', end: '2023-09' });
+  assert.deepEqual(companyPeriod(freelance), { start: '2026-01', end: null });
+  assert.equal(formatDuration(monthsBetween('2024-08', '2025-12')), '1 yr 5 mos');
+  assert.equal(formatDuration(monthsBetween('2018-12', '2023-09')), '4 yrs 10 mos');
+  assert.equal(formatDuration(monthsBetween(yescar.roles[0].startDate, yescar.roles[0].endDate)), '6 mos');
+  assert.equal(monthsBetween('2026-01', null, new Date(2026, 10, 21)), 11);
 });
 
 test('no placeholder contact details', () => {
   const all = JSON.stringify({ profile, projects, experience });
   assert.doesNotMatch(all, /example\.com|alex|555/i);
   if (profile.email) assert.match(profile.email, /^[^@\s]+@[^@\s]+\.[^@\s]+$/);
+});
+
+test('each role lists 2–5 concise highlights', () => {
+  for (const role of experience.flatMap((g) => g.roles)) {
+    assert.ok(role.highlights.length >= 2 && role.highlights.length <= 5, role.title);
+  }
+});
+
+test('asset() resolves against the base path and keeps empty values empty', () => {
+  assert.equal(asset(''), '');
+  assert.equal(asset('resume.pdf'), '/resume.pdf');
+  assert.equal(asset('/resume.pdf'), '/resume.pdf');
 });
