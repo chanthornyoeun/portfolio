@@ -4,7 +4,7 @@ export interface Project {
   role: string;
   summary: string;
   tech: string[];
-  /** Optional sanitized screenshot or conceptual mockup, relative to public/. */
+  /** Optional authorized, sanitized screenshot (16:9) in public/, e.g. 'projects/auction.webp'. Resolved with asset(). */
   image?: string;
   overview: string;
   challenge: string;

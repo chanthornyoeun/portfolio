@@ -1,9 +1,10 @@
 import { ArrowRight, Lock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { asset } from '../data/profile';
 import { otherProjects, projects } from '../data/projects';
-import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Section } from './Section';
 import { reveal } from './styles';
+import { trackEvent } from '../lib/analytics';
 
 export function Tags({ items }: { items: string[] }) {
   return (
@@ -33,25 +34,30 @@ export function Projects() {
           <motion.article
             {...reveal(i)}
             key={project.slug}
-            className="flex flex-col rounded-lg border border-gray-200 p-6 transition-colors hover:border-gray-400 dark:border-gray-800 dark:hover:border-gray-600"
+            className="relative flex flex-col rounded-lg border border-gray-200 p-5 transition-colors focus-within:border-gray-400 hover:border-gray-400 sm:p-6 dark:border-gray-800 dark:focus-within:border-gray-600 dark:hover:border-gray-600"
           >
             {project.image && (
-              <ImageWithFallback
-                src={project.image}
+              <img
+                src={asset(project.image)}
                 alt={`${project.title} preview`}
                 loading="lazy"
-                width={600}
-                height={340}
+                decoding="async"
+                width={640}
+                height={360}
+                // A missing file is hidden rather than leaving a broken placeholder.
+                onError={(e) => (e.currentTarget.hidden = true)}
                 className="mb-5 aspect-video w-full rounded-md border border-gray-200 object-cover dark:border-gray-800"
               />
             )}
             <PrivateLabel />
-            <h3 className="mt-2 mb-2 text-lg font-semibold text-gray-900 dark:text-gray-50">{project.title}</h3>
-            <p className="mb-5 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{project.summary}</p>
+            <h3 className="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-gray-50">{project.title}</h3>
+            <p className="mt-2 mb-5 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{project.summary}</p>
             <Tags items={project.tech} />
             <a
               href={`#/work/${project.slug}`}
-              className="mt-6 inline-flex items-center gap-1 text-sm font-medium text-blue-700 hover:underline dark:text-blue-400"
+              onClick={() => trackEvent('project_card_click', { project_slug: project.slug, project_title: project.title })}
+              // Stretched link: the whole card is clickable, with one link for screen readers.
+              className="mt-6 inline-flex w-fit items-center gap-1 text-sm font-medium text-blue-700 after:absolute after:inset-0 after:rounded-lg hover:underline dark:text-blue-400"
             >
               View Case Study <span className="sr-only">: {project.title}</span>
               <ArrowRight size={14} aria-hidden="true" />
