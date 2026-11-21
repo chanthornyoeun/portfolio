@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { profile } from '../data/profile';
 import { container } from './styles';
+import { trackEvent } from '../lib/analytics';
+import type { LinkLocation } from '../lib/analytics';
 
 const sections = [
   { label: 'Work', id: 'work' },
@@ -45,7 +47,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
     return () => window.removeEventListener('keydown', onKey);
   }, [isMenuOpen]);
 
-  const links = (extra = '') => (
+  const links = (extra = '', where: LinkLocation = 'header') => (
     <>
       {sections.map((s) => (
         <li key={s.id}>
@@ -53,7 +55,10 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
             href={`#${s.id}`}
             aria-current={active === s.id ? 'true' : undefined}
             className={`${linkClass} ${active === s.id ? current : idle} ${extra}`}
-            onClick={() => setIsMenuOpen(false)}
+            onClick={() => {
+              trackEvent('navigation_click', { navigation_target: s.id, link_location: where });
+              setIsMenuOpen(false);
+            }}
           >
             {s.label}
           </a>
@@ -61,7 +66,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
       ))}
       {profile.resumeUrl && (
         <li>
-          <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer" className={`${linkClass} ${idle} ${extra}`}>
+          <a href={profile.resumeUrl} onClick={() => trackEvent('resume_view', { link_location: where })} target="_blank" rel="noopener noreferrer" className={`${linkClass} ${idle} ${extra}`}>
             Resume <span className="sr-only">(PDF, opens in new tab)</span>
           </a>
         </li>
@@ -104,7 +109,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
 
         {isMenuOpen && (
           <ul id="mobile-nav" className="mt-3 border-t border-gray-200 pt-2 md:hidden dark:border-gray-800">
-            {links('block py-2.5')}
+            {links('block py-2.5', 'mobile_menu')}
           </ul>
         )}
       </nav>

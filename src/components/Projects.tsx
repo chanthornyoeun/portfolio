@@ -4,6 +4,7 @@ import { asset } from '../data/profile';
 import { otherProjects, projects } from '../data/projects';
 import { Section } from './Section';
 import { reveal } from './styles';
+import { trackEvent } from '../lib/analytics';
 
 export function Tags({ items }: { items: string[] }) {
   return (
@@ -54,6 +55,7 @@ export function Projects() {
             <Tags items={project.tech} />
             <a
               href={`#/work/${project.slug}`}
+              onClick={() => trackEvent('project_card_click', { project_slug: project.slug, project_title: project.title })}
               // Stretched link: the whole card is clickable, with one link for screen readers.
               className="mt-6 inline-flex w-fit items-center gap-1 text-sm font-medium text-blue-700 after:absolute after:inset-0 after:rounded-lg hover:underline dark:text-blue-400"
             >

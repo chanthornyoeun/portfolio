@@ -12,6 +12,10 @@ import { Footer } from './components/Footer';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { findProject } from './data/projects';
 import { profile } from './data/profile';
+import { ConsentBanner } from './components/ConsentBanner';
+import { initAnalytics, trackEvent, trackPageView } from './lib/analytics';
+
+initAnalytics(); // no-op unless configured and consented
 
 const defaultTitle = document.title;
 
@@ -28,6 +32,7 @@ export default function App() {
 
   useEffect(() => {
     document.title = project ? `${project.title} — ${profile.name}` : defaultTitle;
+    trackPageView(project ? hash : '', document.title);
     if (project || hash.startsWith('#/')) {
       window.scrollTo(0, 0);
     } else if (hash) {
@@ -35,6 +40,10 @@ export default function App() {
       document.getElementById(hash.slice(1))?.scrollIntoView();
     }
   }, [hash, project]);
+
+  useEffect(() => {
+    if (project) trackEvent('project_view', { project_slug: project.slug, project_title: project.title });
+  }, [project]);
 
   return (
     <ThemeProvider>
@@ -59,6 +68,7 @@ export default function App() {
           )}
         </main>
         <Footer />
+        <ConsentBanner />
       </div>
       </MotionConfig>
     </ThemeProvider>

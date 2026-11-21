@@ -2,6 +2,9 @@ import { FileText, Github, Linkedin } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { profile } from '../data/profile';
 import { container, iconLink, primaryButton, secondaryButton } from './styles';
+import { trackEvent } from '../lib/analytics';
+
+const at = { link_location: 'hero' } as const;
 
 export function Hero() {
   return (
@@ -23,15 +26,15 @@ export function Hero() {
                 Explore My Work
               </a>
               {profile.resumeUrl && (
-                <a href={profile.resumeUrl} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>
+                <a href={profile.resumeUrl} onClick={() => trackEvent('resume_view', at)} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>
                   <FileText size={16} aria-hidden="true" /> View Resume <span className="sr-only">(PDF, opens in new tab)</span>
                 </a>
               )}
               <div className="flex gap-1">
-                <a href={profile.github} target="_blank" rel="noopener noreferrer" className={iconLink} aria-label="GitHub (opens in new tab)">
+                <a href={profile.github} onClick={() => trackEvent('github_click', at)} target="_blank" rel="noopener noreferrer" className={iconLink} aria-label="GitHub (opens in new tab)">
                   <Github size={20} aria-hidden="true" />
                 </a>
-                <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className={iconLink} aria-label="LinkedIn (opens in new tab)">
+                <a href={profile.linkedin} onClick={() => trackEvent('linkedin_click', at)} target="_blank" rel="noopener noreferrer" className={iconLink} aria-label="LinkedIn (opens in new tab)">
                   <Linkedin size={20} aria-hidden="true" />
                 </a>
               </div>

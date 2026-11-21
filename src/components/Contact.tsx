@@ -2,6 +2,9 @@ import { Github, Linkedin, Mail } from 'lucide-react';
 import { profile } from '../data/profile';
 import { Section } from './Section';
 import { primaryButton, secondaryButton } from './styles';
+import { trackEvent } from '../lib/analytics';
+
+const at = { link_location: 'contact' } as const;
 
 export function Contact() {
   return (
@@ -12,14 +15,14 @@ export function Contact() {
       </p>
       <div className="flex flex-wrap gap-3">
         {profile.email && (
-          <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} title={profile.email} className={`${primaryButton} gap-2 border border-transparent`}>
+          <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} title={profile.email} onClick={() => trackEvent('contact_email_click', at)} className={`${primaryButton} gap-2 border border-transparent`}>
             <Mail size={16} aria-hidden="true" /> Email
           </a>
         )}
-        <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>
+        <a href={profile.linkedin} onClick={() => trackEvent('linkedin_click', at)} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>
           <Linkedin size={16} aria-hidden="true" /> LinkedIn <span className="sr-only">(opens in new tab)</span>
         </a>
-        <a href={profile.github} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>
+        <a href={profile.github} onClick={() => trackEvent('github_click', at)} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>
           <Github size={16} aria-hidden="true" /> GitHub <span className="sr-only">(opens in new tab)</span>
         </a>
       </div>
