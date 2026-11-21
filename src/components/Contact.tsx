@@ -1,7 +1,7 @@
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { profile } from '../data/profile';
 import { Section } from './Section';
-import { secondaryButton } from './styles';
+import { primaryButton, secondaryButton } from './styles';
 
 export function Contact() {
   return (
@@ -12,8 +12,8 @@ export function Contact() {
       </p>
       <div className="flex flex-wrap gap-3">
         {profile.email && (
-          <a href={`mailto:${profile.email}`} className={`${secondaryButton} gap-2`}>
-            <Mail size={16} aria-hidden="true" /> {profile.email}
+          <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} className={`${primaryButton} gap-2 border border-transparent`}>
+            <Mail size={16} aria-hidden="true" /> Email
           </a>
         )}
         <a href={profile.linkedin} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>

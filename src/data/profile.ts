@@ -18,8 +18,8 @@ export const profile = {
     { name: 'Khmer', level: 'Native' },
     { name: 'English', level: 'Intermediate' },
   ],
-  // Leave empty until confirmed; empty values hide the related links and buttons.
-  email: '',
+  // Empty values hide the related links and buttons.
+  email: 'chanthorn.developer@gmail.com',
   // e.g. `${import.meta.env.BASE_URL}resume.pdf` after adding public/resume.pdf
   resumeUrl: '',
   // e.g. `${import.meta.env.BASE_URL}portrait.webp` after adding a real photo to public/

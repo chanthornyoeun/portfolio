@@ -61,7 +61,14 @@ export function Projects() {
       <ul className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
         {otherProjects.map((p) => (
           <li key={p.title} className="text-sm">
-            <span className="font-medium text-gray-900 dark:text-gray-50">{p.title}</span>
+            {p.url ? (
+              <a href={p.url} target="_blank" rel="noopener noreferrer" className="font-medium text-gray-900 underline hover:text-blue-700 dark:text-gray-50 dark:hover:text-blue-400">
+                {p.title}
+                <span className="sr-only"> (opens in new tab)</span>
+              </a>
+            ) : (
+              <span className="font-medium text-gray-900 dark:text-gray-50">{p.title}</span>
+            )}
             <span className="text-gray-600 dark:text-gray-400"> — {p.description}</span>
           </li>
         ))}

@@ -122,9 +122,9 @@ export const projects: Project[] = [
   },
 ];
 
-export const otherProjects: { title: string; description: string }[] = [
+export const otherProjects: { title: string; description: string; url?: string }[] = [
   { title: 'Vessel Monitoring System', description: 'Frontend leadership (Ecoinsoft).' },
-  { title: 'Insurance Reporting / IAC', description: 'Frontend leadership for insurance reporting (Ecoinsoft).' },
+  { title: 'Insurance Reporting / IAC', description: 'Frontend leadership for insurance reporting (Ecoinsoft).', url: 'https://www.iac.org.kh/' },
   { title: 'E-commerce Frontend', description: 'React e-commerce frontend and reusable UI components (Aibodia).' },
   { title: 'Real Estate, CMS, and POS Systems', description: 'Java/Grails APIs and Angular interfaces (Ecoinsoft).' },
 ];
