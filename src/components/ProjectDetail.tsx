@@ -47,6 +47,7 @@ export function ProjectDetail({ project }: { project: Project }) {
       <Block title="Overview">{project.overview}</Block>
       <Block title="Challenge">{project.challenge}</Block>
       <Block title="My Role">{project.myRole}</Block>
+      {project.team && <Block title="Team & Collaboration">{project.team}</Block>}
       <Block title="Contributions">
         <ul className="grid list-disc gap-x-8 gap-y-1 pl-5 marker:text-gray-400 sm:grid-cols-2">
           {project.contributions.map((c) => (
