@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CONSENT_EVENT, getConsent, isConfigured, setConsent } from '../lib/analytics';
 import { container, primaryButton, secondaryButton } from './styles';
 
@@ -12,9 +12,22 @@ export function ConsentBanner() {
     return () => window.removeEventListener(CONSENT_EVENT, onChange);
   }, []);
 
+  // Reserve space under the page so the fixed bar never hides the footer or contact links.
+  const bar = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!open || !bar.current) return;
+    const el = bar.current;
+    const ro = new ResizeObserver(() => (document.body.style.paddingBottom = `${el.offsetHeight}px`));
+    ro.observe(el);
+    return () => {
+      ro.disconnect();
+      document.body.style.paddingBottom = '';
+    };
+  }, [open]);
+
   if (!open) return null;
   return (
-    <div role="region" aria-label="Analytics consent" className="fixed inset-x-0 bottom-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
+    <div ref={bar} role="region" aria-label="Analytics consent" className="fixed inset-x-0 bottom-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
       <div className={`${container} flex flex-col gap-3 py-4 text-sm sm:flex-row sm:items-center sm:justify-between`}>
         <p className="text-gray-600 dark:text-gray-400">
           May I use Google Analytics to count visits and see which projects are viewed? No personal details are collected.

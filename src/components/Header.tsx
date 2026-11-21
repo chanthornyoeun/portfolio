@@ -78,17 +78,17 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
     <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/95">
       <nav aria-label="Main" className={`${container} py-3`}>
         <div className="flex items-center justify-between gap-4">
-          <a href="#top" className="rounded font-semibold text-gray-900 dark:text-gray-50">
+          <a href="#top" className="-my-2 rounded py-2 font-semibold text-gray-900 dark:text-gray-50">
             {profile.name}.
           </a>
 
-          <div className="flex items-center gap-2 md:gap-6">
+          <div className="flex items-center gap-1 md:gap-6">
             <ul className="hidden items-center gap-7 md:flex">{links()}</ul>
 
             <button
               type="button"
               onClick={toggleTheme}
-              className="rounded-md p-2 text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
               aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
             >
               {theme === 'light' ? <Moon size={18} aria-hidden="true" /> : <Sun size={18} aria-hidden="true" />}
@@ -96,7 +96,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
 
             <button
               type="button"
-              className="rounded-md p-2 text-gray-700 hover:bg-gray-100 md:hidden dark:text-gray-300 dark:hover:bg-gray-800"
+              className="inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-700 hover:bg-gray-100 md:hidden dark:text-gray-300 dark:hover:bg-gray-800"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMenuOpen}
@@ -109,7 +109,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
 
         {isMenuOpen && (
           <ul id="mobile-nav" className="mt-3 border-t border-gray-200 pt-2 md:hidden dark:border-gray-800">
-            {links('block py-2.5', 'mobile_menu')}
+            {links('block py-3', 'mobile_menu')}
           </ul>
         )}
       </nav>

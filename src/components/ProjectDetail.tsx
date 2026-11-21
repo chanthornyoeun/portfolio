@@ -1,6 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import type { Project } from '../data/projects';
 import { PrivateLabel, Tags } from './Projects';
+import { asset } from '../data/profile';
 import { container } from './styles';
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
@@ -30,6 +31,18 @@ export function ProjectDetail({ project }: { project: Project }) {
           <Tags items={project.tech} />
         </div>
       </header>
+
+      {project.image && (
+        <img
+          src={asset(project.image)}
+          alt={`${project.title} screenshot`}
+          width={1280}
+          height={720}
+          decoding="async"
+          onError={(e) => (e.currentTarget.hidden = true)}
+          className="mb-10 aspect-video w-full rounded-lg border border-gray-200 object-cover dark:border-gray-800"
+        />
+      )}
 
       <Block title="Overview">{project.overview}</Block>
       <Block title="Challenge">{project.challenge}</Block>

@@ -38,14 +38,20 @@ declare global {
   }
 }
 
+// Fallback when storage is blocked, so a choice still applies for this visit.
+let memoryConsent: Consent | null = null;
+
 export function getConsent(): Consent | null {
   try {
     const v = localStorage.getItem(CONSENT_KEY);
-    return v === 'granted' || v === 'denied' ? v : null;
+    return v === 'granted' || v === 'denied' ? v : memoryConsent;
   } catch {
-    return null;
+    return memoryConsent;
   }
 }
+
+/** Sends only while consent is granted, including after a later withdrawal. */
+const active = () => loaded && getConsent() === 'granted';
 
 let loaded = false;
 let lastPath = '';
@@ -76,6 +82,7 @@ function load() {
 }
 
 function sendPageView(path: string, title: string) {
+  if (!active()) return;
   window.gtag?.('event', 'page_view', {
     page_location: location.origin + path + location.search, // keeps UTM parameters
     page_path: path,
@@ -83,33 +90,39 @@ function sendPageView(path: string, title: string) {
   });
 }
 
-/** Called on load and on every hash change; repeats of the same page are ignored. */
+/** Called on load and on every hash change. Returns false for a repeat of the current page, which is ignored. */
 export function trackPageView(hash: string, title: string) {
   const path = pagePath(hash);
-  if (path === lastPath) return;
+  if (path === lastPath) return false;
   lastPath = path;
   pending = { path, title };
-  if (loaded) sendPageView(path, title);
+  sendPageView(path, title);
+  return true;
 }
 
 export function trackEvent<K extends keyof EventParams>(name: K, params: EventParams[K]) {
-  if (loaded) window.gtag?.('event', name, params);
+  if (active()) window.gtag?.('event', name, params);
 }
 
 export function setConsent(value: Consent | null) {
+  memoryConsent = value;
   try {
     if (value) localStorage.setItem(CONSENT_KEY, value);
     else localStorage.removeItem(CONSENT_KEY);
   } catch {
     /* storage blocked: the choice lasts for this page only */
   }
+  if (loaded) {
+    // gtag.js stays in memory until reload; this flag pauses or resumes it.
+    (window as unknown as Record<string, boolean>)[`ga-disable-${measurementId}`] = value !== 'granted';
+  }
   if (value === 'granted') load();
-  if (value === 'denied' && loaded) {
-    // Stop collection now and remove GA cookies; the script stays until reload.
-    (window as unknown as Record<string, boolean>)[`ga-disable-${measurementId}`] = true;
+  if (value === 'denied') {
     document.cookie.split(';').forEach((c) => {
       const name = c.split('=')[0].trim();
-      if (name.startsWith('_ga')) document.cookie = `${name}=; Max-Age=0; path=/; domain=${location.hostname.replace(/^www\./, '.')}`;
+      if (!name.startsWith('_ga')) return;
+      document.cookie = `${name}=; Max-Age=0; path=/`;
+      document.cookie = `${name}=; Max-Age=0; path=/; domain=.${location.hostname}`;
     });
   }
   window.dispatchEvent(new Event(CONSENT_EVENT));

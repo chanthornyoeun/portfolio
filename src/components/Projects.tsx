@@ -1,19 +1,25 @@
 import { ArrowRight, Lock } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { asset } from '../data/profile';
 import { otherProjects, projects } from '../data/projects';
 import { Section } from './Section';
 import { reveal } from './styles';
 import { trackEvent } from '../lib/analytics';
 
-export function Tags({ items }: { items: string[] }) {
+export function Tags({ items, limit = items.length }: { items: string[]; limit?: number }) {
+  const hidden = items.length - limit;
   return (
     <ul className="flex flex-wrap gap-2">
-      {items.map((t) => (
+      {items.slice(0, limit).map((t) => (
         <li key={t} className="rounded border border-gray-200 px-2 py-0.5 text-xs text-gray-600 dark:border-gray-700 dark:text-gray-400">
           {t}
         </li>
       ))}
+      {hidden > 0 && (
+        <li className="px-1 py-0.5 text-xs text-gray-500 dark:text-gray-400">
+          etc.<span className="sr-only"> ({hidden} more on the case study)</span>
+        </li>
+      )}
     </ul>
   );
 }
@@ -31,7 +37,7 @@ export function Projects() {
     <Section id="work" title="Selected Work">
       <div className="grid gap-6 md:grid-cols-2">
         {projects.map((project, i) => (
-          <motion.article
+          <m.article
             {...reveal(i)}
             key={project.slug}
             className="relative flex flex-col rounded-lg border border-gray-200 p-5 transition-colors focus-within:border-gray-400 hover:border-gray-400 sm:p-6 dark:border-gray-800 dark:focus-within:border-gray-600 dark:hover:border-gray-600"
@@ -52,7 +58,7 @@ export function Projects() {
             <PrivateLabel />
             <h3 className="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-gray-50">{project.title}</h3>
             <p className="mt-2 mb-5 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{project.summary}</p>
-            <Tags items={project.tech} />
+            <Tags items={project.tech} limit={5} />
             <a
               href={`#/work/${project.slug}`}
               onClick={() => trackEvent('project_card_click', { project_slug: project.slug, project_title: project.title })}
@@ -62,7 +68,7 @@ export function Projects() {
               View Case Study <span className="sr-only">: {project.title}</span>
               <ArrowRight size={14} aria-hidden="true" />
             </a>
-          </motion.article>
+          </m.article>
         ))}
       </div>
 
