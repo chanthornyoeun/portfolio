@@ -9,7 +9,7 @@ Recorded 2026-11-21 against `master` @ 49cb161.
 - Sections rendered in order: Header, Hero (`#home`), About, Experience, Education, Skills, Projects, Contact, Footer.
 - Styling: Tailwind 3 (`tailwind.config.cjs`, `darkMode: 'class'`), `src/assets/styles/globals.css` (shadcn-style tokens, some Tailwind-4 syntax such as `@custom-variant`/`@theme` that Tailwind 3 ignores). `src/App.css` is not imported anywhere.
 - Animation: Framer Motion on every section (fade/slide-in), plus looping blob/badge/rotating-border animations in Hero.
-- Build/deploy: Vite 7, `base: '/portfolio_v1/'`. `.github/workflows/jekyll-gh-pages.yml` builds with `npm install` + `npm run build` and deploys `dist/` via `actions/deploy-pages` on push to `master`. Commit history shows `--legacy-peer-deps` was needed for installs.
+- Build/deploy: Vite 7, `base: '/portfolio/'`. `.github/workflows/jekyll-gh-pages.yml` builds with `npm install` + `npm run build` and deploys `dist/` via `actions/deploy-pages` on push to `master`. Commit history shows `--legacy-peer-deps` was needed for installs.
 
 ## Existing content inventory
 
@@ -66,7 +66,7 @@ Header, Hero, About, Experience, Skills, Projects, Contact, Footer, ThemeContext
 
 ## Deployment considerations
 
-- Keep `base: '/portfolio_v1/'`; reference public assets via `import.meta.env.BASE_URL`.
+- Keep `base: '/portfolio/'`; reference public assets via `import.meta.env.BASE_URL`.
 - GitHub Pages has no SPA fallback → use hash routes (`#/work/<slug>`) for case studies so refresh/direct links work without a 404 hack.
 - Workflow uses `npm install` without `--legacy-peer-deps`; after removing the unused UI kit the peer conflicts it caused should disappear (verify with `npm ci`).
 - No server features, no API keys in the frontend. AI assistant deferred (needs a separately hosted API).

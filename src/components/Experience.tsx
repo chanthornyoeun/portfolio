@@ -42,7 +42,7 @@ export function Experience() {
               />
               <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-50">{group.company}</h3>
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-gray-500 dark:text-gray-400" suppressHydrationWarning>
                   {formatPeriod(start, end)} · {formatDuration(monthsBetween(start, end))}
                 </p>
               </div>

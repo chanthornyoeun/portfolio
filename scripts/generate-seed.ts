@@ -1,11 +1,12 @@
-// Writes supabase/seed.sql from the static content in src/data, so the repo stays the source of truth.
+// Writes supabase/seed.sql from supabase/backup/content.json (the content backup taken before Supabase became the source).
 // Usage: npm run seed:generate   (then run supabase/seed.sql in the Supabase SQL Editor)
 // Every insert uses ON CONFLICT DO NOTHING: re-running never duplicates rows or overwrites dashboard edits.
-import { writeFileSync } from 'node:fs';
-import { experience } from '../src/data/experience.ts';
-import { profile } from '../src/data/profile.ts';
-import { otherProjects, projects } from '../src/data/projects.ts';
-import { skills } from '../src/data/skills.ts';
+import { readFileSync, writeFileSync } from 'node:fs';
+import type { Content } from '../src/services/content.ts';
+
+const { profile, projects, otherProjects, experience, skills, description }: Content = JSON.parse(
+  readFileSync(new URL('../supabase/backup/content.json', import.meta.url), 'utf8'),
+);
 
 const q = (v: string | null | undefined) => (v == null || v === '' ? 'null' : `'${v.replace(/'/g, "''")}'`);
 const arr = (items: string[]) => (items.length ? `array[${items.map(q).join(', ')}]::text[]` : `'{}'::text[]`);
@@ -67,6 +68,7 @@ profile.languages.forEach((l, i) =>
 ].forEach(([platform, url], i) =>
   lines.push(`insert into public.social_links (platform, url, sort_order) values (${q(platform)}, ${q(url)}, ${i}) on conflict (platform) do nothing;`),
 );
+lines.push(`insert into public.site_settings (key, value) values ('meta_description', ${q(description)}) on conflict (key) do nothing;`);
 lines.push(`insert into public.site_settings (key, value) values ('site_title', ${q(`${profile.name} — ${profile.title}`)}) on conflict (key) do nothing;`);
 
 lines.push('', 'commit;', '');

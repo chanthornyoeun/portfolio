@@ -1,6 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { skills } from '../src/data/skills.ts';
+import { readFileSync } from 'node:fs';
+import type { SkillGroup } from '../src/data/skills.ts';
+
+const { skills }: { skills: SkillGroup[] } = JSON.parse(readFileSync(new URL('../supabase/backup/content.json', import.meta.url), 'utf8'));
 
 const all = skills.flatMap((g) => [...g.primary, ...g.supporting, ...(g.subgroup?.items ?? [])]);
 

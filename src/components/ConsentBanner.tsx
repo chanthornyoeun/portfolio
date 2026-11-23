@@ -4,10 +4,12 @@ import { container, primaryButton, secondaryButton } from './styles';
 
 /** Asks once; nothing loads until "Allow". Footer "Privacy settings" brings it back. */
 export function ConsentBanner() {
-  const [open, setOpen] = useState(() => isConfigured() && getConsent() === null);
+  // Closed in the prerendered HTML; the stored choice is only known in the browser.
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onChange = () => setOpen(isConfigured() && getConsent() === null);
+    onChange();
     window.addEventListener(CONSENT_EVENT, onChange);
     return () => window.removeEventListener(CONSENT_EVENT, onChange);
   }, []);

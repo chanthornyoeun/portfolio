@@ -1,6 +1,7 @@
 import { ArrowRight, Lock } from 'lucide-react';
 import { m } from 'framer-motion';
 import { useContent } from '../contexts/ContentContext';
+import { projectPath } from '../routes';
 import { Section } from './Section';
 import { reveal } from './styles';
 import { trackEvent } from '../lib/analytics';
@@ -54,7 +55,7 @@ export function Projects() {
             <p className="mt-2 mb-5 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{project.summary}</p>
             <Tags items={project.featuredTech.slice(0, 5)} />
             <a
-              href={`#/work/${project.slug}`}
+              href={projectPath(project.slug)}
               onClick={() => trackEvent('project_card_click', { project_slug: project.slug, project_title: project.title })}
               // Stretched link: the whole card is clickable, with one link for screen readers.
               className="mt-6 inline-flex w-fit items-center gap-1 text-sm font-medium text-blue-700 after:absolute after:inset-0 after:rounded-lg hover:underline dark:text-blue-400"

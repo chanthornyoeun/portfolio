@@ -2,6 +2,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import type { Project } from '../data/projects';
 import { PrivateLabel, Tags } from './Projects';
 import { useContent } from '../contexts/ContentContext';
+import { projectPath, sectionPath } from '../routes';
 import { container } from './styles';
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
@@ -32,7 +33,7 @@ export function ProjectDetail({ project }: { project: Project }) {
   return (
     <article className={`${container} pt-28 pb-20 sm:pt-32`}>
       <a
-        href="#work"
+        href={sectionPath('work')}
         className="mb-10 flex w-fit items-center gap-1 rounded text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
       >
         <ArrowLeft size={14} aria-hidden="true" /> Back to Selected Work
@@ -86,11 +87,11 @@ export function ProjectDetail({ project }: { project: Project }) {
         aria-label="Case studies"
         className="mt-4 flex flex-col gap-4 border-t border-gray-200 pt-8 text-sm sm:flex-row sm:items-center sm:justify-between dark:border-gray-800"
       >
-        <a href="#work" className="flex w-fit items-center gap-1 rounded text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50">
+        <a href={sectionPath('work')} className="flex w-fit items-center gap-1 rounded text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50">
           <ArrowLeft size={14} aria-hidden="true" /> All projects
         </a>
         <a
-          href={`#/work/${next.slug}`}
+          href={projectPath(next.slug)}
           className="group flex w-fit items-center gap-2 rounded font-medium text-gray-900 hover:text-blue-700 dark:text-gray-50 dark:hover:text-blue-400"
         >
           <span>

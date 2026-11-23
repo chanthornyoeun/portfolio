@@ -118,6 +118,7 @@ insert into public.languages (name, proficiency, sort_order) values ('Khmer', 'N
 insert into public.languages (name, proficiency, sort_order) values ('English', 'Intermediate', 1) on conflict (name) do nothing;
 insert into public.social_links (platform, url, sort_order) values ('github', 'https://github.com/chanthornyoeun', 0) on conflict (platform) do nothing;
 insert into public.social_links (platform, url, sort_order) values ('linkedin', 'https://www.linkedin.com/in/chanthornyoeun/', 1) on conflict (platform) do nothing;
+insert into public.site_settings (key, value) values ('meta_description', 'Chanthorn Yoeun is a senior software engineer in Phnom Penh, Cambodia, with 7+ years of experience building enterprise applications with Java, Spring Boot, React, Angular, Vue.js and Laravel.') on conflict (key) do nothing;
 insert into public.site_settings (key, value) values ('site_title', 'Chanthorn Yoeun — Senior Software Engineer') on conflict (key) do nothing;
 
 commit;

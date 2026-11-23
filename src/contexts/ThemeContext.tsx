@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useSyncExternalStore } from 'react';
 
 type Theme = 'light' | 'dark';
 
@@ -8,26 +8,26 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-function readSavedTheme(): Theme {
-  try {
-    return localStorage.getItem('theme') === 'dark' ? 'dark' : 'light';
-  } catch {
-    return 'light';
-  }
+// The `dark` class on <html> is the source of truth: index.html sets it before paint from the saved choice.
+// The server snapshot is 'light' so hydration matches the prerendered HTML, then React picks up the real class.
+const root = () => document.documentElement;
+function subscribe(onChange: () => void) {
+  const observer = new MutationObserver(onChange);
+  observer.observe(root(), { attributes: true, attributeFilter: ['class'] });
+  return () => observer.disconnect();
 }
 
-// Light by default; dark only when the visitor chose it.
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(readSavedTheme);
+  const theme: Theme = useSyncExternalStore(
+    subscribe,
+    () => (root().classList.contains('dark') ? 'dark' : 'light'),
+    () => 'light',
+  );
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-  }, [theme]);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
+    root().classList.toggle('dark', newTheme === 'dark');
     try {
       localStorage.setItem('theme', newTheme);
     } catch {

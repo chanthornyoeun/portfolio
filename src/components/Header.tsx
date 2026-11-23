@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { useContent } from '../contexts/ContentContext';
 import { container } from './styles';
+import { BASE, sectionPath } from '../routes';
 import { trackEvent } from '../lib/analytics';
 import type { LinkLocation } from '../lib/analytics';
 
@@ -71,7 +72,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
       {sections.map((s) => (
         <li key={s.id}>
           <a
-            href={`#${s.id}`}
+            href={sectionPath(s.id)}
             aria-current={active === s.id ? 'true' : undefined}
             className={`${linkClass} ${active === s.id ? `${current} ${activeExtra}` : idle} ${extra}`}
             onClick={() => {
@@ -97,7 +98,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
     <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/95">
       <nav aria-label="Main" className={`${container} py-3`}>
         <div className="flex items-center justify-between gap-4">
-          <a href="#top" className="-my-2 rounded py-2 font-semibold text-gray-900 dark:text-gray-50">
+          <a href={onCaseStudy ? BASE : '#top'} className="-my-2 rounded py-2 font-semibold text-gray-900 dark:text-gray-50">
             {profile.name}
           </a>
 

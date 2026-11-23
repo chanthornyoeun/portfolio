@@ -1,73 +1,93 @@
-# React + TypeScript + Vite
+# Chanthorn Yoeun — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Live site: https://chanthornyoeun.github.io/portfolio/
 
-Currently, two official plugins are available:
+This is a personal portfolio built with React 18, TypeScript, Vite, Tailwind CSS and Framer Motion. Content comes from Supabase, and the site is **prerendered to static HTML at build time** and served by GitHub Pages. There is no running backend, and visitors never query the database.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Architecture
 
-## React Compiler
+| Piece | Where |
+|---|---|
+| Content source | Supabase tables, RLS and storage. See [docs/supabase-setup.md](docs/supabase-setup.md). |
+| Build-time fetch and validation | `scripts/fetch-content.ts`, `src/services/content.ts` |
+| Content snapshot (git-ignored) | `src/generated/content.json` |
+| Pages | `src/App.tsx` with one route per page (`src/routes.ts`) |
+| Prerender, SEO tags, sitemap | `src/entry-server.tsx`, `scripts/prerender.ts`, `src/seo.ts` |
+| Analytics (GA4, consent-based) | `src/lib/analytics.ts`, [docs/analytics-setup.md](docs/analytics-setup.md) |
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Routes:**
+- `/portfolio/` is the homepage.
+- `/portfolio/work/<slug>/` is a case study.
+- Old `#/work/<slug>` links redirect to the new paths.
+- Unknown paths get `404.html`, which is marked `noindex`.
 
-## Expanding the ESLint configuration
+Each page is a real HTML file with its own title, description, canonical URL, Open Graph and X tags, and structured data. The homepage has Person and WebSite data; each case study has BreadcrumbList and CreativeWork. React hydrates the HTML for theme switching, the mobile menu, animations and analytics.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Development
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```powershell
+npm ci
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Add the Supabase and analytics values to `.env.local`, using `.env.example` as the template. Then:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```powershell
+npm run dev
 ```
+
+`npm run dev` fetches published content from Supabase first. To work without Supabase:
+
+```powershell
+npm run content:fetch -- --from-backup
+```
+
+Then run `npx vite`. This uses `supabase/backup/content.json` and is for development only.
+
+| Command | What it does |
+|---|---|
+| `npm test` | Unit tests: content mapping and validation, routes, SEO, sitemap, analytics |
+| `npm run lint` | ESLint |
+| `npm run build` | Fetch content, typecheck, build and prerender into `dist/` |
+| `npm run build:local` | The same build from the backup snapshot, so it doesn't need Supabase |
+| `npm run og:generate` | Re-render `public/og-image.png`, the 1200×630 link-preview image, with a local Chrome or Edge. Re-run it when your name, title or headline changes. |
+| `npm run preview` | Serve `dist/` at http://localhost:4173/portfolio/ |
+
+## Publishing content
+
+1. Edit rows in the Supabase Table Editor and set `status` to `published`.
+2. In GitHub, go to **Actions → Deploy Vite React App to GitHub Pages → Run workflow**. It also runs daily at 02:00 UTC and on every push to `master`.
+3. After about 2 minutes the new HTML is live.
+
+If the content is invalid, for example a missing field, a duplicate slug, more than 5 badges or a bad date, the build fails with a list of problems and the previous site stays live.
+
+## Deployment
+
+`.github/workflows/jekyll-gh-pages.yml` runs these steps in order:
+
+1. `npm ci`
+2. lint
+3. tests
+4. fetch and validate content
+5. typecheck, build, prerender, then check every page has its heading and canonical tag
+6. deploy
+
+The deploy only runs if every earlier step passed.
+
+Repository **Variables** (all public values):
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_PUBLISHABLE_KEY`
+- `VITE_GA_MEASUREMENT_ID`
+
+No secret keys are used.
+
+## Performance checks
+
+- **Bundle and page sizes:** printed by `npm run build`. Compare `dist/assets/*.js` and `dist/**/index.html`.
+- **Lighthouse:** open the live site in Chrome, then DevTools → Lighthouse → Mobile.
+- **Real-user Core Web Vitals:** PageSpeed Insights, once enough traffic exists.
+
+## Rollback
+
+- **Code:** revert the merge commit on `master`. The push redeploys automatically.
+- **Content:** fix or re-publish the rows in Supabase, then run the workflow. `supabase/backup/content.json` and `supabase/seed.sql` hold the content snapshot that was migrated.
+- **A bad deploy that somehow passed checks:** re-run the workflow from an earlier commit using **Actions → Run workflow → Use workflow from** a branch or tag.

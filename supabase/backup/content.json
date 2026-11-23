@@ -1,0 +1,407 @@
+{
+  "siteTitle": "Chanthorn Yoeun — Senior Software Engineer",
+  "description": "Chanthorn Yoeun is a senior software engineer in Phnom Penh, Cambodia, with 7+ years of experience building enterprise applications with Java, Spring Boot, React, Angular, Vue.js and Laravel.",
+  "profile": {
+    "name": "Chanthorn Yoeun",
+    "title": "Senior Software Engineer",
+    "location": "Phnom Penh, Cambodia",
+    "headline": "Building reliable software for complex business needs.",
+    "intro": "I'm Chanthorn, a software engineer with 7+ years of experience building enterprise applications, solving technical challenges, and guiding development teams.",
+    "about": [
+      "Over the past 7+ years I've worked across backend and frontend engineering, mostly on enterprise applications such as insurance, distribution, auction, and CRM systems.",
+      "Alongside hands-on development, I've led frontend and project teams — mentoring developers, reviewing code, and working with clients and stakeholders to turn business requirements into working software.",
+      "I care most about software that is reliable and maintainable: clear data models, careful handling of transactions and concurrency, and code that the next developer can understand."
+    ],
+    "education": {
+      "title": "Computer Science Studies",
+      "school": "Norton University, Cambodia",
+      "period": "2016–2020"
+    },
+    "languages": [
+      {
+        "name": "Khmer",
+        "level": "Native"
+      },
+      {
+        "name": "English",
+        "level": "Intermediate"
+      }
+    ],
+    "email": "chanthorn.developer@gmail.com",
+    "resumeUrl": "",
+    "portrait": "",
+    "github": "https://github.com/chanthornyoeun",
+    "linkedin": "https://www.linkedin.com/in/chanthornyoeun/"
+  },
+  "projects": [
+    {
+      "slug": "petroleum-distribution",
+      "title": "Petroleum Distribution Management System",
+      "role": "Freelance Software Engineer — Frontend Development & Client Coordination",
+      "summary": "An enterprise petroleum distribution platform supporting wholesale, retail, logistics, and master data operations. Responsible for frontend development, client communication, requirements analysis, and UI/UX prototyping, while collaborating with a dedicated backend development team.",
+      "featuredTech": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Figma",
+        "REST APIs"
+      ],
+      "tech": [
+        "Next.js",
+        "React",
+        "TypeScript",
+        "Figma",
+        "REST APIs",
+        "Laravel (backend team)"
+      ],
+      "overview": "A business platform supporting petroleum distribution operations, covering wholesale, retail, logistics, and master data.",
+      "challenge": "Distribution operations involve several connected business areas. Each workflow needs to reflect real operational rules while staying consistent with shared master data.",
+      "myRole": "Responsible for frontend implementation using Next.js, React, and TypeScript, communicating directly with clients to understand business requirements, creating Figma prototypes, and coordinating with backend developers to deliver integrated business workflows.",
+      "team": "The Laravel backend, including its APIs and database, is implemented and maintained by a dedicated backend team.",
+      "contributions": [
+        "Developed frontend features using Next.js, React, and TypeScript.",
+        "Communicated with clients to gather and clarify business requirements.",
+        "Created Figma prototypes and translated requirements into working interfaces.",
+        "Integrated frontend modules with REST APIs.",
+        "Coordinated with backend developers on API contracts and business rules.",
+        "Contributed to wholesale, retail, logistics, and master data workflows."
+      ],
+      "approach": "Requirements are clarified with the client and prototyped in Figma before implementation. The Next.js frontend consumes REST APIs from the Laravel backend built by the backend team, with API contracts and business rules agreed together before integration.",
+      "lessons": "Close collaboration with stakeholders and early prototyping help align complex operational workflows before code is written."
+    },
+    {
+      "slug": "general-core-insurance",
+      "title": "General Core Insurance Platform",
+      "role": "Frontend Team Leader",
+      "summary": "An enterprise general insurance platform where I led frontend development and contributed hands-on to implementing core insurance workflows using Angular, while coordinating technical requirements with backend teams and clients.",
+      "featuredTech": [
+        "Angular",
+        "TypeScript",
+        "REST APIs"
+      ],
+      "tech": [
+        "Angular",
+        "TypeScript",
+        "REST APIs"
+      ],
+      "overview": "An enterprise general insurance system covering the core insurance lifecycle, from underwriting requests and quotations to policies, claims, and endorsements.",
+      "challenge": "Insurance workflows are rule-heavy and interconnected. The frontend needed to represent these processes clearly while staying aligned with backend services built by a separate team.",
+      "myRole": "Frontend Team Leader: implemented Angular features directly while guiding the frontend team and coordinating requirements with backend developers and clients. ",
+      "team": "Backend services were built and owned by a separate backend team.",
+      "contributions": [
+        "Hands-on Angular frontend development.",
+        "Insurance modules and business workflows.",
+        "Underwriting requests.",
+        "Quotations.",
+        "Policy management.",
+        "Claims.",
+        "Endorsements.",
+        "Reusable frontend components.",
+        "REST API integration.",
+        "Frontend team leadership.",
+        "Backend requirements coordination.",
+        "Client communication and support."
+      ],
+      "approach": "Shared, reusable Angular components were used across modules, with each workflow integrated against backend REST APIs.",
+      "lessons": "Reusable components and clear communication between frontend, backend, and clients are essential in large, rule-heavy business domains."
+    },
+    {
+      "slug": "real-time-auction",
+      "title": "Real-Time Auction & E-Commerce Platform",
+      "role": "Project Leader / Team Lead",
+      "summary": "Developed and maintained a real-time auction and e-commerce platform using Java Spring Boot and Vue.js, supporting live bidding, concurrent transactions, and online shopping workflows.",
+      "featuredTech": [
+        "Spring Boot",
+        "Vue.js",
+        "WebSocket",
+        "Redis",
+        "MySQL"
+      ],
+      "tech": [
+        "Java",
+        "Spring Boot",
+        "Vue.js",
+        "Redis",
+        "MySQL",
+        "WebSocket",
+        "RabbitMQ",
+        "OneSignal",
+        "MyBatis"
+      ],
+      "overview": "An auction and e-commerce platform where many users can bid on the same item at the same time and see new bids as they happen. It includes customer-facing auction and shop interfaces and an admin dashboard.",
+      "challenge": "Concurrent bids on the same item must be accepted or rejected safely so the recorded winning bid stays consistent, while every watching user sees the change in real time.",
+      "myRole": "Project Leader / Team Lead with hands-on development across the Java Spring Boot backend and the Vue.js frontend.",
+      "team": "Built collaboratively with my development team. Alongside my own backend and frontend work, I led the team through code reviews, mentoring, and day-to-day technical coordination with developers. Integrations not listed under my contributions were delivered as a team effort.",
+      "contributions": [
+        "Java Spring Boot backend development.",
+        "Vue.js frontend development for auction participation and e-commerce.",
+        "Real-time auction features.",
+        "Redis distributed locking for concurrent bidding.",
+        "Transactional bidding workflows to keep bid data consistent.",
+        "MySQL query and backend API optimization."
+      ],
+      "approach": "Standard business operations go through REST APIs on a Java Spring Boot backend. Bids for the same item are serialized with a Redis distributed lock, and each accepted bid is written to MySQL through MyBatis inside a transaction so the stored result stays consistent. Accepted bids are pushed to connected clients over WebSocket. RabbitMQ handles asynchronous event processing outside the request flow, and OneSignal delivers push notifications to users. Vue.js powers the auction and e-commerce interfaces and the admin dashboard.",
+      "lessons": "Concurrency issues need to be designed for explicitly — locking and transaction boundaries are part of the business logic, not an afterthought."
+    },
+    {
+      "slug": "enterprise-crm",
+      "title": "YesCAR — Customer Relationship Management System",
+      "role": "Senior Java Developer",
+      "summary": "Developed and maintained a CRM platform that digitized customer management, sales leads, and reporting. Contributed to backend and frontend development, resolved a production N+1 query performance issue, and implemented large-volume data exports.",
+      "featuredTech": [
+        "Java",
+        "Spring Boot",
+        "Spring Data JPA",
+        "Vue.js",
+        "REST APIs"
+      ],
+      "tech": [
+        "Java",
+        "Spring Boot",
+        "Spring Data JPA",
+        "Vue.js",
+        "REST APIs"
+      ],
+      "overview": "The YesCAR CRM platform replaced manual paperwork with digital workflows for managing customer information, sales leads, customer relationships, and sales reports.",
+      "challenge": "After deployment to production, growing customer data exposed an N+1 query problem in an existing customer phone number update workflow. The original implementation fetched records, evaluated matching conditions in application memory, and performed repeated database operations, creating a performance bottleneck. Non-unique customer names and phone numbers also complicated identifying the intended records without changing unrelated ones.\n\nExporting thousands of CRM records for reporting and business operations was a second engineering challenge.",
+      "myRole": "As a Senior Java Developer, I worked on Java Spring Boot backend services, Spring Data JPA persistence, Vue.js frontend features, and REST API integration. I also investigated and resolved the production N+1 query issue and implemented large-volume CRM data exports.",
+      "team": "The CRM was developed collaboratively by a development team. The customer phone number update feature had been implemented before I took ownership of its performance issue. I investigated and optimized that workflow while contributing to backend, frontend, and export functionality.",
+      "contributions": [
+        "Developed backend services using Java and Spring Boot.",
+        "Used Spring Data JPA for database access and persistence.",
+        "Developed Vue.js frontend functionality and integrated REST APIs.",
+        "Supported customer, lead, and sales reporting workflows.",
+        "Investigated a production N+1 query problem in an existing customer update feature.",
+        "Identified inefficient application-level record fetching and repeated database operations.",
+        "Replaced the affected workflow with direct conditional database updates.",
+        "Eliminated unnecessary in-memory record checking and the N+1 query pattern.",
+        "Implemented data exports involving thousands of CRM records.",
+        "Supported troubleshooting and maintenance."
+      ],
+      "approach": "The CRM uses Java Spring Boot backend services with Spring Data JPA for data access, exposing REST APIs consumed by a Vue.js frontend.\n\nSet-based update optimization: I investigated the production bottleneck and replaced the application-level processing with direct conditional database updates. The database now evaluates the matching conditions and updates the intended records itself, which eliminated the N+1 query pattern in the affected workflow, avoided loading records into application memory, and removed unnecessary database round trips. Because customer names and phone numbers are not unique, the update conditions still had to be defined carefully to target only the intended records. The result resolved a production performance bottleneck and improved the efficiency and scalability of customer information updates.\n\nLarge-volume export: I implemented CRM data export functionality capable of handling thousands of records to support business reporting and operational needs.",
+      "lessons": "Performance problems in enterprise applications may only become visible under real production data volumes. ORM query behavior and application-level record processing need careful attention, especially with growing datasets and non-unique customer information. Direct database operations can significantly simplify inefficient workflows."
+    }
+  ],
+  "otherProjects": [
+    {
+      "title": "Vessel Monitoring System",
+      "description": "Frontend leadership (Ecoinsoft)."
+    },
+    {
+      "title": "Insurance Reporting / IAC",
+      "description": "Frontend leadership for insurance reporting (Ecoinsoft).",
+      "url": "https://www.iac.org.kh/"
+    },
+    {
+      "title": "E-commerce Frontend",
+      "description": "React e-commerce frontend and reusable UI components (Aibodia)."
+    },
+    {
+      "title": "Real Estate, CMS, and POS Systems",
+      "description": "Java/Grails APIs and Angular interfaces (Ecoinsoft)."
+    }
+  ],
+  "experience": [
+    {
+      "company": "Freelance",
+      "roles": [
+        {
+          "title": "Freelance Software Engineer",
+          "startDate": "2026-01",
+          "endDate": null,
+          "project": "Petroleum Distribution Management System",
+          "highlights": [
+            "Developed frontend features using Next.js, React, and TypeScript.",
+            "Communicated with clients to gather and clarify business requirements.",
+            "Created Figma prototypes and translated requirements into working interfaces.",
+            "Integrated frontend modules with REST APIs and coordinated with backend developers.",
+            "Contributed to wholesale, retail, logistics, and master data workflows."
+          ]
+        }
+      ]
+    },
+    {
+      "company": "Aibodia Co., Ltd",
+      "roles": [
+        {
+          "title": "Project Leader / Team Lead",
+          "startDate": "2024-11",
+          "endDate": "2025-12",
+          "highlights": [
+            "Hands-on backend and frontend development with Java Spring Boot and Vue.js.",
+            "Real-time auction features using Redis distributed locking.",
+            "Database transactions, concurrency handling, and API and SQL optimization.",
+            "Technical leadership, mentoring, code reviews, and technical coordination."
+          ]
+        },
+        {
+          "title": "Senior Frontend Developer",
+          "startDate": "2024-08",
+          "endDate": "2024-10",
+          "highlights": [
+            "React e-commerce frontend development and API integration.",
+            "Reusable UI components, troubleshooting, and improvements."
+          ]
+        }
+      ]
+    },
+    {
+      "company": "YesCAR Cambodia",
+      "roles": [
+        {
+          "title": "Senior Java Developer",
+          "startDate": "2024-01",
+          "endDate": "2024-06",
+          "highlights": [
+            "Java Spring Boot and Spring Data JPA backend development.",
+            "Vue.js frontend development and REST API integration.",
+            "Investigated and resolved a production N+1 query performance issue.",
+            "Implemented large-volume CRM data exports."
+          ]
+        }
+      ]
+    },
+    {
+      "company": "Ecoinsoft Solution Co., Ltd",
+      "roles": [
+        {
+          "title": "Frontend Team Leader",
+          "startDate": "2020-03",
+          "endDate": "2023-09",
+          "highlights": [
+            "Hands-on Angular implementation of core General Insurance modules and workflows.",
+            "Reusable frontend components, API integration, and frontend architecture.",
+            "Led and mentored frontend developers, including on the Vessel Monitoring System and Insurance Reporting projects.",
+            "Coordinated business requirements with backend developers and supported clients."
+          ]
+        },
+        {
+          "title": "Frontend Developer",
+          "startDate": "2019-11",
+          "endDate": "2020-02",
+          "highlights": [
+            "Angular interfaces for General Insurance, CRM, real estate, and POS systems.",
+            "API integration and frontend maintenance."
+          ]
+        },
+        {
+          "title": "Backend Developer",
+          "startDate": "2018-12",
+          "endDate": "2019-10",
+          "highlights": [
+            "Java/Grails REST APIs for real estate, CMS, and POS back-office systems.",
+            "Database queries and SQL optimization."
+          ]
+        }
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "category": "Backend Engineering",
+      "primary": [
+        "Java",
+        "Spring Boot",
+        "Laravel",
+        "Go",
+        "Node.js"
+      ],
+      "supporting": [
+        "Spring Framework",
+        "Grails",
+        "PHP",
+        "NestJS",
+        "REST APIs"
+      ]
+    },
+    {
+      "category": "Frontend Engineering",
+      "primary": [
+        "TypeScript",
+        "React",
+        "Next.js",
+        "Vue.js",
+        "Nuxt.js",
+        "Angular"
+      ],
+      "supporting": [
+        "JavaScript"
+      ]
+    },
+    {
+      "category": "Databases & Caching",
+      "primary": [
+        "MySQL",
+        "PostgreSQL",
+        "MongoDB",
+        "Redis"
+      ],
+      "supporting": [
+        "MariaDB",
+        "SQL Server"
+      ]
+    },
+    {
+      "category": "Cloud & DevOps",
+      "primary": [
+        "Docker",
+        "Linux",
+        "Nginx"
+      ],
+      "supporting": [
+        "AWS EC2",
+        "AWS S3",
+        "DigitalOcean",
+        "Apache Tomcat"
+      ]
+    },
+    {
+      "category": "Software Engineering",
+      "primary": [],
+      "supporting": [
+        "System Design",
+        "MVC",
+        "SOLID",
+        "Design Patterns",
+        "Microservices",
+        "Concurrency Control",
+        "Database Transactions",
+        "SQL Optimization",
+        "API Performance"
+      ]
+    },
+    {
+      "category": "Leadership",
+      "primary": [],
+      "supporting": [
+        "Technical Leadership",
+        "Mentoring",
+        "Code Review",
+        "Business Analysis",
+        "Requirements Gathering",
+        "Client Communication"
+      ]
+    },
+    {
+      "category": "Development Tools",
+      "primary": [],
+      "supporting": [
+        "Git",
+        "GitHub",
+        "GitLab",
+        "Bitbucket",
+        "Postman",
+        "Swagger/OpenAPI"
+      ],
+      "subgroup": {
+        "label": "AI-assisted",
+        "items": [
+          "OpenAI Codex",
+          "Claude Code",
+          "GitHub Copilot",
+          "ChatGPT"
+        ]
+      }
+    }
+  ]
+}

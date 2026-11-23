@@ -13,7 +13,7 @@ The portfolio uses the official Google tag (`gtag.js`) through a small module, `
   - **Privacy settings** in the footer clears the choice and shows the consent bar again.
   - Declining after allowing stops collection straight away and deletes the `_ga` cookies.
 - **Page views are sent manually** (`send_page_view: false`), so nothing is counted twice:
-  - Each hash route is reported as its own virtual path, for example `#/work/real-time-auction` becomes `/portfolio_v1/work/real-time-auction`, with the case-study title.
+  - Each page is a real path, for example `/portfolio/work/real-time-auction/`, reported once per page load with its title.
   - Section anchors (`#work`, `#contact`) count as the homepage, not as separate pages.
   - A repeat of the current page is ignored, which also covers React StrictMode and back and forward navigation.
   - UTM query parameters are kept on `page_location`, so campaign traffic is attributed.
@@ -40,7 +40,7 @@ The portfolio uses the official Google tag (`gtag.js`) through a small module, `
 ## 1. Create the property and stream
 
 1. Go to <https://analytics.google.com>, then **Admin → Create → Property**, and complete the steps.
-2. Under **Data collection and modification → Data streams → Add stream → Web**, enter `https://chanthornyoeun.github.io/portfolio_v1/`.
+2. Under **Data collection and modification → Data streams → Add stream → Web**, enter `https://chanthornyoeun.github.io/portfolio/`.
 3. In the stream settings, open **Enhanced measurement** and turn off **Page changes based on browser history events**. The app sends page views itself.
 4. Copy the **Measurement ID** (`G-…`) from the stream details.
 
@@ -60,7 +60,7 @@ If the variable is missing, the build still succeeds and analytics stays off.
 1. Run `npm run dev` with `VITE_GA_DEBUG=true` set in `.env.local`, then open the site and click **Allow**.
 2. In GA4, go to **Admin → DebugView**, which lists events within seconds:
    - Open a project and check for `project_card_click`, `page_view` and `project_view`.
-   - Use browser back and check for a single `page_view` of `/portfolio_v1/`.
+   - Use browser back and check for a single `page_view` of `/portfolio/`.
    - Click Email, LinkedIn or GitHub and check `link_location`.
 3. On the live site, check **Reports → Realtime**.
 

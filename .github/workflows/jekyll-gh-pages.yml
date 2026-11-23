@@ -1,37 +1,55 @@
 name: Deploy Vite React App to GitHub Pages
 
+# Publishing model: Supabase content goes live when this workflow succeeds.
+# Run it manually after editing content (Actions > this workflow > Run workflow); it also runs daily.
 on:
   push:
-    branches: ["master"]   # or main if you use main
+    branches: ["master"]
   workflow_dispatch:
+  schedule:
+    - cron: "0 2 * * *" # daily at 02:00 UTC (09:00 Phnom Penh) to pick up content edits
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
+# Never run two deploys at once; a newer run waits for the current one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # Public values only (repository Variables). The publishable key can read published rows and nothing else.
+      VITE_GA_MEASUREMENT_ID: ${{ vars.VITE_GA_MEASUREMENT_ID || secrets.VITE_GA_MEASUREMENT_ID }}
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
     steps:
       - uses: actions/checkout@v4
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: 22
+          cache: "npm"
 
-      - run: npm install
-      - run: npm run build   # Creates dist/
-        env:
-          VITE_GA_MEASUREMENT_ID: ${{ vars.VITE_GA_MEASUREMENT_ID || secrets.VITE_GA_MEASUREMENT_ID }}
-          VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Unit tests
+        run: npm test
+      - name: Fetch and validate published content
+        run: npm run content:fetch
+      - name: Type-check, build, prerender and verify pages
+        run: npm run build:site
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist        # Upload dist folder only
+          path: ./dist
 
+  # Only runs when every check above passed, so a failed build leaves the last good site live.
   deploy:
     needs: build
     runs-on: ubuntu-latest

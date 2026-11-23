@@ -71,5 +71,55 @@ begin
   execute 'reset role';
 end $$;
 
-select 'RLS checks passed' as result;
+-- 4. Grants and functions (after supabase/migrations/20261124000000_harden_grants.sql)
+do $$
+declare
+  t text;
+begin
+  if has_table_privilege('anon', 'public.admins', 'select') or has_table_privilege('authenticated', 'public.admins', 'insert') then
+    raise exception 'API roles still have privileges on public.admins';
+  end if;
+  foreach t in array array['projects', 'other_projects', 'experience_companies', 'experience_roles', 'skill_categories', 'skills',
+                           'profile', 'education', 'languages', 'social_links', 'site_settings'] loop
+    if not (select relrowsecurity from pg_class where oid = format('public.%I', t)::regclass) then raise exception 'RLS is off on %', t; end if;
+    if has_table_privilege('anon', format('public.%I', t), 'insert') or has_table_privilege('anon', format('public.%I', t), 'update')
+       or has_table_privilege('anon', format('public.%I', t), 'delete') then
+      raise exception 'anon has write privileges on %', t;
+    end if;
+  end loop;
+  if (select prosecdef from pg_proc where oid = 'public.is_admin()'::regprocedure) is not true then raise exception 'is_admin must be SECURITY DEFINER'; end if;
+  if not exists (select 1 from pg_proc where oid = 'public.is_admin()'::regprocedure and proconfig @> array['search_path=""']) then
+    raise exception 'is_admin must pin an empty search_path';
+  end if;
+end $$;
+
+-- 5. Storage: only admins may upload, change or delete files in portfolio-media.
+set local role anon;
+select set_config('request.jwt.claims', '{"role":"anon"}', true);
+do $$
+begin
+  begin
+    insert into storage.objects (bucket_id, name) values ('portfolio-media', 'rls-check/anon.txt');
+    raise exception 'anon could upload to portfolio-media';
+  exception when insufficient_privilege then null;
+  end;
+end $$;
+reset role;
+set local role authenticated;
+select set_config('request.jwt.claims', '{"role":"authenticated","sub":"00000000-0000-0000-0000-000000000001"}', true);
+do $$
+begin
+  begin
+    insert into storage.objects (bucket_id, name, owner_id) values ('portfolio-media', 'rls-check/user.txt', '00000000-0000-0000-0000-000000000001');
+    raise exception 'non-admin could upload to portfolio-media';
+  exception when insufficient_privilege then null;
+  end;
+end $$;
+reset role;
+
+-- Never report a full pass when the admin checks were skipped.
+select case when exists (select 1 from public.admins)
+  then 'RLS checks passed (all sections)'
+  else 'RLS checks passed EXCEPT admin read/write, which was SKIPPED: no admin bootstrapped'
+end as result;
 rollback;

@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { isConfigured, pagePath, trackEvent, trackPageView } from '../src/lib/analytics.ts';
+import { isConfigured, trackEvent, trackPageView } from '../src/lib/analytics.ts';
 
 test('analytics stays off without a valid ID, and in dev unless debug is on', () => {
   assert.equal(isConfigured({}), false);
@@ -10,26 +10,16 @@ test('analytics stays off without a valid ID, and in dev unless debug is on', ()
   assert.equal(isConfigured({ VITE_GA_MEASUREMENT_ID: 'G-ABC123', PROD: false, VITE_GA_DEBUG: 'true' }), true);
 });
 
-test('hash routes map to distinct paths; section anchors stay on the homepage', () => {
-  const base = '/portfolio_v1/';
-  assert.equal(pagePath('', base), '/portfolio_v1/');
-  assert.equal(pagePath('#work', base), '/portfolio_v1/');
-  assert.equal(pagePath('#/work/real-time-auction', base), '/portfolio_v1/work/real-time-auction');
-  assert.equal(pagePath('#/work/enterprise-crm/', base), '/portfolio_v1/work/enterprise-crm');
-});
-
 test('nothing is sent before analytics loads', () => {
   const calls: unknown[] = [];
   (globalThis as { window?: unknown }).window = { gtag: (...a: unknown[]) => calls.push(a) };
-  trackPageView('', 'Home');
+  trackPageView('/portfolio/', 'Home');
   trackEvent('contact_email_click', { link_location: 'contact' });
   assert.equal(calls.length, 0);
 });
 
-test('a page view counts once per page; section anchors and repeats are ignored', () => {
-  assert.equal(trackPageView('#/work/enterprise-crm', 'CRM'), true);
-  assert.equal(trackPageView('#/work/enterprise-crm', 'CRM'), false);
-  assert.equal(trackPageView('', 'Home'), true); // back to the homepage
-  assert.equal(trackPageView('#contact', 'Home'), false);
-  assert.equal(trackPageView('#/work/enterprise-crm', 'CRM'), true); // forward again
+test('a page view counts once per page path; repeats (StrictMode) are ignored', () => {
+  assert.equal(trackPageView('/portfolio/work/enterprise-crm/', 'CRM'), true);
+  assert.equal(trackPageView('/portfolio/work/enterprise-crm/', 'CRM'), false);
+  assert.equal(trackPageView('/portfolio/', 'Home'), true);
 });

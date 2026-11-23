@@ -3,43 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Chanthorn Yoeun — Senior Software Engineer</title>
-    <meta name="description" content="Chanthorn Yoeun is a senior software engineer in Phnom Penh, Cambodia, with 7+ years of experience building enterprise applications with Java, Spring Boot, React, Angular, Vue.js and Laravel." />
+    <!--head--><title>Portfolio (dev)</title><!--/head-->
     <meta name="author" content="Chanthorn Yoeun" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Chanthorn Yoeun — Senior Software Engineer" />
-    <meta property="og:description" content="Building reliable software for complex business needs. Enterprise applications, backend engineering, frontend development and technical leadership." />
-    <meta property="og:url" content="https://chanthornyoeun.github.io/portfolio_v1/" />
-    <meta property="og:site_name" content="Chanthorn Yoeun" />
-    <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Chanthorn Yoeun — Senior Software Engineer" />
-    <meta name="twitter:description" content="Building reliable software for complex business needs. Enterprise applications, backend engineering, frontend development and technical leadership." />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="robots" content="index, follow" />
     <script>
+      // Old hash links (#/work/<slug>) now live at real paths.
+      (function () { var m = /^#\/work\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/.exec(location.hash); if (m) location.replace('%BASE_URL%work/' + m[1] + '/'); })();
       // Apply a saved dark theme before first paint to avoid a light flash.
       try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch {}
     </script>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Chanthorn Yoeun",
-        "jobTitle": "Senior Software Engineer",
-        "url": "https://chanthornyoeun.github.io/portfolio_v1/",
-        "address": { "@type": "PostalAddress", "addressLocality": "Phnom Penh", "addressCountry": "KH" },
-        "sameAs": ["https://github.com/chanthornyoeun", "https://www.linkedin.com/in/chanthornyoeun/"]
-      }
-    </script>
-    <link rel="canonical" href="https://chanthornyoeun.github.io/portfolio_v1/" />
+    <!-- Reveal animations start transparent; show everything when JavaScript is off. -->
+    <noscript><style>[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}</style></noscript>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

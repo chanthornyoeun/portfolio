@@ -16,19 +16,12 @@ export type Consent = 'granted' | 'denied';
 
 const env = import.meta.env ?? {};
 const measurementId: string = env.VITE_GA_MEASUREMENT_ID ?? '';
-const base: string = env.BASE_URL ?? '/';
 const CONSENT_KEY = 'analytics-consent';
 export const CONSENT_EVENT = 'analytics-consent-change';
 
 /** Off unless an ID is set, and off in `npm run dev` unless VITE_GA_DEBUG=true. */
 export function isConfigured(e: Record<string, unknown> = env) {
   return /^G-[A-Z0-9]+$/.test(String(e.VITE_GA_MEASUREMENT_ID ?? '')) && (e.PROD === true || e.VITE_GA_DEBUG === 'true');
-}
-
-/** Hash route → virtual path GA4 can report on. Section anchors (#work) are the homepage. */
-export function pagePath(hash: string, basePath = base) {
-  const route = hash.startsWith('#/') ? hash.slice(2).replace(/\/+$/, '') : '';
-  return basePath + route;
 }
 
 declare global {
@@ -90,9 +83,8 @@ function sendPageView(path: string, title: string) {
   });
 }
 
-/** Called on load and on every hash change. Returns false for a repeat of the current page, which is ignored. */
-export function trackPageView(hash: string, title: string) {
-  const path = pagePath(hash);
+/** Called once per page load with location.pathname. Returns false for a repeat of the current page, which is ignored. */
+export function trackPageView(path: string, title: string) {
   if (path === lastPath) return false;
   lastPath = path;
   pending = { path, title };
