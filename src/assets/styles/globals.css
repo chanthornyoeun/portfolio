@@ -6,8 +6,14 @@ body {
   @apply bg-white dark:bg-gray-950;
 }
 
+/* Tell the browser which theme the page shows, so phone browsers in dark mode keep the status bar and
+   toolbar in the site's colors (theme-color) instead of forcing their own dark UI. */
 html {
   scroll-behavior: smooth;
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
 }
 
 @media (prefers-reduced-motion: reduce) {
