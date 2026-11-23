@@ -14,12 +14,7 @@
       // Apply a saved dark theme before first paint to avoid a light flash.
       try { if (localStorage.getItem('theme') === 'dark') { document.documentElement.classList.add('dark'); document.querySelector('meta[name=theme-color]').content = '#030712'; } } catch {}
     </script>
-    <!-- Reveal animations start transparent; show everything when JavaScript is off. -->
-    <noscript><style>[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}</style></noscript>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
   </head>
   <body>
     <div id="root"><!--app--></div>

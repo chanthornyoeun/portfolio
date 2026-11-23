@@ -3,6 +3,8 @@ export interface Project {
   title: string;
   role: string;
   summary: string;
+  /** Optional shorter summary for homepage cards; falls back to `summary`. */
+  cardSummary?: string;
   /** Up to five shown on the homepage card. */
   featuredTech: string[];
   /** Full verified stack, shown on the case study. */

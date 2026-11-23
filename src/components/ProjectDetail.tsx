@@ -7,7 +7,7 @@ import { container } from './styles';
 
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <section className="grid gap-2 border-t border-gray-200 py-8 sm:grid-cols-[180px_1fr] sm:gap-8 dark:border-gray-800">
+    <section className="grid gap-2 border-t border-gray-200 py-7 sm:py-8 md:grid-cols-[160px_1fr] md:gap-8 lg:grid-cols-[180px_1fr] dark:border-gray-800">
       <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">{title}</h2>
       <div className="max-w-3xl space-y-4 leading-relaxed text-gray-700 dark:text-gray-300">{children}</div>
     </section>

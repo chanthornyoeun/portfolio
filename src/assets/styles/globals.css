@@ -4,6 +4,8 @@
 
 body {
   @apply bg-white dark:bg-gray-950;
+  /* Long words, URLs and technical terms wrap instead of overflowing on narrow screens. */
+  overflow-wrap: break-word;
 }
 
 /* Tell the browser which theme the page shows, so phone browsers in dark mode keep the status bar and
@@ -11,9 +13,23 @@ body {
 html {
   scroll-behavior: smooth;
   color-scheme: light;
+  /* Keep anchors and keyboard-focused elements clear of the fixed header. */
+  scroll-padding-top: 5rem;
 }
 html.dark {
   color-scheme: dark;
+}
+
+/* Fade-in for below-the-fold items, enabled by src/lib/reveal.ts only after JavaScript runs. */
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-ready [data-reveal] {
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition-delay: var(--reveal-delay, 0ms);
+  }
+  .reveal-ready [data-reveal]:not([data-shown]) {
+    opacity: 0;
+    transform: translateY(12px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

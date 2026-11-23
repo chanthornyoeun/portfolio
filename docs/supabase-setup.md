@@ -29,6 +29,7 @@ GitHub Pages (static files only)
 2. Run, in order:
    1. `supabase/migrations/20261123000000_portfolio_cms.sql`: tables, admin allowlist, RLS and the media bucket.
    2. `supabase/migrations/20261124000000_harden_grants.sql`: removes the API grants on `admins`, gives anonymous visitors read-only access, and adds the `meta_description` setting.
+   3. `supabase/migrations/20261125000000_project_card_summary.sql`: adds the optional `projects.card_summary` column. Run it **before** deploying code that reads it; otherwise the build fails with a clear error and the live site stays as it is.
 
 Both scripts are safe to re-run.
 
@@ -79,6 +80,7 @@ For local work, put the same two values in `.env.local`.
 | To change | Table |
 |---|---|
 | Project / case study | `projects`. `slug` is the URL `/work/<slug>/`; card badges are `featured_technologies` (1–5, each also in `technologies`). |
+| Shorter text on homepage cards | `projects.card_summary` (optional, up to 220 characters). Leave it empty to show the full `summary`, which is always used on the case study and in search results. |
 | Other professional work | `other_projects` |
 | Experience | `experience_companies` → `experience_roles` (`YYYY-MM` dates; an empty `end_date` means Present) |
 | Skills | `skill_categories` → `skills` (`level` is `primary` or `supporting`; `subgroup` gives a labelled sub-list) |

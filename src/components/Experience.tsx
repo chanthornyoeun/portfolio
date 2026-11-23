@@ -1,4 +1,3 @@
-import { m } from 'framer-motion';
 import { companyPeriod, formatDuration, formatPeriod, monthsBetween } from '../data/experience';
 import { useContent } from '../contexts/ContentContext';
 import type { Role } from '../data/experience';
@@ -33,7 +32,7 @@ export function Experience() {
           const { start, end } = companyPeriod(group);
           const single = group.roles.length === 1 ? group.roles[0] : null;
           return (
-            <m.li {...reveal(i)} key={group.company} className="relative pl-6 sm:pl-8">
+            <li {...reveal(i)} key={group.company} className="relative pl-6 sm:pl-8">
               <span
                 aria-hidden="true"
                 className={`absolute -left-[6px] top-1.5 h-[11px] w-[11px] rounded-full border-2 ring-4 ring-white dark:ring-gray-950 ${
@@ -66,7 +65,7 @@ export function Experience() {
                   ))}
                 </ol>
               )}
-            </m.li>
+            </li>
           );
         })}
       </ol>

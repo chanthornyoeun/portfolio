@@ -9,10 +9,7 @@ export const secondaryButton =
 export const iconLink =
   'inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-600 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-gray-50';
 
-// Subtle staggered reveal for list items; MotionConfig in App disables it for reduced-motion users.
-export const reveal = (index: number) => ({
-  initial: { opacity: 0, y: 12 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, amount: 0.2 },
-  transition: { duration: 0.4, delay: Math.min(index, 6) * 0.06 },
-});
+// Progressive reveal: content is visible in the HTML; src/lib/reveal.ts fades in items below the fold
+// once JavaScript runs (skipped for reduced-motion users and when JavaScript is off).
+export const reveal = (index: number) =>
+  ({ 'data-reveal': '', style: { '--reveal-delay': `${Math.min(index, 6) * 60}ms` } }) as Record<string, unknown>;

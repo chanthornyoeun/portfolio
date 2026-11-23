@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { LazyMotion, MotionConfig, domAnimation } from 'framer-motion';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { About } from './components/About';
@@ -14,6 +13,7 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { useContent } from './contexts/ContentContext';
 import { ConsentBanner } from './components/ConsentBanner';
 import { initAnalytics, trackEvent, trackPageView } from './lib/analytics';
+import { startReveal } from './lib/reveal';
 import type { Route } from './routes';
 
 if (typeof window !== 'undefined') initAnalytics(); // no-op unless configured and consented
@@ -31,10 +31,10 @@ export default function App({ route }: { route: Route }) {
     }
   }, [notFound, project]);
 
+  useEffect(startReveal, []);
+
   return (
     <ThemeProvider>
-      <LazyMotion features={domAnimation} strict>
-        <MotionConfig reducedMotion="user">
           <div className="min-h-screen bg-white font-sans text-gray-900 antialiased dark:bg-gray-950 dark:text-gray-50">
             <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-white focus:text-gray-900 focus:px-3 focus:py-2 focus:text-sm">
               Skip to content
@@ -59,8 +59,6 @@ export default function App({ route }: { route: Route }) {
             <Footer />
             <ConsentBanner />
           </div>
-        </MotionConfig>
-      </LazyMotion>
     </ThemeProvider>
   );
 }

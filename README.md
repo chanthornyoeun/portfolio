@@ -80,6 +80,21 @@ Repository **Variables** (all public values):
 
 No secret keys are used.
 
+## Conventions
+
+- **Responsive:** mobile-first Tailwind classes. Tighter spacing below `sm` (640 px); case-study label columns only from `md` (768 px). Headings use rem-based `clamp()` and icons use rem sizes, so both follow the user's text-size setting.
+- **Animations:** content is fully visible in the prerendered HTML. `src/lib/reveal.ts` only fades in items below the fold after JavaScript runs, and skips this for reduced-motion users.
+- **Fonts:** Inter is self-hosted (`@fontsource-variable/inter`), and the Latin file is preloaded.
+
+## Testing
+
+- `npm test` runs the unit tests.
+- The prerender step also fails the build if:
+  - a page is missing its heading or tags;
+  - content starts hidden;
+  - the sitemap doesn't match the generated pages.
+- Accessibility and responsive checks are manual for now: axe-core in the browser, keyboard checks of the menu, and a viewport sweep from 320 to 1920 px.
+
 ## Performance checks
 
 - **Bundle and page sizes:** printed by `npm run build`. Compare `dist/assets/*.js` and `dist/**/index.html`.

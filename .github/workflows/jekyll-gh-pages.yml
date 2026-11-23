@@ -42,6 +42,11 @@ jobs:
         run: npm test
       - name: Fetch and validate published content
         run: npm run content:fetch
+      # Keeps the link-preview image in sync with the published name/title/headline. The runner ships with
+      # Google Chrome; if rendering fails, the committed public/og-image.png is used instead.
+      - name: Render link-preview image
+        run: npm run og:generate
+        continue-on-error: true
       - name: Type-check, build, prerender and verify pages
         run: npm run build:site
 

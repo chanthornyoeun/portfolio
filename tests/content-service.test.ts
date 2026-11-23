@@ -118,3 +118,31 @@ test('config refuses missing values, non-https URLs and secret keys', () => {
   assert.equal(mediaUrl('https://cdn.example.com/a.png', env), 'https://cdn.example.com/a.png');
   assert.equal(mediaUrl('a.png', {}), '');
 });
+
+test('card_summary is optional: trimmed when set, absent when empty, capped at 220 characters', () => {
+  const r = rows();
+  r.projects[0] = { ...r.projects[0], card_summary: '  Short card text.  ' };
+  r.projects[1] = { ...r.projects[1], card_summary: '   ' };
+  const c = mapContent(r, env);
+  assert.equal(c.projects.find((p) => p.slug === 'b')!.cardSummary, 'Short card text.');
+  assert.equal(c.projects.find((p) => p.slug === 'a')!.cardSummary, undefined);
+  const long = { ...c, projects: c.projects.map((p) => ({ ...p, cardSummary: 'x'.repeat(221) })) };
+  assert.ok(validateContent(long).some((e) => e.includes('card summary is over 220 characters')));
+});
+
+test('fetchRows retries a 5xx once but never retries a 4xx', async () => {
+  const calls: Record<string, number> = {};
+  const flaky = (async (url: string) => {
+    const t = url.split('/rest/v1/')[1].split('?')[0];
+    calls[t] = (calls[t] ?? 0) + 1;
+    if (t === 'projects' && calls[t] === 1) return new Response('waking up', { status: 503 });
+    return new Response(t === 'profile' ? '[{"name":"N"}]' : '[]', { status: 200 });
+  }) as unknown as typeof fetch;
+  await fetchRows('https://demo.supabase.co', 'k', flaky);
+  assert.equal(calls.projects, 2);
+
+  let badCalls = 0;
+  const unauthorized = (async () => (badCalls++, new Response('bad key', { status: 401 }))) as unknown as typeof fetch;
+  await assert.rejects(fetchRows('https://demo.supabase.co', 'k', unauthorized), /HTTP 401/);
+  assert.equal(badCalls, 9); // one per query, no retries
+});

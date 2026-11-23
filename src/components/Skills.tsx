@@ -1,4 +1,3 @@
-import { m } from 'framer-motion';
 import { useContent } from '../contexts/ContentContext';
 import { Section } from './Section';
 import { reveal } from './styles';
@@ -20,7 +19,7 @@ export function Skills() {
     <Section id="skills" title="Technical Expertise">
       <div className="grid items-start gap-x-12 gap-y-10 md:grid-cols-2">
         {skills.map((group, i) => (
-          <m.div {...reveal(i)} key={group.category}>
+          <div {...reveal(i)} key={group.category}>
             <h3 className="mb-3 text-sm font-semibold text-gray-900 dark:text-gray-50">{group.category}</h3>
             {group.primary.length > 0 && (
               <ul className="mb-3 flex flex-wrap gap-2" aria-label={`${group.category}: primary`}>
@@ -38,7 +37,7 @@ export function Skills() {
                 <Muted items={group.subgroup.items} />
               </div>
             )}
-          </m.div>
+          </div>
         ))}
       </div>
     </Section>

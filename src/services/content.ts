@@ -20,7 +20,7 @@ export interface Content {
 type Sorted = { sort_order: number };
 export interface Rows {
   projects: (Sorted & {
-    slug: string; title: string; role: string; summary: string; overview: string; challenge: string; my_role: string;
+    slug: string; title: string; role: string; summary: string; card_summary?: string | null; overview: string; challenge: string; my_role: string;
     team: string | null; approach: string; lessons: string; featured_technologies: string[] | null; technologies: string[] | null;
     contributions: string[] | null; image_path: string | null; updated_at?: string | null;
   })[];
@@ -77,6 +77,7 @@ export function mapContent(rows: Rows, env?: Record<string, unknown>): Content {
       title: r.title,
       role: r.role,
       summary: r.summary,
+      cardSummary: r.card_summary?.trim() || undefined,
       featuredTech: r.featured_technologies ?? [],
       tech: r.technologies ?? [],
       image: mediaUrl(r.image_path, env) || undefined,
@@ -143,6 +144,7 @@ export function validateContent(c: Content): string[] {
     const missing = p.featuredTech.filter((t) => !p.tech.includes(t));
     if (missing.length) errors.push(`${at}: featured technologies not in the full stack: ${missing.join(', ')}`);
     if (!p.contributions.length) errors.push(`${at}: no contributions`);
+    if (p.cardSummary && p.cardSummary.length > 220) errors.push(`${at}: card summary is over 220 characters`);
     if (p.image && !/^https:\/\//.test(p.image) && !p.image.startsWith('/')) errors.push(`${at}: image is not a URL`);
   }
 
@@ -165,7 +167,7 @@ export function validateContent(c: Content): string[] {
 }
 
 const QUERIES: Record<keyof Omit<Rows, 'profile'> | 'profile', string> = {
-  projects: 'projects?select=slug,title,role,summary,overview,challenge,my_role,team,approach,lessons,featured_technologies,technologies,contributions,image_path,sort_order,updated_at&status=eq.published',
+  projects: 'projects?select=slug,title,role,summary,card_summary,overview,challenge,my_role,team,approach,lessons,featured_technologies,technologies,contributions,image_path,sort_order,updated_at&status=eq.published',
   otherProjects: 'other_projects?select=title,description,url,sort_order&status=eq.published',
   companies: 'experience_companies?select=company_name,sort_order,experience_roles(title,start_date,end_date,project_name,highlights,sort_order)&status=eq.published',
   skillCategories: 'skill_categories?select=name,sort_order,skills(name,level,subgroup,sort_order)&status=eq.published',
@@ -176,14 +178,27 @@ const QUERIES: Record<keyof Omit<Rows, 'profile'> | 'profile', string> = {
   settings: 'site_settings?select=key,value',
 };
 
+/** GET with a timeout; retries once on network errors and 5xx (e.g. a paused project waking up), never on 4xx. */
+async function getJson(name: string, url: string, key: string, fetchImpl: typeof fetch, attempts = 2): Promise<unknown> {
+  for (let attempt = 1; ; attempt++) {
+    let res: Response;
+    try {
+      res = await fetchImpl(url, { headers: { apikey: key, Authorization: `Bearer ${key}` }, signal: AbortSignal.timeout(15_000) });
+    } catch (error) {
+      if (attempt < attempts) continue;
+      throw new Error(`${name}: request failed (${(error as Error).message})`);
+    }
+    if (res.status >= 500 && attempt < attempts) continue;
+    // The response body is PostgREST's error message; it never contains the key.
+    if (!res.ok) throw new Error(`${name}: HTTP ${res.status} ${(await res.text()).slice(0, 300)}`);
+    return res.json();
+  }
+}
+
 /** One parallel round of read-only REST queries with the public key (RLS returns published rows only). Throws on any error. */
 export async function fetchRows(url: string, key: string, fetchImpl: typeof fetch = fetch): Promise<Rows> {
   const entries = await Promise.all(
-    Object.entries(QUERIES).map(async ([name, path]) => {
-      const res = await fetchImpl(`${url}/rest/v1/${path}`, { headers: { apikey: key, Authorization: `Bearer ${key}` } });
-      if (!res.ok) throw new Error(`${name}: HTTP ${res.status} ${await res.text()}`);
-      return [name, await res.json()] as const;
-    }),
+    Object.entries(QUERIES).map(async ([name, path]) => [name, await getJson(name, `${url}/rest/v1/${path}`, key, fetchImpl)] as const),
   );
   const rows = Object.fromEntries(entries) as unknown as Rows & { profile: Rows['profile'] | Rows['profile'][] };
   return { ...rows, profile: Array.isArray(rows.profile) ? (rows.profile[0] ?? null) : rows.profile };

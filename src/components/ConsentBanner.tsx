@@ -30,9 +30,9 @@ export function ConsentBanner() {
   if (!open) return null;
   return (
     <div ref={bar} role="region" aria-label="Analytics consent" className="fixed inset-x-0 bottom-0 z-50 border-t border-gray-200 bg-white dark:border-gray-800 dark:bg-gray-950">
-      <div className={`${container} flex flex-col gap-3 py-4 text-sm sm:flex-row sm:items-center sm:justify-between`}>
+      <div className={`${container} flex flex-col gap-3 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] text-sm sm:flex-row sm:items-center sm:justify-between`}>
         <p className="text-gray-600 dark:text-gray-400">
-          May I use Google Analytics to count visits and see which projects are viewed? No personal details are collected.
+          May I use Google Analytics cookies to count visits and see which projects are viewed? Nothing loads unless you allow it, and you can change this later in Privacy settings.
         </p>
         <div className="flex shrink-0 gap-2">
           <button type="button" className={`${secondaryButton} py-2`} onClick={() => setConsent('denied')}>
