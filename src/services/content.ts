@@ -161,6 +161,9 @@ export function validateContent(c: Content): string[] {
     if (url && !/^https:\/\//.test(url) && !url.startsWith('/')) errors.push(`${label} is not an https URL: ${url}`);
   }
 
+  // The CV buttons promise a PDF; catch an image or a typo in profile.resume_path before it goes live.
+  if (c.profile.resumeUrl && !/\.pdf$/i.test(new URL(c.profile.resumeUrl, 'https://x').pathname)) errors.push('profile.resume_path must point to a .pdf file');
+
   if (!c.projects.length) errors.push('projects: no published projects (incomplete migration?)');
   const slugs = new Set<string>();
   for (const p of c.projects) {

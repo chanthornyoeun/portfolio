@@ -1,4 +1,5 @@
-import { Github, Linkedin, Mail } from 'lucide-react';
+import { Download, FileText, Github, Linkedin, Mail } from 'lucide-react';
+import { resumeDownload } from '../data/profile';
 import { useContent } from '../contexts/ContentContext';
 import { Section } from './Section';
 import { primaryButton, secondaryButton } from './styles';
@@ -27,6 +28,28 @@ export function Contact() {
           <Github size="1rem" aria-hidden="true" /> GitHub <span className="sr-only">(opens in new tab)</span>
         </a>
       </div>
+      {profile.resumeUrl && (
+        <p className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-gray-600 dark:text-gray-400">
+          <span>Prefer a CV?</span>
+          <a
+            href={resumeDownload(profile.resumeUrl, profile.name).href}
+            download={resumeDownload(profile.resumeUrl, profile.name).fileName}
+            onClick={() => trackEvent('resume_download', at)}
+            className="inline-flex min-h-[2.75rem] items-center gap-1.5 font-medium text-gray-900 underline-offset-2 hover:underline dark:text-gray-50"
+          >
+            <Download size="1rem" aria-hidden="true" /> Download (PDF)
+          </a>
+          <a
+            href={profile.resumeUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent('resume_view', at)}
+            className="inline-flex min-h-[2.75rem] items-center gap-1.5 font-medium text-gray-900 underline-offset-2 hover:underline dark:text-gray-50"
+          >
+            <FileText size="1rem" aria-hidden="true" /> View online <span className="sr-only">(opens in new tab)</span>
+          </a>
+        </p>
+      )}
     </Section>
   );
 }

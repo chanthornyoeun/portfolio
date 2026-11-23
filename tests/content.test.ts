@@ -101,3 +101,17 @@ test('YesCAR CRM keeps its slug, five featured badges and no invented metrics', 
   assert.match(p.challenge, /N\+1/);
   assert.doesNotMatch([p.summary, p.challenge, p.approach, p.lessons].join(' '), /\d+\s*(%|ms|x\b|times faster)/i);
 });
+
+test('CV download link forces a download from Supabase Storage and keeps other URLs as they are', async () => {
+  const { resumeDownload } = await import('../src/data/profile.ts');
+  const supa = 'https://demo.supabase.co/storage/v1/object/public/portfolio-media/cv/resume.pdf';
+  assert.deepEqual(resumeDownload(supa, 'Chanthorn Yoeun'), { href: `${supa}?download=Chanthorn-Yoeun-CV.pdf`, fileName: 'Chanthorn-Yoeun-CV.pdf' });
+  assert.equal(resumeDownload('https://cdn.example.com/cv.pdf', 'A B').href, 'https://cdn.example.com/cv.pdf');
+});
+
+test('the CV must be a PDF', () => {
+  const ok = applyDisclosure({ ...backup, profile: { ...profile, resumeUrl: 'https://demo.supabase.co/storage/v1/object/public/portfolio-media/cv/resume.pdf' } });
+  assert.deepEqual(validateContent(ok), []);
+  const bad = { ...ok, profile: { ...ok.profile, resumeUrl: 'https://demo.supabase.co/storage/v1/object/public/portfolio-media/cv/resume.png' } };
+  assert.ok(validateContent(bad).includes('profile.resume_path must point to a .pdf file'));
+});

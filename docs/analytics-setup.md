@@ -32,8 +32,10 @@ The portfolio uses the official Google tag (`gtag.js`) through a small module, `
 | `navigation_click` | A visitor uses the header or mobile menu | `navigation_target`, `link_location` |
 | `contact_email_click` | A visitor clicks the Email button in Contact | `link_location` |
 | `linkedin_click` / `github_click` | A visitor clicks a LinkedIn or GitHub link (Hero or Contact) | `link_location` |
-| `resume_view` | A visitor clicks a Resume link (only shown once a CV is configured) | `link_location` |
-| `resume_download` | Reserved; no download-only link exists yet | `link_location` |
+| `resume_view` | A visitor opens the CV in the browser: the header or mobile-menu **Resume** link, or **View online** in Contact | `link_location` (`header`, `mobile_menu`, `contact`) |
+| `resume_download` | A visitor clicks **Download CV** in the hero or **Download (PDF)** in Contact | `link_location` (`hero`, `contact`) |
+
+The CV links only appear once a CV is configured (see the Supabase guide, "Upload your CV"). A click is recorded even if the visitor then cancels the download.
 
 `contact_email_click` only means the visitor opened their mail app. It does not prove that a message was sent.
 
@@ -84,7 +86,7 @@ Real visitor data appears only after the site has had tracked traffic; standard 
 Go to **Admin → Events** (or **Key events**) and mark these as key events:
 
 - `contact_email_click`
-- `resume_download`, once a download link exists
+- `resume_download`
 
 Each event appears in that list after it has fired at least once.
 

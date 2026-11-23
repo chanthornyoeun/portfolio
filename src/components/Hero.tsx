@@ -1,4 +1,5 @@
-import { FileText, Github, Linkedin } from 'lucide-react';
+import { Download, Github, Linkedin } from 'lucide-react';
+import { resumeDownload } from '../data/profile';
 import { useContent } from '../contexts/ContentContext';
 import { container, iconLink, primaryButton, secondaryButton } from './styles';
 import { trackEvent } from '../lib/analytics';
@@ -27,8 +28,13 @@ export function Hero() {
                 Explore My Work
               </a>
               {profile.resumeUrl && (
-                <a href={profile.resumeUrl} onClick={() => trackEvent('resume_view', at)} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>
-                  <FileText size="1rem" aria-hidden="true" /> View Resume <span className="sr-only">(PDF, opens in new tab)</span>
+                <a
+                  href={resumeDownload(profile.resumeUrl, profile.name).href}
+                  download={resumeDownload(profile.resumeUrl, profile.name).fileName}
+                  onClick={() => trackEvent('resume_download', at)}
+                  className={`${secondaryButton} gap-2`}
+                >
+                  <Download size="1rem" aria-hidden="true" /> Download CV <span className="sr-only">(PDF)</span>
                 </a>
               )}
               <div className="flex gap-1">

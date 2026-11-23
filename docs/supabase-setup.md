@@ -117,6 +117,24 @@ For local work, put the same two values in `.env.local`.
 
 **Unpublishing** removes a page from the next build and from `sitemap.xml`. Browsers, CDNs and search engines may keep old copies for a while. To have Google drop a page quickly, use Search Console → Removals.
 
+## Upload your CV
+
+1. Export your CV as a PDF. The build rejects other file types.
+2. In Supabase, go to **Storage → portfolio-media → Upload file**. Name it `cv/resume.pdf`, without spaces. To replace it later, upload with the same name; to keep versions, use a new name such as `cv/resume-2026-12.pdf`.
+3. In **Table Editor → profile**, set `resume_path` to `cv/resume.pdf`.
+4. Run **Actions → Deploy Vite React App to GitHub Pages → Run workflow**.
+
+These then appear on the site:
+- a **Download CV** button in the hero;
+- a **Resume** link in the header and mobile menu, which opens the PDF;
+- **Download (PDF)** and **View online** links in Contact.
+
+Downloads are saved as `Chanthorn-Yoeun-CV.pdf`.
+
+To remove the CV, clear `resume_path` and run the workflow; all the CV links disappear.
+
+The file is public to anyone who has the link, so leave out your home address, ID numbers and similar details.
+
 ## 8. Media
 
 1. Upload files to **Storage → portfolio-media**, using a path such as `projects/<slug>.webp`. The bucket accepts images and PDFs up to 5 MB, and only admins can upload.

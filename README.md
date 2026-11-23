@@ -52,6 +52,10 @@ Then run `npx vite`. This uses `supabase/backup/content.json` and is for develop
 | `npm run og:generate` | Re-render `public/og-image.png`, the 1200×630 link-preview image, with a local Chrome or Edge. Re-run it when your name, title or headline changes. |
 | `npm run preview` | Serve `dist/` at http://localhost:4173/portfolio/ |
 
+## CV / resume
+
+Upload the PDF to Supabase Storage (`portfolio-media/cv/resume.pdf`), set `profile.resume_path`, and run the deploy workflow. See [docs/supabase-setup.md](docs/supabase-setup.md#upload-your-cv). The Resume and Download CV links then appear, and views and downloads are tracked as the GA4 events `resume_view` and `resume_download`.
+
 ## Publishing content
 
 1. Edit rows in the Supabase Table Editor and set `status` to `published`.
