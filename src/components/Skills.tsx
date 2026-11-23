@@ -1,5 +1,5 @@
 import { m } from 'framer-motion';
-import { skills } from '../data/skills';
+import { useContent } from '../contexts/ContentContext';
 import { Section } from './Section';
 import { reveal } from './styles';
 
@@ -15,6 +15,7 @@ function Muted({ items }: { items: string[] }) {
 }
 
 export function Skills() {
+  const { skills } = useContent();
   return (
     <Section id="skills" title="Technical Expertise">
       <div className="grid items-start gap-x-12 gap-y-10 md:grid-cols-2">

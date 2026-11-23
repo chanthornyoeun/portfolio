@@ -10,19 +10,20 @@ import { ProjectDetail } from './components/ProjectDetail';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { ThemeProvider } from './contexts/ThemeContext';
-import { findProject } from './data/projects';
-import { profile } from './data/profile';
+import { useContent } from './contexts/ContentContext';
 import { ConsentBanner } from './components/ConsentBanner';
 import { initAnalytics, trackEvent, trackPageView } from './lib/analytics';
 
 initAnalytics(); // no-op unless configured and consented
 
-const defaultTitle = document.title;
-
 // Hash routes (#/work/<slug>) so refresh and direct links work on GitHub Pages without a 404 fallback.
 export default function App() {
   const [hash, setHash] = useState(window.location.hash);
-  const project = hash.startsWith('#/work/') ? findProject(hash.slice('#/work/'.length)) : undefined;
+  const { projects, profile, siteTitle, ready } = useContent();
+  const slug = hash.startsWith('#/work/') ? hash.slice('#/work/'.length) : '';
+  const project = slug ? projects.find((p) => p.slug === slug) : undefined;
+  // A case study that only exists in the database: wait for it instead of flashing the homepage.
+  const pending = !!slug && !project && !ready;
 
   useEffect(() => {
     const onHashChange = () => setHash(window.location.hash);
@@ -31,18 +32,23 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    document.title = project ? `${project.title} — ${profile.name}` : defaultTitle;
-    // project_view only on a real page change, so StrictMode and repeated hashes don't double count.
+    if (pending) return;
+    document.title = project ? `${project.title} — ${profile.name}` : siteTitle;
+    // project_view only on a real page change, so StrictMode, repeated hashes and content refreshes don't double count.
     if (trackPageView(project ? hash : '', document.title) && project) {
       trackEvent('project_view', { project_slug: project.slug, project_title: project.title });
     }
-    if (project || hash.startsWith('#/')) {
+  }, [hash, project, pending, profile.name, siteTitle]);
+
+  // Scroll only when the route changes, not when content refreshes.
+  useEffect(() => {
+    if (hash.startsWith('#/')) {
       window.scrollTo(0, 0);
     } else if (hash) {
       // Section may only exist after switching back from a case study.
       document.getElementById(hash.slice(1))?.scrollIntoView();
     }
-  }, [hash, project]);
+  }, [hash]);
 
   return (
     <ThemeProvider>
@@ -54,7 +60,7 @@ export default function App() {
         </a>
         <Header onCaseStudy={!!project} />
         <main id="main">
-          {project ? (
+          {pending ? null : project ? (
             <ProjectDetail project={project} />
           ) : (
             <>

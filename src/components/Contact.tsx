@@ -1,5 +1,5 @@
 import { Github, Linkedin, Mail } from 'lucide-react';
-import { profile } from '../data/profile';
+import { useContent } from '../contexts/ContentContext';
 import { Section } from './Section';
 import { primaryButton, secondaryButton } from './styles';
 import { trackEvent } from '../lib/analytics';
@@ -7,6 +7,7 @@ import { trackEvent } from '../lib/analytics';
 const at = { link_location: 'contact' } as const;
 
 export function Contact() {
+  const { profile } = useContent();
   return (
     <Section id="contact" title="Let's connect.">
       <p className="mb-8 max-w-2xl leading-relaxed text-gray-600 dark:text-gray-400">
