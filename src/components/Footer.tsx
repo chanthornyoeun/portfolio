@@ -11,7 +11,7 @@ export function Footer() {
           &copy; {new Date().getFullYear()} {profile.name}. All rights reserved.
         </p>
         <p>
-          Built with React, Vite and Tailwind CSS ·{' '}
+          Built with React, Vite, Tailwind CSS and Supabase, with help from Claude and ChatGPT ·{' '}
           <a
             href="https://github.com/chanthornyoeun/portfolio/blob/master/ATTRIBUTION.md"
             target="_blank"

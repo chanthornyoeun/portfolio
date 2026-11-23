@@ -2,55 +2,45 @@
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE). See the `LICENSE` file for full details.
+This project is licensed under the [MIT License](LICENSE).
 
-## Third-Party Libraries & Tools
+## Authors
 
-### UI & Components
-- **[Radix UI](https://www.radix-ui.com/)** – High-quality, accessible primitives (e.g., `@radix-ui/react-dialog`, `@radix-ui/react-dropdown-menu`, etc.)
-- **[Tailwind CSS](https://tailwindcss.com/)** – Utility-first CSS framework for responsive design and styling
-- **[Lucide React](https://lucide.dev/)** – Beautiful, consistent icon library
-- **[Framer Motion](https://www.framer.com/motion/)** – React animation library for smooth entrance and interactive effects
+- **Chanthorn Yoeun** – creator, owner and maintainer. All portfolio content describes my own work and was reviewed by me.
 
-### Development & Build Tools
-- **[Vite](https://vitejs.dev/)** – Lightning-fast build tool and dev server
-- **[React](https://react.dev/)** – JavaScript library for building user interfaces
-- **[TypeScript](https://www.typescriptlang.org/)** – Typed JavaScript for safer development
-- **[PostCSS](https://postcss.org/)** & **[Autoprefixer](https://autoprefixer.github.io/)** – CSS processing and vendor prefixes
-- **[GitHub Copilot](https://github.com/features/copilot)** – AI-assisted code generation and debugging
+## AI assistants
 
-### Hosting & Deployment
-- **[GitHub Pages](https://pages.github.com/)** – Free static site hosting and deployment
+These AI tools helped with code, content editing, reviews and debugging. Every change was directed, reviewed and approved by me.
 
-### Design & AI-Assisted Content
-- **[Figma](https://www.figma.com/)** – Design tool used for wireframing and layout
-- **Figma AI** – Design and composition assistance (see note below)
-- **[Unsplash](https://unsplash.com)** – Stock photos used in design, licensed under [Unsplash License](https://unsplash.com/license)
+- **[Claude](https://www.anthropic.com/claude)** (Anthropic), via **[Claude Code](https://claude.com/claude-code)**: implementation, refactoring, accessibility and performance audits, SEO and prerendering, Supabase schema and security rules, tests and documentation.
+- **[ChatGPT](https://chatgpt.com/)** (OpenAI): planning, requirements and prompt writing, and content drafting.
+- **[GitHub Copilot](https://github.com/features/copilot)**: code completion and debugging.
+- **Figma AI**: early design and layout exploration.
 
-## AI-Generated Content
+## Frameworks & libraries
 
-This project includes design and visual elements created with assistance from **Figma's AI tools**. These AI-generated elements are used under Figma's standard terms and for the purpose of this portfolio/demo project.
+- **[React](https://react.dev/)**: user interface, including server-side rendering at build time with `react-dom/server`.
+- **[TypeScript](https://www.typescriptlang.org/)**: typed JavaScript.
+- **[Vite](https://vite.dev/)**: dev server and build tool.
+- **[Tailwind CSS](https://tailwindcss.com/)**, with [PostCSS](https://postcss.org/) and [Autoprefixer](https://github.com/postcss/autoprefixer): styling.
+- **[Framer Motion](https://www.framer.com/motion/)**: entrance animations, which respect reduced-motion settings.
+- **[Lucide](https://lucide.dev/)** (`lucide-react`): icons.
+- **[Inter](https://rsms.me/inter/)** by Rasmus Andersson, served by [Google Fonts](https://fonts.google.com/specimen/Inter): typeface, licensed under the SIL Open Font License.
 
-**Important:** If you fork or redistribute this project:
-1. Review and comply with [Figma's AI features terms of service](https://www.figma.com/terms/)
-2. Verify licenses for all included third-party packages
-3. Properly attribute or replace any AI-generated assets per your use case
+## Services & platforms
 
-## Authors & Contributors
+- **[Supabase](https://supabase.com/)**: PostgreSQL content database, Row-Level Security and storage. It is read only at build time.
+- **[GitHub](https://github.com/)**: source hosting. **[GitHub Actions](https://github.com/features/actions)** runs builds and checks, and **[GitHub Pages](https://pages.github.com/)** hosts the site.
+- **[Google Analytics 4](https://marketingplatform.google.com/about/analytics/)**: visitor statistics, loaded only after consent.
 
-- **Chanthorn Yoeun** – Creator and maintainer
-- **GitHub Copilot** – AI-assisted development, code debugging, and implementation
+## Development tools
 
----
+- **[Node.js](https://nodejs.org/)**: build scripts and the built-in test runner.
+- **[ESLint](https://eslint.org/)** with [typescript-eslint](https://typescript-eslint.io/) and the React Hooks plugin: linting.
+- **[Google Chrome](https://www.google.com/chrome/)** (headless): renders the link-preview image (`npm run og:generate`).
+- **[Figma](https://www.figma.com/)**: wireframing and layout.
 
-**For full licensing details, please see the `LICENSE` file in the root directory.**
-- **Icons:** `lucide-react` (Lucide icons) used across the UI.
-- **UI Primitives / Components:** Radix UI packages (e.g., `@radix-ui/*`) and locally adapted primitives in `src/components/ui`.
-- **Styling:** Tailwind CSS is used for utility-first styling and responsive layouts.
-- **Animations:** `framer-motion` powers entrance animations and interactive motion effects.
-- **Build / Tooling:** Vite + React + TypeScript, plus supporting tooling (`postcss`, `autoprefixer`) for the development/build pipeline.
+## Notes
 
-Notes
-
-- Some images and decorative assets may include AI-generated elements produced via Figma’s AI features — use and reuse of these assets should follow Figma's terms and any applicable licensing.
-- If you plan to publish or redistribute the project, verify licenses for each third-party package and any AI-generated assets you include.
+- Project case studies describe private professional work. No confidential code, data or screenshots are included.
+- If you fork or reuse this project, check the license of each third-party package and service before redistributing.
