@@ -17,6 +17,8 @@ test('paths map to routes; unknown or malformed paths are not found', () => {
   assert.deepEqual(routeFromPath('/portfolio/work/enterprise-crm', B), { page: 'project', slug: 'enterprise-crm' });
   assert.deepEqual(routeFromPath('/portfolio/work/Bad_Slug/', B), { page: 'not-found' });
   assert.deepEqual(routeFromPath('/portfolio/admin', B), { page: 'not-found' });
+  assert.deepEqual(routeFromPath('/portfolio/credits/', B), { page: 'credits' });
+  assert.deepEqual(routeFromPath('/portfolio/credits', B), { page: 'credits' });
   assert.deepEqual(routeFromPath('/other/', B), { page: 'not-found' });
   assert.equal(projectPath('real-time-auction', B), '/portfolio/work/real-time-auction/');
   assert.equal(sectionPath('work', B), '/portfolio/#work');
@@ -75,7 +77,8 @@ test('the 404 page is noindex and has no canonical', () => {
 test('sitemap lists the homepage and published case studies with real lastmod only', () => {
   const withDate = { ...c, projects: c.projects.map((p, i) => (i === 0 ? { ...p, updatedAt: '2026-11-20T08:00:00Z' } : p)) };
   const xml = sitemap(withDate, SITE);
-  assert.equal(xml.match(/<url>/g)!.length, c.projects.length + 1);
+  assert.equal(xml.match(/<url>/g)!.length, c.projects.length + 2);
+  assert.ok(xml.includes(`<loc>${SITE}credits/</loc>`));
   assert.ok(xml.includes(`<loc>${SITE}</loc>`));
   for (const p of c.projects) assert.ok(xml.includes(`<loc>${SITE}work/${p.slug}/</loc>`));
   assert.equal(xml.match(/<lastmod>/g)!.length, 1);

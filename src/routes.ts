@@ -3,12 +3,13 @@
 //   /portfolio/work/<slug>/          case study
 // Old hash links (#/work/<slug>) are redirected by an inline script in index.html.
 
-export type Route = { page: 'home' } | { page: 'project'; slug: string } | { page: 'not-found' };
+export type Route = { page: 'home' } | { page: 'project'; slug: string } | { page: 'credits' } | { page: 'not-found' };
 
 export const BASE: string = import.meta.env?.BASE_URL ?? '/';
 export const SITE_ORIGIN = 'https://chanthornyoeun.github.io';
 
 export const projectPath = (slug: string, base = BASE) => `${base}work/${slug}/`;
+export const creditsPath = (base = BASE) => `${base}credits/`;
 /** Link to a homepage section that works from any page. */
 export const sectionPath = (id: string, base = BASE) => `${base}#${id}`;
 
@@ -16,6 +17,7 @@ export function routeFromPath(pathname: string, base = BASE): Route {
   if (!pathname.startsWith(base)) return { page: 'not-found' };
   const rest = pathname.slice(base.length).replace(/index\.html$/, '');
   if (rest === '') return { page: 'home' };
+  if (/^credits\/?$/.test(rest)) return { page: 'credits' };
   const m = /^work\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/.exec(rest);
   return m ? { page: 'project', slug: m[1] } : { page: 'not-found' };
 }

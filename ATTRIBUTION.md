@@ -1,5 +1,7 @@
 # Attribution & Credits
 
+The same list is published on the site at https://chanthornyoeun.github.io/portfolio/credits/ (source: `src/data/credits.ts`).
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
@@ -23,9 +25,8 @@ These AI tools helped with code, content editing, reviews and debugging. Every c
 - **[TypeScript](https://www.typescriptlang.org/)**: typed JavaScript.
 - **[Vite](https://vite.dev/)**: dev server and build tool.
 - **[Tailwind CSS](https://tailwindcss.com/)**, with [PostCSS](https://postcss.org/) and [Autoprefixer](https://github.com/postcss/autoprefixer): styling.
-- **[Framer Motion](https://www.framer.com/motion/)**: entrance animations, which respect reduced-motion settings.
 - **[Lucide](https://lucide.dev/)** (`lucide-react`): icons.
-- **[Inter](https://rsms.me/inter/)** by Rasmus Andersson, served by [Google Fonts](https://fonts.google.com/specimen/Inter): typeface, licensed under the SIL Open Font License.
+- **[Inter](https://rsms.me/inter/)** by Rasmus Andersson: typeface, self-hosted via [Fontsource](https://fontsource.org/fonts/inter), licensed under the SIL Open Font License.
 
 ## Services & platforms
 
@@ -38,6 +39,7 @@ These AI tools helped with code, content editing, reviews and debugging. Every c
 - **[Node.js](https://nodejs.org/)**: build scripts and the built-in test runner.
 - **[ESLint](https://eslint.org/)** with [typescript-eslint](https://typescript-eslint.io/) and the React Hooks plugin: linting.
 - **[Google Chrome](https://www.google.com/chrome/)** (headless): renders the link-preview image (`npm run og:generate`).
+- **[Lighthouse](https://developer.chrome.com/docs/lighthouse/)** and **[axe-core](https://github.com/dequelabs/axe-core)**: performance, accessibility and SEO audits.
 - **[Figma](https://www.figma.com/)**: wireframing and layout.
 
 ## Notes

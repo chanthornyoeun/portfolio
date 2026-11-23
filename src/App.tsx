@@ -9,6 +9,7 @@ import { ProjectDetail } from './components/ProjectDetail';
 import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
 import { NotFound } from './components/NotFound';
+import { Credits } from './components/Credits';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { useContent } from './contexts/ContentContext';
 import { ConsentBanner } from './components/ConsentBanner';
@@ -39,10 +40,12 @@ export default function App({ route }: { route: Route }) {
             <a href="#main" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-white focus:text-gray-900 focus:px-3 focus:py-2 focus:text-sm">
               Skip to content
             </a>
-            <Header onCaseStudy={route.page !== 'home'} />
+            <Header page={notFound ? 'not-found' : route.page} />
             <main id="main">
               {notFound ? (
                 <NotFound />
+              ) : route.page === 'credits' ? (
+                <Credits />
               ) : project ? (
                 <ProjectDetail project={project} />
               ) : (

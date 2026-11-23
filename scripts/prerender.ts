@@ -5,7 +5,7 @@ import { mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'nod
 import type { Content } from '../src/services/content.ts';
 import { routeKey } from '../src/routes.ts';
 import type { Route } from '../src/routes.ts';
-import { headTags, homeMeta, notFoundMeta, projectMeta, sitemap } from '../src/seo.ts';
+import { creditsMeta, headTags, homeMeta, notFoundMeta, projectMeta, sitemap } from '../src/seo.ts';
 import type { PageMeta } from '../src/seo.ts';
 
 const BASE = '/portfolio/';
@@ -52,11 +52,12 @@ for (const p of content.projects) {
     `<link rel="canonical" href="${SITE_URL}work/${p.slug}/" />`,
   ]);
 }
+page('credits/index.html', { page: 'credits' }, creditsMeta(content, SITE_URL), ['>Credits</h1>', `<link rel="canonical" href="${SITE_URL}credits/" />`]);
 page('404.html', { page: 'not-found' }, notFoundMeta(content), ['Page not found', 'noindex']);
 const xml = sitemap(content, SITE_URL);
 // Every sitemap URL must be a page we just wrote (no drafts, no duplicates, no missing pages).
 const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-const expected = [SITE_URL, ...content.projects.map((p) => `${SITE_URL}work/${p.slug}/`)];
+const expected = [SITE_URL, ...content.projects.map((p) => `${SITE_URL}work/${p.slug}/`), `${SITE_URL}credits/`];
 if (new Set(locs).size !== locs.length || locs.join() !== expected.join()) problems.push('sitemap.xml does not match the generated pages');
 writeFileSync(new URL('sitemap.xml', dist), xml);
 rmSync(new URL('../dist-ssr/', import.meta.url), { recursive: true, force: true });
@@ -65,4 +66,4 @@ if (problems.length) {
   console.error(`prerender: ${problems.length} problem(s):\n  - ${problems.join('\n  - ')}`);
   process.exit(1);
 }
-console.log(`prerender: ${content.projects.length + 2} pages and sitemap.xml written`);
+console.log(`prerender: ${content.projects.length + 3} pages and sitemap.xml written`);

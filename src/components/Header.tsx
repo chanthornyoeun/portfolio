@@ -4,6 +4,7 @@ import { useTheme } from '../contexts/ThemeContext';
 import { useContent } from '../contexts/ContentContext';
 import { container } from './styles';
 import { BASE, sectionPath } from '../routes';
+import type { Route } from '../routes';
 import { trackEvent } from '../lib/analytics';
 import type { LinkLocation } from '../lib/analytics';
 
@@ -19,10 +20,11 @@ const idle = 'text-gray-600 dark:text-gray-400';
 const current = 'font-medium text-gray-900 dark:text-gray-50';
 
 // Highlights the section in the middle of the viewport; on a case study, "Work" stays active.
-function useActiveSection(onCaseStudy: boolean) {
+function useActiveSection(page: Route['page']) {
+  const onHome = page === 'home';
   const [active, setActive] = useState('');
   useEffect(() => {
-    if (onCaseStudy) return;
+    if (!onHome) return;
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
       { rootMargin: '-45% 0px -50% 0px' },
@@ -32,15 +34,16 @@ function useActiveSection(onCaseStudy: boolean) {
       if (el) observer.observe(el);
     });
     return () => observer.disconnect();
-  }, [onCaseStudy]);
-  return onCaseStudy ? 'work' : active;
+  }, [onHome]);
+  // Case studies belong to Work; other pages (credits, 404) have no active section.
+  return page === 'project' ? 'work' : onHome ? active : '';
 }
 
-export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
+export function Header({ page }: { page: Route['page'] }) {
   const { profile } = useContent();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const active = useActiveSection(onCaseStudy);
+  const active = useActiveSection(page);
 
   const headerRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
@@ -98,7 +101,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
     <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/95">
       <nav aria-label="Main" className={`${container} py-3`}>
         <div className="flex items-center justify-between gap-4">
-          <a href={onCaseStudy ? BASE : '#top'} className="-my-2.5 rounded py-2.5 font-semibold text-gray-900 dark:text-gray-50">
+          <a href={page === 'home' ? '#top' : BASE} className="-my-2.5 rounded py-2.5 font-semibold text-gray-900 dark:text-gray-50">
             {profile.name}
           </a>
 

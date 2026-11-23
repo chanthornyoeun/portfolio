@@ -82,6 +82,26 @@ export function projectMeta(project: Project, c: Content, siteUrl: string): Page
   };
 }
 
+export function creditsMeta(c: Content, siteUrl: string): PageMeta {
+  const url = `${siteUrl}credits/`;
+  return {
+    title: `Credits — ${c.profile.name}`,
+    description: `Tools, libraries, services and AI assistants used to build ${c.profile.name}'s portfolio.`,
+    url,
+    image: defaultImage(c, siteUrl),
+    jsonLd: [
+      {
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: c.profile.name, item: siteUrl },
+          { '@type': 'ListItem', position: 2, name: 'Credits', item: url },
+        ],
+      },
+    ],
+  };
+}
+
 export const notFoundMeta = (c: Content): PageMeta => ({ title: `Page not found — ${c.profile.name}`, description: c.description, noindex: true, jsonLd: [] });
 
 export function headTags(m: PageMeta, siteName: string) {
@@ -118,6 +138,7 @@ export function sitemap(c: Content, siteUrl: string) {
       const lastmod = p.updatedAt ? `<lastmod>${p.updatedAt.slice(0, 10)}</lastmod>` : '';
       return `  <url><loc>${esc(`${siteUrl}work/${p.slug}/`)}</loc>${lastmod}</url>`;
     }),
+    `  <url><loc>${esc(`${siteUrl}credits/`)}</loc></url>`,
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
 }

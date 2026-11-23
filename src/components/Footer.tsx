@@ -1,5 +1,6 @@
 import { useContent } from '../contexts/ContentContext';
 import { container } from './styles';
+import { creditsPath } from '../routes';
 import { isConfigured, setConsent } from '../lib/analytics';
 
 export function Footer() {
@@ -12,12 +13,7 @@ export function Footer() {
         </p>
         <p>
           Built with React, Vite, Tailwind CSS and Supabase, with help from Claude and ChatGPT ·{' '}
-          <a
-            href="https://github.com/chanthornyoeun/portfolio/blob/master/ATTRIBUTION.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline hover:text-gray-900 dark:hover:text-gray-50"
-          >
+          <a href={creditsPath()} className="underline hover:text-gray-900 dark:hover:text-gray-50">
             Credits
           </a>
           {isConfigured() && (
