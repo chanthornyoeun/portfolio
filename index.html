@@ -5,12 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--head--><title>Portfolio (dev)</title><!--/head-->
     <meta name="author" content="Chanthorn Yoeun" />
+    <!-- Phone browser toolbar color; matches the header (white / gray-950) and follows the theme toggle. -->
     <meta name="theme-color" content="#ffffff" />
     <script>
       // Old hash links (#/work/<slug>) now live at real paths.
       (function () { var m = /^#\/work\/([a-z0-9]+(?:-[a-z0-9]+)*)\/?$/.exec(location.hash); if (m) location.replace('%BASE_URL%work/' + m[1] + '/'); })();
       // Apply a saved dark theme before first paint to avoid a light flash.
-      try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch {}
+      try { if (localStorage.getItem('theme') === 'dark') { document.documentElement.classList.add('dark'); document.querySelector('meta[name=theme-color]').content = '#030712'; } } catch {}
     </script>
     <!-- Reveal animations start transparent; show everything when JavaScript is off. -->
     <noscript><style>[style*="opacity:0"],[style*="opacity: 0"]{opacity:1!important;transform:none!important}</style></noscript>

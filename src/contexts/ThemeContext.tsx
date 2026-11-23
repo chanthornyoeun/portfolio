@@ -28,6 +28,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     root().classList.toggle('dark', newTheme === 'dark');
+    // Keep the phone browser toolbar the same color as the header.
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', newTheme === 'dark' ? '#030712' : '#ffffff');
     try {
       localStorage.setItem('theme', newTheme);
     } catch {
