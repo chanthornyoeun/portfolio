@@ -1,7 +1,7 @@
 import { Menu, X, Moon, Sun } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
-import { profile } from '../data/profile';
+import { useContent } from '../contexts/ContentContext';
 import { container } from './styles';
 import { trackEvent } from '../lib/analytics';
 import type { LinkLocation } from '../lib/analytics';
@@ -36,6 +36,7 @@ function useActiveSection(onCaseStudy: boolean) {
 }
 
 export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
+  const { profile } = useContent();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const active = useActiveSection(onCaseStudy);

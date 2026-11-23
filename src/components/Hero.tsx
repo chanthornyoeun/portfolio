@@ -1,11 +1,12 @@
 import { FileText, Github, Linkedin } from 'lucide-react';
-import { profile } from '../data/profile';
+import { useContent } from '../contexts/ContentContext';
 import { container, iconLink, primaryButton, secondaryButton } from './styles';
 import { trackEvent } from '../lib/analytics';
 
 const at = { link_location: 'hero' } as const;
 
 export function Hero() {
+  const { profile } = useContent();
   return (
     <section id="top" aria-label="Introduction" className="pt-28 pb-20 sm:pt-40 sm:pb-28">
       {/* No entrance animation: the headline is the largest paint and should show immediately. */}

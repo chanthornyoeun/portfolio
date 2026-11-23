@@ -1,7 +1,6 @@
 import { ArrowRight, Lock } from 'lucide-react';
 import { m } from 'framer-motion';
-import { asset } from '../data/profile';
-import { otherProjects, projects } from '../data/projects';
+import { useContent } from '../contexts/ContentContext';
 import { Section } from './Section';
 import { reveal } from './styles';
 import { trackEvent } from '../lib/analytics';
@@ -27,6 +26,7 @@ export function PrivateLabel() {
 }
 
 export function Projects() {
+  const { projects, otherProjects } = useContent();
   return (
     <Section id="work" title="Selected Work">
       <div className="grid gap-6 md:grid-cols-2">
@@ -38,7 +38,7 @@ export function Projects() {
           >
             {project.image && (
               <img
-                src={asset(project.image)}
+                src={project.image}
                 alt={`${project.title} preview`}
                 loading="lazy"
                 decoding="async"

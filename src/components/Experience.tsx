@@ -1,5 +1,6 @@
 import { m } from 'framer-motion';
-import { companyPeriod, experience, formatDuration, formatPeriod, monthsBetween } from '../data/experience';
+import { companyPeriod, formatDuration, formatPeriod, monthsBetween } from '../data/experience';
+import { useContent } from '../contexts/ContentContext';
 import type { Role } from '../data/experience';
 import { Section } from './Section';
 import { reveal } from './styles';
@@ -24,6 +25,7 @@ function RoleTitle({ role }: { role: Role }) {
 }
 
 export function Experience() {
+  const { experience } = useContent();
   return (
     <Section id="experience" title="Professional Experience">
       <ol className="ml-1.5 space-y-12 border-l border-gray-200 dark:border-gray-800">

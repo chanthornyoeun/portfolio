@@ -1,7 +1,8 @@
-import { profile } from '../data/profile';
+import { useContent } from '../contexts/ContentContext';
 import { Section } from './Section';
 
 export function About() {
+  const { profile } = useContent();
   const { education } = profile;
   return (
     <Section id="about" title="About">
