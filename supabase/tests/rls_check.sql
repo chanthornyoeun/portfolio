@@ -20,7 +20,11 @@ begin
   if exists (select 1 from public.projects where status <> 'published') then raise exception 'anon can read draft projects'; end if;
   if exists (select 1 from public.experience_roles where title = 'Hidden role') then raise exception 'anon can read roles of a draft company'; end if;
   if exists (select 1 from public.skills where name = 'Hidden skill') then raise exception 'anon can read skills of a draft category'; end if;
-  if exists (select 1 from public.admins) then raise exception 'anon can read the admin allowlist'; end if;
+  -- After the grants migration, reading the allowlist is denied outright (before it, RLS returns no rows).
+  begin
+    if exists (select 1 from public.admins) then raise exception 'anon can read the admin allowlist'; end if;
+  exception when insufficient_privilege then null; -- expected
+  end;
   if not exists (select 1 from public.profile) then raise exception 'anon cannot read the public profile'; end if;
   begin
     insert into public.projects (slug, title, role, summary, overview, challenge, my_role, approach, lessons) values ('anon-write', 't', 'r', 's', 'o', 'c', 'm', 'a', 'l');
