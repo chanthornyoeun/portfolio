@@ -7,7 +7,7 @@ import { reveal } from './styles';
 
 function Highlights({ items }: { items: string[] }) {
   return (
-    <ul className="mt-2 list-disc space-y-1 pl-5 text-sm leading-relaxed text-gray-600 marker:text-gray-400 dark:text-gray-400">
+    <ul className="mt-2 list-disc space-y-1 pl-4 text-sm sm:pl-5 leading-relaxed text-gray-600 marker:text-gray-400 dark:text-gray-400">
       {items.map((h) => (
         <li key={h}>{h}</li>
       ))}
@@ -33,7 +33,7 @@ export function Experience() {
           const { start, end } = companyPeriod(group);
           const single = group.roles.length === 1 ? group.roles[0] : null;
           return (
-            <m.li {...reveal(i)} key={group.company} className="relative pl-8">
+            <m.li {...reveal(i)} key={group.company} className="relative pl-6 sm:pl-8">
               <span
                 aria-hidden="true"
                 className={`absolute -left-[6px] top-1.5 h-[11px] w-[11px] rounded-full border-2 ring-4 ring-white dark:ring-gray-950 ${
@@ -55,10 +55,10 @@ export function Experience() {
                   <Highlights items={single.highlights} />
                 </>
               ) : (
-                <ol className="mt-4 space-y-6 border-l border-dashed border-gray-200 pl-5 dark:border-gray-800" aria-label={`Roles at ${group.company}`}>
+                <ol className="mt-4 space-y-6 border-l border-dashed border-gray-200 pl-4 sm:pl-5 dark:border-gray-800" aria-label={`Roles at ${group.company}`}>
                   {group.roles.map((role) => (
                     <li key={role.title} className="relative">
-                      <span aria-hidden="true" className="absolute -left-[23.5px] top-2 h-[7px] w-[7px] rounded-full bg-gray-300 dark:bg-gray-600" />
+                      <span aria-hidden="true" className="absolute -left-[19.5px] top-2 sm:-left-[23.5px] h-[7px] w-[7px] rounded-full bg-gray-300 dark:bg-gray-600" />
                       <RoleTitle role={role} />
                       <p className="text-sm text-gray-500 dark:text-gray-400">{formatPeriod(role.startDate, role.endDate)}</p>
                       <Highlights items={role.highlights} />

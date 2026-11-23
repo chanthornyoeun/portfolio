@@ -21,7 +21,7 @@ export function Tags({ items }: { items: string[] }) {
 export function PrivateLabel() {
   return (
     <span className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
-      <Lock size={12} aria-hidden="true" /> Professional Project · Private
+      <Lock size="0.75rem" aria-hidden="true" /> Professional Project · Private
     </span>
   );
 }
@@ -61,7 +61,7 @@ export function Projects() {
               className="mt-6 inline-flex w-fit items-center gap-1 text-sm font-medium text-blue-700 after:absolute after:inset-0 after:rounded-lg hover:underline dark:text-blue-400"
             >
               View Case Study <span className="sr-only">: {project.title}</span>
-              <ArrowRight size={14} aria-hidden="true" />
+              <ArrowRight size="0.875rem" aria-hidden="true" />
             </a>
           </m.article>
         ))}

@@ -31,17 +31,17 @@ export function ProjectDetail({ project }: { project: Project }) {
   const { projects } = useContent();
   const next = projects[(projects.findIndex((p) => p.slug === project.slug) + 1) % projects.length];
   return (
-    <article className={`${container} pt-28 pb-20 sm:pt-32`}>
+    <article className={`${container} pt-24 pb-16 sm:pt-32 sm:pb-20`}>
       <a
         href={sectionPath('work')}
-        className="mb-10 flex w-fit items-center gap-1 rounded text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
+        className="mb-8 flex w-fit items-center gap-1 rounded text-sm sm:mb-10 text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50"
       >
-        <ArrowLeft size={14} aria-hidden="true" /> Back to Selected Work
+        <ArrowLeft size="0.875rem" aria-hidden="true" /> Back to Selected Work
       </a>
 
-      <header className="mb-10 max-w-3xl">
+      <header className="mb-8 max-w-3xl sm:mb-10">
         <PrivateLabel />
-        <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight text-gray-900 sm:text-4xl dark:text-gray-50">{project.title}</h1>
+        <h1 className="mt-3 text-[clamp(1.75rem,1.3rem+2vw,2.25rem)] font-semibold leading-tight tracking-tight text-gray-900 dark:text-gray-50">{project.title}</h1>
         <p className="mt-4 text-lg leading-relaxed text-gray-600 dark:text-gray-400">{project.summary}</p>
         <dl className="mt-6 grid gap-4 text-sm sm:grid-cols-[auto_1fr] sm:gap-x-8">
           <div className="sm:contents">
@@ -88,7 +88,7 @@ export function ProjectDetail({ project }: { project: Project }) {
         className="mt-4 flex flex-col gap-4 border-t border-gray-200 pt-8 text-sm sm:flex-row sm:items-center sm:justify-between dark:border-gray-800"
       >
         <a href={sectionPath('work')} className="flex w-fit items-center gap-1 rounded text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-50">
-          <ArrowLeft size={14} aria-hidden="true" /> All projects
+          <ArrowLeft size="0.875rem" aria-hidden="true" /> All projects
         </a>
         <a
           href={projectPath(next.slug)}
@@ -98,7 +98,7 @@ export function ProjectDetail({ project }: { project: Project }) {
             <span className="block text-xs font-normal text-gray-500 dark:text-gray-400">Next case study</span>
             {next.title}
           </span>
-          <ArrowRight size={16} aria-hidden="true" className="shrink-0 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
+          <ArrowRight size="1rem" aria-hidden="true" className="shrink-0 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none" />
         </a>
       </nav>
     </article>

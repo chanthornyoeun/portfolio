@@ -14,17 +14,17 @@ export function Contact() {
         Interested in discussing software engineering opportunities, technical challenges, or potential collaborations? Feel free
         to reach out.
       </p>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
         {profile.email && (
-          <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} title={profile.email} onClick={() => trackEvent('contact_email_click', at)} className={`${primaryButton} gap-2 border border-transparent`}>
-            <Mail size={16} aria-hidden="true" /> Email
+          <a href={`mailto:${profile.email}`} aria-label={`Email ${profile.email}`} title={profile.email} onClick={() => trackEvent('contact_email_click', at)} className={`${primaryButton} justify-center gap-2 border border-transparent`}>
+            <Mail size="1rem" aria-hidden="true" /> Email
           </a>
         )}
-        <a href={profile.linkedin} onClick={() => trackEvent('linkedin_click', at)} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>
-          <Linkedin size={16} aria-hidden="true" /> LinkedIn <span className="sr-only">(opens in new tab)</span>
+        <a href={profile.linkedin} onClick={() => trackEvent('linkedin_click', at)} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} justify-center gap-2`}>
+          <Linkedin size="1rem" aria-hidden="true" /> LinkedIn <span className="sr-only">(opens in new tab)</span>
         </a>
-        <a href={profile.github} onClick={() => trackEvent('github_click', at)} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} gap-2`}>
-          <Github size={16} aria-hidden="true" /> GitHub <span className="sr-only">(opens in new tab)</span>
+        <a href={profile.github} onClick={() => trackEvent('github_click', at)} target="_blank" rel="noopener noreferrer" className={`${secondaryButton} justify-center gap-2`}>
+          <Github size="1rem" aria-hidden="true" /> GitHub <span className="sr-only">(opens in new tab)</span>
         </a>
       </div>
     </Section>

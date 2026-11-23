@@ -98,7 +98,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
     <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/95">
       <nav aria-label="Main" className={`${container} py-3`}>
         <div className="flex items-center justify-between gap-4">
-          <a href={onCaseStudy ? BASE : '#top'} className="-my-2 rounded py-2 font-semibold text-gray-900 dark:text-gray-50">
+          <a href={onCaseStudy ? BASE : '#top'} className="-my-2.5 rounded py-2.5 font-semibold text-gray-900 dark:text-gray-50">
             {profile.name}
           </a>
 
@@ -111,7 +111,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
               className="inline-flex h-11 w-11 items-center justify-center rounded-md text-gray-600 focus-visible:outline-offset-0 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800"
               aria-label={theme === 'light' ? 'Switch to dark theme' : 'Switch to light theme'}
             >
-              {theme === 'light' ? <Moon size={18} aria-hidden="true" /> : <Sun size={18} aria-hidden="true" />}
+              {theme === 'light' ? <Moon size="1.125rem" aria-hidden="true" /> : <Sun size="1.125rem" aria-hidden="true" />}
             </button>
 
             <button
@@ -123,7 +123,7 @@ export function Header({ onCaseStudy }: { onCaseStudy: boolean }) {
               aria-expanded={isMenuOpen}
               aria-controls="mobile-nav"
             >
-              {isMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+              {isMenuOpen ? <X size="1.25rem" aria-hidden="true" /> : <Menu size="1.25rem" aria-hidden="true" />}
             </button>
           </div>
         </div>
