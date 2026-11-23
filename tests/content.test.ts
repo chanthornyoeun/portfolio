@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { companyPeriod, formatDuration, formatPeriod, monthsBetween } from '../src/data/experience.ts';
 import { asset } from '../src/data/profile.ts';
-import { validateContent } from '../src/services/content.ts';
+import { applyDisclosure, validateContent } from '../src/services/content.ts';
 import type { Content } from '../src/services/content.ts';
 
 // The verified content backup (supabase/backup/content.json) that seeded Supabase.
@@ -12,7 +12,7 @@ const { projects, experience, profile } = backup;
 const findProject = (slug: string) => projects.find((p) => p.slug === slug);
 
 test('the backup passes the same validation as a deploy', () => {
-  assert.deepEqual(validateContent(backup), []);
+  assert.deepEqual(validateContent(applyDisclosure(backup)), []);
 });
 
 test('four featured projects with unique slugs that resolve', () => {

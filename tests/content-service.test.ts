@@ -78,7 +78,7 @@ test('validation catches incomplete or invalid required content', () => {
     profile: { ...c.profile, headline: ' ' },
     projects: [
       { ...c.projects[0], slug: 'Bad Slug' },
-      { ...c.projects[1], featuredTech: ['A', 'B', 'C', 'D', 'E', 'F'] },
+      { ...c.projects[1], techVisibility: 'full', featuredTech: ['A', 'B', 'C', 'D', 'E', 'F'] },
       { ...c.projects[2], slug: c.projects[3].slug, contributions: [] },
       c.projects[3],
     ],
@@ -101,9 +101,12 @@ test('fetchRows sends the public key, keeps published filters, and fails on any 
   }) as unknown as typeof fetch;
   const r = await fetchRows(env.VITE_SUPABASE_URL, env.VITE_SUPABASE_PUBLISHABLE_KEY, ok);
   assert.equal(seen.length, 9);
-  for (const t of ['projects', 'other_projects', 'experience_companies', 'skill_categories']) {
+  for (const t of ['other_projects', 'experience_companies', 'skill_categories']) {
     assert.ok(seen.some((u) => u.includes(`/${t}?`) && u.includes('status=eq.published')), t);
   }
+  // Projects come only from the public projection (published rows, technologies stripped unless approved).
+  assert.ok(seen.some((u) => u.includes('/projects_public?')));
+  assert.ok(!seen.some((u) => u.includes('/projects?')));
   assert.deepEqual(r.profile, { name: 'N' });
 
   const failing = (async (url: string) => (url.includes('skills') ? new Response('boom', { status: 500 }) : new Response('[]', { status: 200 }))) as unknown as typeof fetch;
@@ -135,11 +138,11 @@ test('fetchRows retries a 5xx once but never retries a 4xx', async () => {
   const flaky = (async (url: string) => {
     const t = url.split('/rest/v1/')[1].split('?')[0];
     calls[t] = (calls[t] ?? 0) + 1;
-    if (t === 'projects' && calls[t] === 1) return new Response('waking up', { status: 503 });
+    if (t === 'projects_public' && calls[t] === 1) return new Response('waking up', { status: 503 });
     return new Response(t === 'profile' ? '[{"name":"N"}]' : '[]', { status: 200 });
   }) as unknown as typeof fetch;
   await fetchRows('https://demo.supabase.co', 'k', flaky);
-  assert.equal(calls.projects, 2);
+  assert.equal(calls.projects_public, 2);
 
   let badCalls = 0;
   const unauthorized = (async () => (badCalls++, new Response('bad key', { status: 401 }))) as unknown as typeof fetch;

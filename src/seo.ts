@@ -1,4 +1,5 @@
 // Per-page <head> tags, structured data and sitemap, generated at build time from the content snapshot.
+import { publicTags } from './data/projects.ts';
 import type { Project } from './data/projects.ts';
 import type { Content } from './services/content.ts';
 
@@ -73,7 +74,8 @@ export function projectMeta(project: Project, c: Content, siteUrl: string): Page
         description: project.summary,
         url,
         author: { '@type': 'Person', name: c.profile.name, url: siteUrl },
-        keywords: project.tech.join(', '),
+        // Only what the project may disclose: approved technologies, or capability tags, or nothing.
+        ...(publicTags(project, 'detail').length ? { keywords: publicTags(project, 'detail').join(', ') } : {}),
         ...(project.updatedAt ? { dateModified: project.updatedAt } : {}),
       },
     ],

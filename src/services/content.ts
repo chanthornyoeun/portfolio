@@ -2,7 +2,8 @@
 // Runs in Node (scripts/fetch-content.ts); the browser only ever sees the validated snapshot.
 import type { ExperienceGroup } from '../data/experience.ts';
 import type { Profile } from '../data/profile.ts';
-import type { OtherProject, Project } from '../data/projects.ts';
+import { TECH_VISIBILITY } from '../data/projects.ts';
+import type { OtherProject, Project, TechVisibility } from '../data/projects.ts';
 import type { SkillGroup } from '../data/skills.ts';
 import { mediaUrl } from '../lib/supabase.ts';
 
@@ -23,6 +24,7 @@ export interface Rows {
     slug: string; title: string; role: string; summary: string; card_summary?: string | null; overview: string; challenge: string; my_role: string;
     team: string | null; approach: string; lessons: string; featured_technologies: string[] | null; technologies: string[] | null;
     contributions: string[] | null; image_path: string | null; updated_at?: string | null;
+    tech_visibility?: string | null; capability_tags?: string[] | null;
   })[];
   otherProjects: (Sorted & { title: string; description: string; url: string | null })[];
   companies: (Sorted & {
@@ -45,6 +47,30 @@ type YearMonth = ExperienceGroup['roles'][number]['startDate'];
 
 /** Turns database rows into component shapes. Faulty rows are kept as-is so validateContent can report them. */
 export function mapContent(rows: Rows, env?: Record<string, unknown>): Content {
+  return applyDisclosure(mapRows(rows, env));
+}
+
+/**
+ * Removes technology data a project is not approved to show, whatever the source (database or backup file).
+ * Runs before the snapshot is written, so restricted values never reach HTML, JavaScript or SEO tags.
+ */
+export function applyDisclosure(c: Content): Content {
+  return {
+    ...c,
+    projects: c.projects.map((p) => {
+      const v = (p.techVisibility ?? 'general') as TechVisibility;
+      return {
+        ...p,
+        techVisibility: v,
+        capabilityTags: v === 'general' ? (p.capabilityTags ?? []) : [],
+        featuredTech: v === 'full' ? p.featuredTech : [],
+        tech: v === 'full' ? p.tech : [],
+      };
+    }),
+  };
+}
+
+function mapRows(rows: Rows, env?: Record<string, unknown>): Content {
   const p = rows.profile;
   if (!p) throw new Error('profile: no published profile row');
   const link = (platform: string) => rows.socialLinks.find((l) => l.platform === platform)?.url ?? '';
@@ -78,6 +104,9 @@ export function mapContent(rows: Rows, env?: Record<string, unknown>): Content {
       role: r.role,
       summary: r.summary,
       cardSummary: r.card_summary?.trim() || undefined,
+      // Missing (pre-migration) rows default to 'general'; invalid values pass through so validation fails the build.
+      techVisibility: (r.tech_visibility ?? 'general') as TechVisibility,
+      capabilityTags: r.capability_tags ?? [],
       featuredTech: r.featured_technologies ?? [],
       tech: r.technologies ?? [],
       image: mediaUrl(r.image_path, env) || undefined,
@@ -140,9 +169,18 @@ export function validateContent(c: Content): string[] {
     if (slugs.has(p.slug)) errors.push(`${at}: duplicate slug`);
     slugs.add(p.slug);
     (['title', 'role', 'summary', 'overview', 'challenge', 'myRole', 'approach', 'lessons'] as const).forEach((k) => need(p[k], `${at}.${k}`));
-    if (!p.featuredTech.length || p.featuredTech.length > 5) errors.push(`${at}: needs 1–5 featured technologies`);
-    const missing = p.featuredTech.filter((t) => !p.tech.includes(t));
-    if (missing.length) errors.push(`${at}: featured technologies not in the full stack: ${missing.join(', ')}`);
+    if (!(TECH_VISIBILITY as readonly string[]).includes(p.techVisibility)) {
+      errors.push(`${at}: tech_visibility must be full, general or hidden (got ${JSON.stringify(p.techVisibility)})`);
+    } else if (p.techVisibility === 'full') {
+      if (!p.featuredTech.length || p.featuredTech.length > 5) errors.push(`${at}: needs 1–5 featured technologies`);
+      const missing = p.featuredTech.filter((t) => !p.tech.includes(t));
+      if (missing.length) errors.push(`${at}: featured technologies not in the full stack: ${missing.join(', ')}`);
+    } else if (p.tech.length || p.featuredTech.length) {
+      // Defence in depth: never publish technologies for a project that is not approved for them.
+      errors.push(`${at}: restricted technologies present for visibility "${p.techVisibility}"`);
+    }
+    if (p.capabilityTags.length > 5) errors.push(`${at}: at most 5 capability tags`);
+    if (p.capabilityTags.some((t) => !t.trim() || t.length > 40)) errors.push(`${at}: capability tags must be 1–40 characters`);
     if (!p.contributions.length) errors.push(`${at}: no contributions`);
     if (p.cardSummary && p.cardSummary.length > 220) errors.push(`${at}: card summary is over 220 characters`);
     if (p.image && !/^https:\/\//.test(p.image) && !p.image.startsWith('/')) errors.push(`${at}: image is not a URL`);
@@ -167,7 +205,8 @@ export function validateContent(c: Content): string[] {
 }
 
 const QUERIES: Record<keyof Omit<Rows, 'profile'> | 'profile', string> = {
-  projects: 'projects?select=slug,title,role,summary,card_summary,overview,challenge,my_role,team,approach,lessons,featured_technologies,technologies,contributions,image_path,sort_order,updated_at&status=eq.published',
+  // Public projection: published rows only, technologies emptied unless approved (see the tech_visibility migration).
+  projects: 'projects_public?select=slug,title,role,summary,card_summary,overview,challenge,my_role,team,approach,lessons,tech_visibility,capability_tags,featured_technologies,technologies,contributions,image_path,sort_order,updated_at',
   otherProjects: 'other_projects?select=title,description,url,sort_order&status=eq.published',
   companies: 'experience_companies?select=company_name,sort_order,experience_roles(title,start_date,end_date,project_name,highlights,sort_order)&status=eq.published',
   skillCategories: 'skill_categories?select=name,sort_order,skills(name,level,subgroup,sort_order)&status=eq.published',

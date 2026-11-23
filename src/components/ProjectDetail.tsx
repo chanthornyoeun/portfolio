@@ -1,4 +1,5 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { publicTags } from '../data/projects';
 import type { Project } from '../data/projects';
 import { PrivateLabel, Tags } from './Projects';
 import { useContent } from '../contexts/ContentContext';
@@ -29,6 +30,7 @@ const paras = (text: string) =>
 
 export function ProjectDetail({ project }: { project: Project }) {
   const { projects } = useContent();
+  const tags = publicTags(project, 'detail');
   const next = projects[(projects.findIndex((p) => p.slug === project.slug) + 1) % projects.length];
   return (
     <article className={`${container} pt-24 pb-16 sm:pt-32 sm:pb-20`}>
@@ -48,12 +50,16 @@ export function ProjectDetail({ project }: { project: Project }) {
             <dt className="font-semibold text-gray-900 dark:text-gray-50">Role</dt>
             <dd className="mt-1 text-gray-600 sm:mt-0 dark:text-gray-400">{project.role}</dd>
           </div>
-          <div className="sm:contents">
-            <dt className="font-semibold text-gray-900 dark:text-gray-50">Stack</dt>
-            <dd className="mt-2 sm:mt-0">
-              <Tags items={project.tech} />
-            </dd>
-          </div>
+          {tags.length > 0 && (
+            <div className="sm:contents">
+              <dt className="font-semibold text-gray-900 dark:text-gray-50">
+                {project.techVisibility === 'full' ? 'Technology Stack' : 'Engineering Focus'}
+              </dt>
+              <dd className="mt-2 sm:mt-0">
+                <Tags items={tags} />
+              </dd>
+            </div>
+          )}
         </dl>
       </header>
 

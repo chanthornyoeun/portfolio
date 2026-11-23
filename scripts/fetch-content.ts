@@ -4,7 +4,7 @@
 // On any error the snapshot is not written and the process exits non-zero, so CI never deploys bad content.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { supabaseConfig } from '../src/lib/supabase.ts';
-import { fetchRows, mapContent, validateContent } from '../src/services/content.ts';
+import { applyDisclosure, fetchRows, mapContent, validateContent } from '../src/services/content.ts';
 import type { Content } from '../src/services/content.ts';
 
 for (const file of ['.env.local', '.env']) {
@@ -20,7 +20,7 @@ let content: Content;
 
 if (process.argv.includes('--from-backup')) {
   console.warn('content: using supabase/backup/content.json (development only, not for deploys)');
-  content = JSON.parse(readFileSync(new URL('../supabase/backup/content.json', import.meta.url), 'utf8'));
+  content = applyDisclosure(JSON.parse(readFileSync(new URL('../supabase/backup/content.json', import.meta.url), 'utf8')));
 } else {
   const config = supabaseConfig(process.env);
   if (!config) {

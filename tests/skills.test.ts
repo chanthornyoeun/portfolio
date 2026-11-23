@@ -11,7 +11,7 @@ test('every skill appears once, AI tools live under Development Tools', () => {
   assert.equal(new Set(all).size, all.length);
   assert.equal(all.length, 55);
   assert.ok(!skills.some((g) => g.category.startsWith('AI')));
-  assert.deepEqual(skills.find((g) => g.category === 'Development Tools')?.subgroup?.items, ['OpenAI Codex', 'Claude Code', 'GitHub Copilot', 'ChatGPT']);
+  assert.deepEqual(skills.find((g) => g.category === 'Development Tools')?.subgroup?.items, ['ChatGPT', 'OpenAI Codex', 'Claude Code', 'GitHub Copilot']);
 });
 
 test('core technologies are primary', () => {

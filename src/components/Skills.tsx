@@ -16,7 +16,7 @@ function Muted({ items }: { items: string[] }) {
 export function Skills() {
   const { skills } = useContent();
   return (
-    <Section id="skills" title="Technical Expertise">
+    <Section id="skills" title="Technical Skills & Tools">
       <div className="grid items-start gap-x-12 gap-y-10 md:grid-cols-2">
         {skills.map((group, i) => (
           <div {...reveal(i)} key={group.category}>

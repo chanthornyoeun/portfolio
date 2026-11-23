@@ -30,6 +30,8 @@ GitHub Pages (static files only)
    1. `supabase/migrations/20261123000000_portfolio_cms.sql`: tables, admin allowlist, RLS and the media bucket.
    2. `supabase/migrations/20261124000000_harden_grants.sql`: removes the API grants on `admins`, gives anonymous visitors read-only access, and adds the `meta_description` setting.
    3. `supabase/migrations/20261125000000_project_card_summary.sql`: adds the optional `projects.card_summary` column. Run it **before** deploying code that reads it; otherwise the build fails with a clear error and the live site stays as it is.
+   4. `supabase/migrations/20261126000000_project_tech_visibility.sql`: adds `tech_visibility` and `capability_tags` and the `projects_public` view, and stops anonymous reads of the `projects` table. Run it **before** deploying the code that reads `projects_public`. To undo it, use `supabase/migrations/rollback/…_down.sql`.
+   5. Optionally, review and run `supabase/content/capability_tags.sql`, which sets the proposed public tags.
 
 Both scripts are safe to re-run.
 
@@ -80,6 +82,7 @@ For local work, put the same two values in `.env.local`.
 | To change | Table |
 |---|---|
 | Project / case study | `projects`. `slug` is the URL `/work/<slug>/`; card badges are `featured_technologies` (1–5, each also in `technologies`). |
+| What technology is public | `projects.tech_visibility`: `full`, `general` or `hidden` (see below) |
 | Shorter text on homepage cards | `projects.card_summary` (optional, up to 220 characters). Leave it empty to show the full `summary`, which is always used on the case study and in search results. |
 | Other professional work | `other_projects` |
 | Experience | `experience_companies` → `experience_roles` (`YYYY-MM` dates; an empty `end_date` means Present) |
@@ -91,6 +94,21 @@ For local work, put the same two values in `.env.local`.
 - **Paragraphs:** separate them with a blank line. A paragraph that starts with `Label: ` shows the label in bold.
 - **Order:** `sort_order`, lowest first.
 - **Publish / unpublish:** set `status` to `published` or `draft` on `projects`, `other_projects`, `experience_companies` or `skill_categories`. Roles and skills follow their parent.
+
+## Technology disclosure per project
+
+| `tech_visibility` | Cards | Case-study header | SEO keywords | Public database access |
+|---|---|---|---|---|
+| `full` | Up to 5 `featured_technologies` | **Technology Stack**: `technologies` | the technologies | technologies readable |
+| `general` (default) | Up to 5 `capability_tags` | **Engineering Focus**: capability tags | the capability tags | technologies **not** readable |
+| `hidden` | none | none | none | neither readable |
+
+- **Defaults:** new and existing projects start as `general`. Only switch a project to `full` after the client or employer has approved naming its technologies.
+- **Enforcement:** the database does this, not the page. Public readers only get `projects_public`, which empties technology columns unless the project is `full`. The build also strips them, and fails if any slip through, so they never reach the HTML, JavaScript, structured data or link previews.
+- **Case-study text isn't filtered.** Overview, approach, contributions and experience highlights can still name technologies, so review them when tightening a project's visibility.
+- **Your own skills are separate.** The Skills section lists your personal skills and isn't affected.
+- **Approval:** publishing even high-level capability tags may still need employer or client approval.
+- **Rolling back a disclosure change:** set `tech_visibility` back in the Table Editor and run the deploy workflow. Pages already cached by browsers or search engines may lag.
 
 **Changes go live when the site is rebuilt:**
 - Go to **GitHub → Actions → Deploy Vite React App to GitHub Pages → Run workflow** (about 2 minutes).

@@ -39,6 +39,14 @@
       "title": "Petroleum Distribution Management System",
       "role": "Freelance Software Engineer — Frontend Development & Client Coordination",
       "summary": "An enterprise petroleum distribution platform supporting wholesale, retail, logistics, and master data operations. Responsible for frontend development, client communication, requirements analysis, and UI/UX prototyping, while collaborating with a dedicated backend development team.",
+      "techVisibility": "general",
+      "capabilityTags": [
+        "Frontend Engineering",
+        "UI/UX Prototyping",
+        "API Integration",
+        "Business Analysis",
+        "Client Collaboration"
+      ],
       "featuredTech": [
         "Next.js",
         "React",
@@ -74,6 +82,14 @@
       "title": "General Core Insurance Platform",
       "role": "Frontend Team Leader",
       "summary": "An enterprise general insurance platform where I led frontend development and contributed hands-on to implementing core insurance workflows using Angular, while coordinating technical requirements with backend teams and clients.",
+      "techVisibility": "general",
+      "capabilityTags": [
+        "Frontend Engineering",
+        "Enterprise Applications",
+        "API Integration",
+        "Technical Leadership",
+        "Business Workflows"
+      ],
       "featuredTech": [
         "Angular",
         "TypeScript",
@@ -110,6 +126,14 @@
       "title": "Real-Time Auction & E-Commerce Platform",
       "role": "Project Leader / Team Lead",
       "summary": "Developed and maintained a real-time auction and e-commerce platform using Java Spring Boot and Vue.js, supporting live bidding, concurrent transactions, and online shopping workflows.",
+      "techVisibility": "general",
+      "capabilityTags": [
+        "Full-Stack Engineering",
+        "Real-Time Systems",
+        "Concurrency Control",
+        "Transaction Processing",
+        "Performance Optimization"
+      ],
       "featuredTech": [
         "Spring Boot",
         "Vue.js",
@@ -148,6 +172,14 @@
       "title": "YesCAR — Customer Relationship Management System",
       "role": "Senior Java Developer",
       "summary": "Developed and maintained a CRM platform that digitized customer management, sales leads, and reporting. Contributed to backend and frontend development, resolved a production N+1 query performance issue, and implemented large-volume data exports.",
+      "techVisibility": "general",
+      "capabilityTags": [
+        "Backend Engineering",
+        "Database Optimization",
+        "Enterprise CRM",
+        "Data Processing",
+        "Performance Troubleshooting"
+      ],
       "featuredTech": [
         "Java",
         "Spring Boot",
@@ -302,15 +334,15 @@
       "primary": [
         "Java",
         "Spring Boot",
+        "Node.js",
         "Laravel",
-        "Go",
-        "Node.js"
+        "Go"
       ],
       "supporting": [
         "Spring Framework",
         "Grails",
-        "PHP",
         "NestJS",
+        "PHP",
         "REST APIs"
       ]
     },
@@ -344,15 +376,15 @@
     {
       "category": "Cloud & DevOps",
       "primary": [
-        "Docker",
         "Linux",
+        "Docker",
         "Nginx"
       ],
       "supporting": [
+        "Apache Tomcat",
         "AWS EC2",
         "AWS S3",
-        "DigitalOcean",
-        "Apache Tomcat"
+        "DigitalOcean"
       ]
     },
     {
@@ -360,12 +392,12 @@
       "primary": [],
       "supporting": [
         "System Design",
-        "MVC",
-        "SOLID",
-        "Design Patterns",
         "Microservices",
-        "Concurrency Control",
+        "MVC",
+        "Design Patterns",
+        "SOLID",
         "Database Transactions",
+        "Concurrency Control",
         "SQL Optimization",
         "API Performance"
       ]
@@ -377,8 +409,8 @@
         "Technical Leadership",
         "Mentoring",
         "Code Review",
-        "Business Analysis",
         "Requirements Gathering",
+        "Business Analysis",
         "Client Communication"
       ]
     },
@@ -396,10 +428,10 @@
       "subgroup": {
         "label": "AI-assisted",
         "items": [
+          "ChatGPT",
           "OpenAI Codex",
           "Claude Code",
-          "GitHub Copilot",
-          "ChatGPT"
+          "GitHub Copilot"
         ]
       }
     }

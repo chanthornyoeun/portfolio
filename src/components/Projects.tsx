@@ -1,5 +1,6 @@
 import { ArrowRight, Lock } from 'lucide-react';
 import { useContent } from '../contexts/ContentContext';
+import { publicTags } from '../data/projects';
 import { projectPath } from '../routes';
 import { Section } from './Section';
 import { reveal } from './styles';
@@ -52,7 +53,7 @@ export function Projects() {
             <PrivateLabel />
             <h3 className="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-gray-50">{project.title}</h3>
             <p className="mt-2 mb-5 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{project.cardSummary ?? project.summary}</p>
-            <Tags items={project.featuredTech.slice(0, 5)} />
+            {publicTags(project, 'card').length > 0 && <Tags items={publicTags(project, 'card')} />}
             <a
               href={projectPath(project.slug)}
               onClick={() => trackEvent('project_card_click', { project_slug: project.slug, project_title: project.title })}

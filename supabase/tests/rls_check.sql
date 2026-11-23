@@ -121,6 +121,28 @@ begin
 end $$;
 reset role;
 
+-- 6. Technology disclosure (after 20261126000000_project_tech_visibility.sql)
+update public.projects set tech_visibility = 'general', technologies = array['RLS-SECRET-TECH'], featured_technologies = array['RLS-SECRET-TECH']
+where slug = (select slug from public.projects where status = 'published' order by sort_order limit 1);
+set local role anon;
+select set_config('request.jwt.claims', '{"role":"anon"}', true);
+do $$
+begin
+  begin
+    perform technologies from public.projects limit 1;
+    raise exception 'anon can read the projects base table (restricted technology columns)';
+  exception when insufficient_privilege then null; -- expected
+  end;
+  if exists (select 1 from public.projects_public where 'RLS-SECRET-TECH' = any(technologies || featured_technologies)) then
+    raise exception 'projects_public exposes technologies of a non-full project';
+  end if;
+  if exists (select 1 from public.projects_public where slug = 'rls-draft-check') then raise exception 'projects_public exposes drafts'; end if;
+  if exists (select 1 from public.projects_public where tech_visibility = 'hidden' and cardinality(capability_tags) > 0) then
+    raise exception 'projects_public exposes capability tags of a hidden project';
+  end if;
+end $$;
+reset role;
+
 -- Never report a full pass when the admin checks were skipped.
 select case when exists (select 1 from public.admins)
   then 'RLS checks passed (all sections)'
