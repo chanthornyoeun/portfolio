@@ -110,6 +110,17 @@ For local work, put the same two values in `.env.local`.
 - **Approval:** publishing even high-level capability tags may still need employer or client approval.
 - **Rolling back a disclosure change:** set `tech_visibility` back in the Table Editor and run the deploy workflow. Pages already cached by browsers or search engines may lag.
 
+## Skills (Professional Skills & Tools)
+
+The section shows eight categories, in this order: Backend Development, Frontend Development, Databases & Caching, Cloud & DevOps, Software Engineering, Development & Testing Tools, Project Management & Delivery, Leadership & Business Analysis.
+
+- **Categories:** `skill_categories` (`name`, `status`, `sort_order`). Only `published` categories are shown.
+- **Skills:** `skills` (`category_id`, `name`, `level`, `subgroup`, `sort_order`). A name is unique within its category.
+- **Levels:** `primary` skills show as outlined badges; `supporting` skills show as muted text. The level is a display grouping, not a proficiency rating.
+- **Subgroups:** give skills a `subgroup` label (for example `AI-Assisted Development`) to list them under that heading at the end of their category. Use one label per category; subgroup skills ignore `level`.
+- **Order:** `sort_order`, lowest first, for both categories and skills within a category.
+- **Bulk update:** `supabase/content/skills_restructure.sql` applies the approved structure. It renames in place, upserts every skill, deletes skills that are no longer approved and sets other categories to draft. It's safe to re-run. Keep `supabase/backup/content.json` in step and run `npm run seed:generate` after changing it.
+
 **Changes go live when the site is rebuilt:**
 - Go to **GitHub → Actions → Deploy Vite React App to GitHub Pages → Run workflow** (about 2 minutes).
 - The workflow also runs every day at 02:00 UTC.

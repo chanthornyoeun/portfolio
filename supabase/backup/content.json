@@ -330,7 +330,7 @@
   ],
   "skills": [
     {
-      "category": "Backend Engineering",
+      "category": "Backend Development",
       "primary": [
         "Java",
         "Spring Boot",
@@ -339,25 +339,25 @@
         "Go"
       ],
       "supporting": [
-        "Spring Framework",
         "Grails",
         "NestJS",
-        "PHP",
-        "REST APIs"
+        "Gin",
+        "REST APIs",
+        "WebSocket"
       ]
     },
     {
-      "category": "Frontend Engineering",
+      "category": "Frontend Development",
       "primary": [
-        "TypeScript",
-        "React",
-        "Next.js",
-        "Vue.js",
-        "Nuxt.js",
+        "TypeScript/JavaScript",
+        "React/Next.js",
+        "Vue.js/Nuxt.js",
         "Angular"
       ],
       "supporting": [
-        "JavaScript"
+        "Tailwind CSS",
+        "Material UI",
+        "Vuetify"
       ]
     },
     {
@@ -370,7 +370,8 @@
       ],
       "supporting": [
         "MariaDB",
-        "SQL Server"
+        "SQL Server",
+        "SQLite"
       ]
     },
     {
@@ -378,55 +379,46 @@
       "primary": [
         "Linux",
         "Docker",
-        "Nginx"
+        "Nginx",
+        "CI/CD"
       ],
       "supporting": [
-        "Apache Tomcat",
-        "AWS EC2",
-        "AWS S3",
-        "DigitalOcean"
+        "GitHub Actions",
+        "AWS",
+        "DigitalOcean",
+        "Supabase"
       ]
     },
     {
       "category": "Software Engineering",
-      "primary": [],
-      "supporting": [
+      "primary": [
         "System Design",
         "Microservices",
-        "MVC",
         "Design Patterns",
-        "SOLID",
-        "Database Transactions",
+        "SOLID"
+      ],
+      "supporting": [
         "Concurrency Control",
-        "SQL Optimization",
-        "API Performance"
+        "Transaction Management",
+        "RabbitMQ",
+        "Performance Optimization"
       ]
     },
     {
-      "category": "Leadership",
-      "primary": [],
-      "supporting": [
-        "Technical Leadership",
-        "Mentoring",
-        "Code Review",
-        "Requirements Gathering",
-        "Business Analysis",
-        "Client Communication"
-      ]
-    },
-    {
-      "category": "Development Tools",
-      "primary": [],
-      "supporting": [
+      "category": "Development & Testing Tools",
+      "primary": [
         "Git",
         "GitHub",
         "GitLab",
+        "Postman"
+      ],
+      "supporting": [
         "Bitbucket",
-        "Postman",
-        "Swagger/OpenAPI"
+        "Swagger/OpenAPI",
+        "Apache JMeter"
       ],
       "subgroup": {
-        "label": "AI-assisted",
+        "label": "AI-Assisted Development",
         "items": [
           "ChatGPT",
           "OpenAI Codex",
@@ -434,6 +426,37 @@
           "GitHub Copilot"
         ]
       }
+    },
+    {
+      "category": "Project Management & Delivery",
+      "primary": [
+        "Jira",
+        "ClickUp",
+        "Trello",
+        "Redmine",
+        "Notion"
+      ],
+      "supporting": [
+        "Agile",
+        "Scrum",
+        "Sprint Planning",
+        "Backlog Management",
+        "Task Prioritization"
+      ]
+    },
+    {
+      "category": "Leadership & Business Analysis",
+      "primary": [
+        "Technical Leadership",
+        "Business Analysis"
+      ],
+      "supporting": [
+        "Team Management",
+        "Mentoring",
+        "Code Review",
+        "Requirements Gathering",
+        "Client Communication"
+      ]
     }
   ]
 }
