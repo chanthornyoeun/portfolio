@@ -18,7 +18,7 @@ test('eight categories in the approved order', () => {
 
 test('every skill appears once and every category has primary skills', () => {
   assert.equal(new Set(all).size, all.length);
-  assert.equal(all.length, 68);
+  assert.equal(all.length, 70);
   for (const g of skills) assert.ok(g.primary.length > 0, g.category);
 });
 
@@ -30,6 +30,6 @@ test('AI tools are a subgroup of Development & Testing Tools only', () => {
 test('levels match the approved structure', () => {
   assert.deepEqual(group('Frontend Development').primary, ['TypeScript/JavaScript', 'React/Next.js', 'Vue.js/Nuxt.js', 'Angular']);
   assert.deepEqual(group('Project Management & Delivery').primary, ['Jira', 'ClickUp', 'Trello', 'Redmine', 'Notion']);
-  assert.deepEqual(group('Leadership & Business Analysis').primary, ['Technical Leadership', 'Business Analysis']);
+  assert.deepEqual(group('Leadership & Business Analysis').primary, ['Technical Leadership', 'Business Analysis', 'Figma']);
   for (const old of ['Spring Framework', 'PHP', 'MVC', 'Apache Tomcat', 'AWS EC2', 'AWS S3', 'Next.js', 'Nuxt.js', 'JavaScript']) assert.ok(!all.includes(old), old);
 });

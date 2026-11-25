@@ -9,6 +9,7 @@ type EventParams = {
   github_click: { link_location: LinkLocation };
   resume_view: { link_location: LinkLocation };
   resume_download: { link_location: LinkLocation };
+  additional_project_link_click: { project_title: string };
   navigation_click: { navigation_target: string; link_location: LinkLocation };
 };
 export type LinkLocation = 'header' | 'mobile_menu' | 'hero' | 'contact';

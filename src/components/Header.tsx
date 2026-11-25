@@ -11,6 +11,7 @@ import type { LinkLocation } from '../lib/analytics';
 const sections = [
   { label: 'Work', id: 'work' },
   { label: 'Experience', id: 'experience' },
+  { label: 'Skills', id: 'skills' },
   { label: 'About', id: 'about' },
   { label: 'Contact', id: 'contact' },
 ];

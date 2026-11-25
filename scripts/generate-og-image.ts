@@ -8,6 +8,9 @@ import { fileURLToPath } from 'node:url';
 import type { Content } from '../src/services/content.ts';
 
 const { profile }: Content = JSON.parse(readFileSync(new URL('../src/generated/content.json', import.meta.url), 'utf8'));
+// Optional portrait panel on the right (cropped to fit, never stretched); skipped if the file is absent.
+const portraitFile = new URL('../design/portrait/portrait.webp', import.meta.url);
+const portrait = existsSync(portraitFile) ? `data:image/webp;base64,${readFileSync(portraitFile).toString('base64')}` : '';
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 // Same palette as the site: white background, gray-900 text, blue-700 accent.
@@ -18,11 +21,16 @@ const html = `<!doctype html><html><head><meta charset="utf-8">
   html, body { width: 1200px; height: 630px; }
   body { font-family: Inter, 'Segoe UI', system-ui, sans-serif; background: #fff; color: #111827; padding: 88px 96px;
          display: flex; flex-direction: column; justify-content: space-between; border-top: 12px solid #1d4ed8; }
+  body.with-portrait { padding-right: 520px; }
+  .portrait { position: fixed; top: 0; right: 0; width: 472px; height: 630px; object-fit: cover; object-position: top; background: #000; }
+  body.with-portrait h1 { font-size: 52px; }
+  body.with-portrait .foot span:first-child { display: none; }
   .name { font-size: 34px; font-weight: 600; }
   .role { margin-top: 10px; font-size: 28px; color: #1d4ed8; }
   h1 { font-size: 64px; line-height: 1.12; font-weight: 600; letter-spacing: -0.02em; max-width: 960px; }
   .foot { display: flex; justify-content: space-between; font-size: 24px; color: #4b5563; border-top: 2px solid #e5e7eb; padding-top: 28px; }
-</style></head><body>
+</style></head><body${portrait ? ' class="with-portrait"' : ''}>
+  ${portrait ? `<img class="portrait" src="${portrait}" alt="">` : ''}
   <div><div class="name">${esc(profile.name)}</div><div class="role">${esc(profile.title)} · ${esc(profile.location)}</div></div>
   <h1>${esc(profile.headline)}</h1>
   <div class="foot"><span>Case studies · Experience · Skills</span><span>chanthornyoeun.github.io/portfolio</span></div>

@@ -6,7 +6,7 @@
     "title": "Senior Software Engineer",
     "location": "Phnom Penh, Cambodia",
     "headline": "Building reliable software for complex business needs.",
-    "intro": "I'm Chanthorn, a software engineer with 7+ years of experience building enterprise applications, solving technical challenges, and guiding development teams.",
+    "intro": "Software engineer with 7+ years of experience in full-stack development, technical leadership, and enterprise software delivery.",
     "about": [
       "Over the past 7+ years I've worked across backend and frontend engineering, mostly on enterprise applications such as insurance, distribution, auction, and CRM systems.",
       "Alongside hands-on development, I've led frontend and project teams — mentoring developers, reviewing code, and working with clients and stakeholders to turn business requirements into working software.",
@@ -75,7 +75,8 @@
         "Contributed to wholesale, retail, logistics, and master data workflows."
       ],
       "approach": "Requirements are clarified with the client and prototyped in Figma before implementation. The Next.js frontend consumes REST APIs from the Laravel backend built by the backend team, with API contracts and business rules agreed together before integration.",
-      "lessons": "Close collaboration with stakeholders and early prototyping help align complex operational workflows before code is written."
+      "lessons": "Close collaboration with stakeholders and early prototyping help align complex operational workflows before code is written.",
+      "cardSummary": "Enterprise petroleum distribution platform. I led frontend development, client requirements and UI/UX prototyping, working alongside a separate backend team."
     },
     {
       "slug": "general-core-insurance",
@@ -119,7 +120,8 @@
         "Client communication and support."
       ],
       "approach": "Shared, reusable Angular components were used across modules, with each workflow integrated against backend REST APIs.",
-      "lessons": "Reusable components and clear communication between frontend, backend, and clients are essential in large, rule-heavy business domains."
+      "lessons": "Reusable components and clear communication between frontend, backend, and clients are essential in large, rule-heavy business domains.",
+      "cardSummary": "Enterprise general insurance platform where I led the frontend team, built core insurance workflows and coordinated requirements with backend teams and clients."
     },
     {
       "slug": "real-time-auction",
@@ -165,7 +167,8 @@
         "MySQL query and backend API optimization."
       ],
       "approach": "Standard business operations go through REST APIs on a Java Spring Boot backend. Bids for the same item are serialized with a Redis distributed lock, and each accepted bid is written to MySQL through MyBatis inside a transaction so the stored result stays consistent. Accepted bids are pushed to connected clients over WebSocket. RabbitMQ handles asynchronous event processing outside the request flow, and OneSignal delivers push notifications to users. Vue.js powers the auction and e-commerce interfaces and the admin dashboard.",
-      "lessons": "Concurrency issues need to be designed for explicitly — locking and transaction boundaries are part of the business logic, not an afterthought."
+      "lessons": "Concurrency issues need to be designed for explicitly — locking and transaction boundaries are part of the business logic, not an afterthought.",
+      "cardSummary": "Real-time auction and e-commerce platform. As project lead, I built live bidding, concurrent transaction handling and shopping workflows across backend and frontend."
     },
     {
       "slug": "enterprise-crm",
@@ -211,26 +214,80 @@
         "Supported troubleshooting and maintenance."
       ],
       "approach": "The CRM uses Java Spring Boot backend services with Spring Data JPA for data access, exposing REST APIs consumed by a Vue.js frontend.\n\nSet-based update optimization: I investigated the production bottleneck and replaced the application-level processing with direct conditional database updates. The database now evaluates the matching conditions and updates the intended records itself, which eliminated the N+1 query pattern in the affected workflow, avoided loading records into application memory, and removed unnecessary database round trips. Because customer names and phone numbers are not unique, the update conditions still had to be defined carefully to target only the intended records. The result resolved a production performance bottleneck and improved the efficiency and scalability of customer information updates.\n\nLarge-volume export: I implemented CRM data export functionality capable of handling thousands of records to support business reporting and operational needs.",
-      "lessons": "Performance problems in enterprise applications may only become visible under real production data volumes. ORM query behavior and application-level record processing need careful attention, especially with growing datasets and non-unique customer information. Direct database operations can significantly simplify inefficient workflows."
+      "lessons": "Performance problems in enterprise applications may only become visible under real production data volumes. ORM query behavior and application-level record processing need careful attention, especially with growing datasets and non-unique customer information. Direct database operations can significantly simplify inefficient workflows.",
+      "cardSummary": "CRM platform for customer management, sales leads and reporting. Backend and frontend development, including a production N+1 query fix and large-volume data exports."
     }
   ],
   "otherProjects": [
     {
       "title": "Vessel Monitoring System",
-      "description": "Frontend leadership (Ecoinsoft)."
+      "company": "Ecoinsoft",
+      "role": "Frontend Team Lead",
+      "icon": "Ship",
+      "description": "Led frontend development and team coordination for a vessel monitoring application.",
+      "capabilityTags": [
+        "Frontend Leadership",
+        "Enterprise Applications"
+      ],
+      "url": "https://vms.fia.maff.gov.kh/",
+      "urlLabel": "Visit Website"
     },
     {
-      "title": "Insurance Reporting / IAC",
-      "description": "Frontend leadership for insurance reporting (Ecoinsoft).",
-      "url": "https://www.iac.org.kh/"
+      "title": "Insurance Reporting System (IAC)",
+      "company": "Ecoinsoft",
+      "role": "Frontend Team Lead",
+      "icon": "ChartNoAxesCombined",
+      "description": "Led frontend development for insurance reporting and coordinated requirements with development teams.",
+      "capabilityTags": [
+        "Reporting",
+        "Technical Leadership"
+      ],
+      "url": "https://www.iac.org.kh/",
+      "urlLabel": "Organization Website"
     },
     {
-      "title": "E-commerce Frontend",
-      "description": "React e-commerce frontend and reusable UI components (Aibodia)."
+      "title": "E-Commerce Platform",
+      "company": "Aibodia",
+      "role": "Senior Frontend Developer",
+      "icon": "ShoppingCart",
+      "description": "Developed e-commerce interfaces, reusable UI components, and API integrations.",
+      "capabilityTags": [
+        "Frontend Engineering",
+        "API Integration"
+      ]
     },
     {
-      "title": "Real Estate, CMS, and POS Systems",
-      "description": "Java/Grails APIs and Angular interfaces (Ecoinsoft)."
+      "title": "Real Estate Management System",
+      "company": "Ecoinsoft",
+      "role": "Software Developer",
+      "icon": "Building2",
+      "description": "Contributed to backend APIs and frontend interfaces for real estate applications.",
+      "capabilityTags": [
+        "Backend Engineering",
+        "Frontend Development"
+      ]
+    },
+    {
+      "title": "Content Management System",
+      "company": "Ecoinsoft",
+      "role": "Backend Developer",
+      "icon": "FileText",
+      "description": "Developed backend APIs for content management and back-office applications.",
+      "capabilityTags": [
+        "Backend Engineering",
+        "API Development"
+      ]
+    },
+    {
+      "title": "Point of Sale System",
+      "company": "Ecoinsoft",
+      "role": "Software Developer",
+      "icon": "Receipt",
+      "description": "Contributed to backend APIs and frontend interfaces for point-of-sale applications.",
+      "capabilityTags": [
+        "Business Applications",
+        "API Development"
+      ]
     }
   ],
   "experience": [
@@ -448,13 +505,15 @@
       "category": "Leadership & Business Analysis",
       "primary": [
         "Technical Leadership",
-        "Business Analysis"
+        "Business Analysis",
+        "Figma"
       ],
       "supporting": [
         "Team Management",
         "Mentoring",
         "Code Review",
         "Requirements Gathering",
+        "UI/UX Prototyping",
         "Client Communication"
       ]
     }

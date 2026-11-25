@@ -6,14 +6,21 @@ import { trackEvent } from '../lib/analytics';
 
 const at = { link_location: 'hero' } as const;
 
+/** Upload portrait-sm / portrait / portrait-lg side by side in Storage (see docs/supabase-setup.md). */
+const portraitSrcSet = (url: string) => {
+  const m = /^(.*?)(\.\w+)$/.exec(url);
+  // shortcut: assumes the -sm/-lg files exist next to the main file; add explicit columns if that becomes error-prone.
+  return m ? `${m[1]}-sm${m[2]} 400w, ${url} 800w, ${m[1]}-lg${m[2]} 1086w` : undefined;
+};
+
 export function Hero() {
   const { profile } = useContent();
   return (
-    <section id="top" aria-label="Introduction" className="pt-24 pb-14 sm:pt-40 sm:pb-28">
+    <section id="top" aria-label="Introduction" className="pt-24 pb-14 sm:pt-32 sm:pb-20">
       {/* No entrance animation: the headline is the largest paint and should show immediately. */}
       <div className={container}>
-        <div className="flex flex-col gap-8 md:flex-row md:items-center md:justify-between md:gap-12">
-          <div className="max-w-2xl">
+        <div className="grid gap-10 md:grid-cols-[3fr_2fr] md:items-center md:gap-12">
+          <div className="min-w-0">
             <p className="text-sm font-medium text-gray-900 dark:text-gray-50">{profile.name}</p>
             <p className="mt-1 text-sm text-blue-700 dark:text-blue-400">
               {profile.title} · {profile.location}
@@ -51,11 +58,16 @@ export function Hero() {
           {profile.portrait && (
             <img
               src={profile.portrait}
-              alt={`Portrait of ${profile.name}`}
-              width={400}
-              height={400}
+              srcSet={portraitSrcSet(profile.portrait)}
+              sizes="(min-width: 1024px) 380px, (min-width: 768px) 38vw, (min-width: 640px) 20rem, 16rem"
+              alt={`Black-and-white portrait of ${profile.name}, ${profile.title}.`}
+              width={800}
+              height={1066}
               decoding="async"
-              className="order-first aspect-square w-24 shrink-0 rounded-xl object-cover sm:w-32 md:order-none md:w-48"
+              {...{ fetchpriority: 'high' }}
+              // A missing file hides the portrait; the text column then fills the hero.
+              onError={(e) => (e.currentTarget.hidden = true)}
+              className="mx-auto aspect-[3/4] w-64 rounded-lg border border-gray-200 bg-black object-cover sm:w-80 md:mx-0 md:w-full dark:border-transparent"
             />
           )}
         </div>

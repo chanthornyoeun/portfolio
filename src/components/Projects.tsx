@@ -1,10 +1,12 @@
 import { ArrowRight, Lock } from 'lucide-react';
 import { useContent } from '../contexts/ContentContext';
-import { publicTags } from '../data/projects';
+import { imageAlt, publicTags } from '../data/projects';
+import type { Project } from '../data/projects';
 import { projectPath } from '../routes';
 import { Section } from './Section';
 import { reveal } from './styles';
 import { trackEvent } from '../lib/analytics';
+import { AdditionalProjects } from './AdditionalProjects';
 
 export function Tags({ items }: { items: string[] }) {
   return (
@@ -26,8 +28,14 @@ export function PrivateLabel() {
   );
 }
 
+/** Disclosure under concept images, so they are never mistaken for real product screenshots. */
+export function ImageNote({ project, className = '' }: { project: Pick<Project, 'imageType'>; className?: string }) {
+  if (project.imageType === 'screenshot') return null;
+  return <p className={`text-xs text-gray-500 dark:text-gray-400 ${className}`}>Conceptual illustration — not an actual product screenshot.</p>;
+}
+
 export function Projects() {
-  const { projects, otherProjects } = useContent();
+  const { projects } = useContent();
   return (
     <Section id="work" title="Selected Work">
       <div className="grid gap-6 md:grid-cols-2">
@@ -40,16 +48,17 @@ export function Projects() {
             {project.image && (
               <img
                 src={project.image}
-                alt={`${project.title} preview`}
+                alt={imageAlt(project)}
                 loading="lazy"
                 decoding="async"
                 width={640}
                 height={360}
                 // A missing file is hidden rather than leaving a broken placeholder.
                 onError={(e) => (e.currentTarget.hidden = true)}
-                className="mb-5 aspect-video w-full rounded-md border border-gray-200 object-cover dark:border-gray-800"
+                className="mb-2 aspect-video w-full rounded-md border border-gray-200 object-cover dark:border-gray-800"
               />
             )}
+            {project.image && <ImageNote project={project} className="mb-4" />}
             <PrivateLabel />
             <h3 className="mt-2 text-lg font-semibold leading-snug text-gray-900 dark:text-gray-50">{project.title}</h3>
             <p className="mt-2 mb-5 flex-1 text-sm leading-relaxed text-gray-600 dark:text-gray-400">{project.cardSummary ?? project.summary}</p>
@@ -67,22 +76,7 @@ export function Projects() {
         ))}
       </div>
 
-      <h3 className="mt-14 mb-4 text-sm font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Other professional work</h3>
-      <ul className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
-        {otherProjects.map((p) => (
-          <li key={p.title} className="text-sm">
-            {p.url ? (
-              <a href={p.url} target="_blank" rel="noopener noreferrer" className="font-medium text-gray-900 underline hover:text-blue-700 dark:text-gray-50 dark:hover:text-blue-400">
-                {p.title}
-                <span className="sr-only"> (opens in new tab)</span>
-              </a>
-            ) : (
-              <span className="font-medium text-gray-900 dark:text-gray-50">{p.title}</span>
-            )}
-            <span className="text-gray-600 dark:text-gray-400"> — {p.description}</span>
-          </li>
-        ))}
-      </ul>
+      <AdditionalProjects />
     </Section>
   );
 }

@@ -32,8 +32,10 @@ GitHub Pages (static files only)
    3. `supabase/migrations/20261125000000_project_card_summary.sql`: adds the optional `projects.card_summary` column. Run it **before** deploying code that reads it; otherwise the build fails with a clear error and the live site stays as it is.
    4. `supabase/migrations/20261126000000_project_tech_visibility.sql`: adds `tech_visibility` and `capability_tags` and the `projects_public` view, and stops anonymous reads of the `projects` table. Run it **before** deploying the code that reads `projects_public`. To undo it, use `supabase/migrations/rollback/…_down.sql`.
    5. Optionally, review and run `supabase/content/capability_tags.sql`, which sets the proposed public tags.
+   6. `supabase/migrations/20261127000000_additional_projects_and_images.sql`: adds company, role, icon, capability tags and link label to `other_projects`, and `image_type` / `image_alt` to `projects` (exposed through `projects_public`). Run it **before** deploying the code that reads these columns. Rollback: `supabase/migrations/rollback/20261127000000_…_down.sql`.
+   7. Optionally, review and run `supabase/content/additional_projects.sql` (the six additional projects and the Selected Work card summaries).
 
-Both scripts are safe to re-run.
+All scripts are safe to re-run.
 
 ## 3. Import content (first time only)
 
@@ -84,7 +86,7 @@ For local work, put the same two values in `.env.local`.
 | Project / case study | `projects`. `slug` is the URL `/work/<slug>/`; card badges are `featured_technologies` (1–5, each also in `technologies`). |
 | What technology is public | `projects.tech_visibility`: `full`, `general` or `hidden` (see below) |
 | Shorter text on homepage cards | `projects.card_summary` (optional, up to 220 characters). Leave it empty to show the full `summary`, which is always used on the case study and in search results. |
-| Other professional work | `other_projects` |
+| Additional Professional Projects | `other_projects` (see below) |
 | Experience | `experience_companies` → `experience_roles` (`YYYY-MM` dates; an empty `end_date` means Present) |
 | Skills | `skill_categories` → `skills` (`level` is `primary` or `supporting`; `subgroup` gives a labelled sub-list) |
 | Profile, About, email | `profile` (one row) |
@@ -109,6 +111,23 @@ For local work, put the same two values in `.env.local`.
 - **Your own skills are separate.** The Skills section lists your personal skills and isn't affected.
 - **Approval:** publishing even high-level capability tags may still need employer or client approval.
 - **Rolling back a disclosure change:** set `tech_visibility` back in the Table Editor and run the deploy workflow. Pages already cached by browsers or search engines may lag.
+
+## Additional Professional Projects
+
+Compact cards under Selected Work, managed in `other_projects`. They have no case-study page and no sitemap entry. The section is hidden when nothing is published.
+
+| Column | Required | Notes |
+|---|---|---|
+| `title` | yes | Unique; also the record key used by the content script. |
+| `description` | yes | One short contribution sentence. |
+| `company`, `role` | no | Shown as muted text under the title, e.g. `Ecoinsoft · Frontend Team Lead`. |
+| `icon` | no | One of `Ship`, `ChartNoAxesCombined`, `ShoppingCart`, `Building2`, `FileText`, `Receipt`. Anything else shows a generic briefcase. To add an icon, add it to `src/data/projectIcons.ts`. |
+| `capability_tags` | no | General capabilities only, at most 3 (2 is typical). Don't list client-specific technologies. |
+| `url` | no | Public `https://` URL only. Check it opens before publishing. No link is shown when empty. |
+| `url_label` | no | Link text, e.g. `Visit Website` (the project itself) or `Organization Website` (the client). Needs a `url`. |
+| `status`, `sort_order` | | Publish/unpublish and order, as elsewhere. |
+
+Link clicks are sent to analytics (only after consent) as `additional_project_link_click` with the project title.
 
 ## Skills (Professional Skills & Tools)
 
@@ -152,6 +171,16 @@ The file is public to anyone who has the link, so leave out your home address, I
 2. Put that path in `projects.image_path`, `profile.avatar_path` or `profile.resume_path`. A full `https://` URL also works.
 
 Files in this bucket are public by URL, so only upload screenshots you're allowed to share.
+
+**Project images:**
+- `projects.image_type` is `concept` (the default) or `screenshot`. Concept images show the caption *Conceptual illustration — not an actual product screenshot.* on the card and the case study, and their default alt text says so too. Only use `screenshot` for real, approved, sanitized screenshots.
+- `projects.image_alt` sets the alt text (also used for link previews). Leave it empty for the default.
+- Use 16:9 WebP (about 1280×720, under 200 KB). Images on cards lazy-load, and their size is reserved so the page doesn't shift.
+
+**Hero portrait:**
+- Upload `design/portrait/portrait-sm.webp` (400 px), `portrait.webp` (800 px) and `portrait-lg.webp` (1086 px, all from `portrait-original.webp`) to `portfolio-media/profile/` with those exact names, then set `profile.avatar_path` to `profile/portrait.webp` (or run `supabase/content/hero_portrait.sql`).
+- The hero builds its responsive `srcset` from that name, so all three files must exist side by side. If the portrait is missing, it is hidden and the text fills the hero.
+- Re-run `npm run og:generate` after changing the portrait to refresh the link-preview image.
 
 ## 9. Free-plan notes
 

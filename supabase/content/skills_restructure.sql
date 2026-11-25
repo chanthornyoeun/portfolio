@@ -113,11 +113,13 @@ insert into approved_skills values
   ('Project Management & Delivery', 'Task Prioritization', 'supporting', null, 9),
   ('Leadership & Business Analysis', 'Technical Leadership', 'primary', null, 0),
   ('Leadership & Business Analysis', 'Business Analysis', 'primary', null, 1),
-  ('Leadership & Business Analysis', 'Team Management', 'supporting', null, 2),
-  ('Leadership & Business Analysis', 'Mentoring', 'supporting', null, 3),
-  ('Leadership & Business Analysis', 'Code Review', 'supporting', null, 4),
-  ('Leadership & Business Analysis', 'Requirements Gathering', 'supporting', null, 5),
-  ('Leadership & Business Analysis', 'Client Communication', 'supporting', null, 6);
+  ('Leadership & Business Analysis', 'Figma', 'primary', null, 2),
+  ('Leadership & Business Analysis', 'Team Management', 'supporting', null, 3),
+  ('Leadership & Business Analysis', 'Mentoring', 'supporting', null, 4),
+  ('Leadership & Business Analysis', 'Code Review', 'supporting', null, 5),
+  ('Leadership & Business Analysis', 'Requirements Gathering', 'supporting', null, 6),
+  ('Leadership & Business Analysis', 'UI/UX Prototyping', 'supporting', null, 7),
+  ('Leadership & Business Analysis', 'Client Communication', 'supporting', null, 8);
 
 insert into public.skills (category_id, name, level, subgroup, sort_order)
 select c.id, a.name, a.level, a.subgroup, a.sort_order
@@ -130,7 +132,7 @@ using public.skill_categories c
 where s.category_id = c.id and c.name in (select name from approved_categories)
   and not exists (select 1 from approved_skills a where a.category = c.name and a.name = s.name);
 
--- Check: 8 published categories and 68 skills.
+-- Check: 8 published categories and 70 skills.
 select (select count(*) from public.skill_categories where status = 'published') as published_categories,
        (select count(*) from public.skills s join public.skill_categories c on c.id = s.category_id where c.status = 'published') as published_skills;
 commit;

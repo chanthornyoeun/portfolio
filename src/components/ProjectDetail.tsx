@@ -1,5 +1,5 @@
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { publicTags } from '../data/projects';
+import { imageAlt, publicTags } from '../data/projects';
 import type { Project } from '../data/projects';
 import { PrivateLabel, Tags } from './Projects';
 import { useContent } from '../contexts/ContentContext';
@@ -64,15 +64,20 @@ export function ProjectDetail({ project }: { project: Project }) {
       </header>
 
       {project.image && (
-        <img
-          src={project.image}
-          alt={`${project.title} screenshot`}
-          width={1280}
-          height={720}
-          decoding="async"
-          onError={(e) => (e.currentTarget.hidden = true)}
-          className="mb-10 aspect-video w-full rounded-lg border border-gray-200 object-cover dark:border-gray-800"
-        />
+        <figure className="mb-10">
+          <img
+            src={project.image}
+            alt={imageAlt(project)}
+            width={1280}
+            height={720}
+            decoding="async"
+            onError={(e) => (e.currentTarget.hidden = true)}
+            className="aspect-video w-full rounded-lg border border-gray-200 object-cover dark:border-gray-800"
+          />
+          {project.imageType !== 'screenshot' && (
+            <figcaption className="mt-2 text-xs text-gray-500 dark:text-gray-400">Conceptual illustration — not an actual product screenshot.</figcaption>
+          )}
+        </figure>
       )}
 
       <Block title="Overview">{paras(project.overview)}</Block>

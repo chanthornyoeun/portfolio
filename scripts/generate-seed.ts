@@ -21,7 +21,9 @@ on conflict (slug) do nothing;`,
 );
 
 otherProjects.forEach((p, i) =>
-  lines.push(`insert into public.other_projects (title, description, url, status, sort_order) values (${q(p.title)}, ${q(p.description)}, ${q(p.url)}, 'published', ${i}) on conflict (title) do nothing;`),
+  lines.push(
+    `insert into public.other_projects (title, description, company, role, icon, capability_tags, url, url_label, status, sort_order) values (${[q(p.title), q(p.description), q(p.company), q(p.role), q(p.icon), arr(p.capabilityTags ?? []), q(p.url), q(p.urlLabel), "'published'", i].join(', ')}) on conflict (title) do nothing;`,
+  ),
 );
 
 experience.forEach((g, i) => {

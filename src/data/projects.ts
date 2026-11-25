@@ -8,6 +8,10 @@ export function publicTags(p: Pick<Project, 'techVisibility' | 'capabilityTags' 
   return [];
 }
 
+/** Image alt text: the configured text, else a description that says whether it is a concept or a screenshot. */
+export const imageAlt = (p: Pick<Project, 'title' | 'imageType' | 'imageAlt'>) =>
+  p.imageAlt ?? `${p.title} — ${p.imageType === 'screenshot' ? 'screenshot' : 'conceptual illustration'}`;
+
 export interface Project {
   slug: string;
   title: string;
@@ -28,6 +32,10 @@ export interface Project {
   tech: string[];
   /** Optional authorized, sanitized screenshot (16:9) in public/, e.g. 'projects/auction.webp'. Resolved with asset(). */
   image?: string;
+  /** 'concept' images are labelled as illustrations, not product screenshots. Defaults to 'concept'. */
+  imageType?: 'concept' | 'screenshot';
+  /** Alt text for the image; a generic description is used when empty. */
+  imageAlt?: string;
   overview: string;
   challenge: string;
   myRole: string;
@@ -43,5 +51,14 @@ export interface Project {
 export interface OtherProject {
   title: string;
   description: string;
+  company?: string;
+  role?: string;
+  /** Key in the icon registry (components/AdditionalProjects.tsx); unknown values get a generic icon. */
+  icon?: string;
+  /** General capabilities, at most 3. */
+  capabilityTags: string[];
+  /** Optional public https URL. */
   url?: string;
+  /** Link text, e.g. "Organization Website"; defaults to "Visit Website". */
+  urlLabel?: string;
 }

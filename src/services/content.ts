@@ -23,10 +23,13 @@ export interface Rows {
   projects: (Sorted & {
     slug: string; title: string; role: string; summary: string; card_summary?: string | null; overview: string; challenge: string; my_role: string;
     team: string | null; approach: string; lessons: string; featured_technologies: string[] | null; technologies: string[] | null;
-    contributions: string[] | null; image_path: string | null; updated_at?: string | null;
+    contributions: string[] | null; image_path: string | null; image_type?: string | null; image_alt?: string | null; updated_at?: string | null;
     tech_visibility?: string | null; capability_tags?: string[] | null;
   })[];
-  otherProjects: (Sorted & { title: string; description: string; url: string | null })[];
+  otherProjects: (Sorted & {
+    title: string; description: string; url: string | null;
+    company?: string | null; role?: string | null; icon?: string | null; capability_tags?: string[] | null; url_label?: string | null;
+  })[];
   companies: (Sorted & {
     company_name: string;
     experience_roles: (Sorted & { title: string; start_date: string; end_date: string | null; project_name: string | null; highlights: string[] | null })[] | null;
@@ -110,6 +113,8 @@ function mapRows(rows: Rows, env?: Record<string, unknown>): Content {
       featuredTech: r.featured_technologies ?? [],
       tech: r.technologies ?? [],
       image: mediaUrl(r.image_path, env) || undefined,
+      imageType: r.image_type === 'screenshot' ? 'screenshot' : 'concept',
+      imageAlt: r.image_alt?.trim() || undefined,
       overview: r.overview,
       challenge: r.challenge,
       myRole: r.my_role,
@@ -119,7 +124,16 @@ function mapRows(rows: Rows, env?: Record<string, unknown>): Content {
       lessons: r.lessons,
       updatedAt: r.updated_at ?? undefined,
     })),
-    otherProjects: bySort(rows.otherProjects).map((r) => ({ title: r.title, description: r.description, url: r.url ?? undefined })),
+    otherProjects: bySort(rows.otherProjects).map((r) => ({
+      title: r.title,
+      description: r.description,
+      company: r.company?.trim() || undefined,
+      role: r.role?.trim() || undefined,
+      icon: r.icon?.trim() || undefined,
+      capabilityTags: r.capability_tags ?? [],
+      url: r.url ?? undefined,
+      urlLabel: r.url_label?.trim() || undefined,
+    })),
     experience: bySort(rows.companies).map((c) => ({
       company: c.company_name,
       roles: bySort(c.experience_roles).map((r) => ({
@@ -201,6 +215,19 @@ export function validateContent(c: Content): string[] {
       if (r.endDate && r.endDate < r.startDate) errors.push(`${at}: ends before it starts`);
     }
   }
+  const otherTitles = new Set<string>();
+  for (const o of c.otherProjects) {
+    const at = `additional project "${o.title || '?'}"`;
+    need(o.title, `${at}.title`);
+    need(o.description, `${at}.description`);
+    if (otherTitles.has(o.title)) errors.push(`${at}: duplicate title`);
+    otherTitles.add(o.title);
+    if (o.capabilityTags.length > 3) errors.push(`${at}: at most 3 capability tags`);
+    if (o.capabilityTags.some((t) => !t.trim() || t.length > 40)) errors.push(`${at}: capability tags must be 1–40 characters`);
+    if (o.url && !URL.canParse(o.url)) errors.push(`${at}: url is not valid`);
+    else if (o.url && new URL(o.url).protocol !== 'https:') errors.push(`${at}: url must use https`);
+    if (o.urlLabel && !o.url) errors.push(`${at}: url_label set without a url`);
+  }
   for (const s of c.skills) {
     if (!s.primary.length && !s.supporting.length && !s.subgroup) errors.push(`skill category "${s.category}" has no skills`);
   }
@@ -209,8 +236,8 @@ export function validateContent(c: Content): string[] {
 
 const QUERIES: Record<keyof Omit<Rows, 'profile'> | 'profile', string> = {
   // Public projection: published rows only, technologies emptied unless approved (see the tech_visibility migration).
-  projects: 'projects_public?select=slug,title,role,summary,card_summary,overview,challenge,my_role,team,approach,lessons,tech_visibility,capability_tags,featured_technologies,technologies,contributions,image_path,sort_order,updated_at',
-  otherProjects: 'other_projects?select=title,description,url,sort_order&status=eq.published',
+  projects: 'projects_public?select=slug,title,role,summary,card_summary,overview,challenge,my_role,team,approach,lessons,tech_visibility,capability_tags,featured_technologies,technologies,contributions,image_path,image_type,image_alt,sort_order,updated_at',
+  otherProjects: 'other_projects?select=title,description,company,role,icon,capability_tags,url,url_label,sort_order&status=eq.published',
   companies: 'experience_companies?select=company_name,sort_order,experience_roles(title,start_date,end_date,project_name,highlights,sort_order)&status=eq.published',
   skillCategories: 'skill_categories?select=name,sort_order,skills(name,level,subgroup,sort_order)&status=eq.published',
   profile: 'profile?select=name,title,location,headline,introduction,about,email,resume_path,avatar_path',

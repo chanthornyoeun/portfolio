@@ -1,5 +1,5 @@
 // Per-page <head> tags, structured data and sitemap, generated at build time from the content snapshot.
-import { publicTags } from './data/projects.ts';
+import { imageAlt, publicTags } from './data/projects.ts';
 import type { Project } from './data/projects.ts';
 import type { Content } from './services/content.ts';
 
@@ -57,7 +57,7 @@ export function projectMeta(project: Project, c: Content, siteUrl: string): Page
     description: clip(project.summary),
     url,
     // A sanitized project screenshot, when one is published, makes a better preview than the generic card.
-    image: project.image?.startsWith('https://') ? { url: project.image, alt: `${project.title} screenshot` } : defaultImage(c, siteUrl),
+    image: project.image?.startsWith('https://') ? { url: project.image, alt: imageAlt(project) } : defaultImage(c, siteUrl),
     jsonLd: [
       {
         '@context': 'https://schema.org',
